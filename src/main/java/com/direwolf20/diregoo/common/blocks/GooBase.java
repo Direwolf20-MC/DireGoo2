@@ -58,8 +58,8 @@ public class GooBase extends Block {
         if (!worldIn.isAreaLoaded(pos, 3))
             return; // Forge: prevent loading unloaded chunks when checking neighbor's light and spreading
         int x = random.nextInt(Direction.values().length);
-        //Direction direction = Direction.values()[x];
-        Direction direction = Direction.NORTH;
+        Direction direction = Direction.values()[x];
+        //Direction direction = Direction.NORTH;
         System.out.println("randomTick Firing at " + pos + " Direction: " + direction);
         BlockPos checkPos = pos.offset(direction);
         BlockState oldState = worldIn.getBlockState(checkPos);
@@ -74,7 +74,8 @@ public class GooBase extends Block {
                 worldIn.removeTileEntity(checkPos);
             }
             worldIn.setBlockState(checkPos, this.getDefaultState());
-            blockSave.push(checkPos, oldState);
+            if (!oldState.equals(Blocks.AIR.getDefaultState()))
+                blockSave.push(checkPos, oldState);
             if (nbtData != new CompoundNBT())
                 blockSave.pushTE(checkPos, nbtData);
         }
