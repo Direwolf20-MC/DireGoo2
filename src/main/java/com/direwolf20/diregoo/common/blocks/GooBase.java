@@ -6,6 +6,8 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
@@ -27,9 +29,18 @@ public class GooBase extends Block {
     public static void resetBlock(ServerWorld world, BlockPos pos) {
         BlockSave blockSave = BlockSave.get(world);
         BlockState oldState = blockSave.getStateFromPos(pos);
-        if (oldState == null) oldState = Blocks.AIR.getDefaultState();
+        if (oldState == null) {
+            world.setBlockState(pos, Blocks.AIR.getDefaultState());
+            return;
+        }
         world.setBlockState(pos, oldState);
         blockSave.pop(pos);
+
+        CompoundNBT oldNBT = blockSave.getTEFromPos(pos);
+        if (oldNBT.isEmpty()) return;
+        TileEntity te = world.getTileEntity(pos);
+        te.func_230337_a_(oldState, oldNBT);
+        blockSave.popTE(pos);
     }
 
     @Override
@@ -47,16 +58,25 @@ public class GooBase extends Block {
         if (!worldIn.isAreaLoaded(pos, 3))
             return; // Forge: prevent loading unloaded chunks when checking neighbor's light and spreading
         int x = random.nextInt(Direction.values().length);
-        Direction direction = Direction.values()[x];
+        //Direction direction = Direction.values()[x];
+        Direction direction = Direction.NORTH;
         System.out.println("randomTick Firing at " + pos + " Direction: " + direction);
         BlockPos checkPos = pos.offset(direction);
         BlockState oldState = worldIn.getBlockState(checkPos);
 
         BlockSave blockSave = BlockSave.get(worldIn);
-        System.out.println(blockSave);
+        //System.out.println(blockSave);
         if (!oldState.equals(this.getDefaultState())) {
+            TileEntity te = worldIn.getTileEntity(checkPos);
+            CompoundNBT nbtData = new CompoundNBT();
+            if (te != null) {
+                te.write(nbtData);
+                worldIn.removeTileEntity(checkPos);
+            }
             worldIn.setBlockState(checkPos, this.getDefaultState());
             blockSave.push(checkPos, oldState);
+            if (nbtData != new CompoundNBT())
+                blockSave.pushTE(checkPos, nbtData);
         }
     }
 }

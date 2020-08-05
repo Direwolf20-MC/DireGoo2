@@ -17,6 +17,7 @@ import java.util.Map;
 public class BlockSave extends WorldSavedData {
     private static final String NAME = DireGoo.MOD_ID + "_blocksave";
     private final HashMap<BlockPos, BlockState> blockMap = new HashMap<>();
+    private final HashMap<BlockPos, CompoundNBT> teMap = new HashMap<>();
 
     public BlockSave() {
         super(NAME);
@@ -25,6 +26,7 @@ public class BlockSave extends WorldSavedData {
     @Override
     public void read(CompoundNBT nbt) {
         blockMap.clear();
+        teMap.clear();
 
         ListNBT list = nbt.getList("blockmap", Constants.NBT.TAG_COMPOUND);
         for (int i = 0; i < list.size(); i++) {
@@ -32,6 +34,14 @@ public class BlockSave extends WorldSavedData {
             BlockState state = NBTUtil.readBlockState(list.getCompound(i).getCompound("state"));
 
             blockMap.put(blockpos, state);
+        }
+
+        ListNBT telist = nbt.getList("temap", Constants.NBT.TAG_COMPOUND);
+        for (int i = 0; i < telist.size(); i++) {
+            BlockPos blockpos = NBTUtil.readBlockPos(telist.getCompound(i).getCompound("pos"));
+            CompoundNBT teData = telist.getCompound(i).getCompound("teData");
+
+            teMap.put(blockpos, teData);
         }
     }
 
@@ -47,6 +57,17 @@ public class BlockSave extends WorldSavedData {
         }
 
         compound.put("blockmap", nbt);
+
+        ListNBT nbtTE = new ListNBT();
+
+        for (Map.Entry<BlockPos, CompoundNBT> teData : teMap.entrySet()) {
+            CompoundNBT comp = new CompoundNBT();
+            comp.put("pos", NBTUtil.writeBlockPos(teData.getKey()));
+            comp.put("teData", teData.getValue());
+            nbtTE.add(comp);
+        }
+
+        compound.put("temap", nbtTE);
         return compound;
     }
 
@@ -76,7 +97,21 @@ public class BlockSave extends WorldSavedData {
         this.markDirty();
     }
 
+    public void pushTE(BlockPos pos, CompoundNBT nbt) {
+        this.teMap.put(pos, nbt);
+        this.markDirty();
+    }
+
+    public void popTE(BlockPos pos) {
+        this.teMap.remove(pos);
+        this.markDirty();
+    }
+
     public BlockState getStateFromPos(BlockPos pos) {
         return this.blockMap.get(pos);
+    }
+
+    public CompoundNBT getTEFromPos(BlockPos pos) {
+        return this.teMap.get(pos);
     }
 }
