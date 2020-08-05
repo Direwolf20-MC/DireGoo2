@@ -7,6 +7,7 @@ import net.minecraft.block.Block;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.client.model.generators.ExistingFileHelper;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
+import net.minecraftforge.client.model.generators.ModelBuilder;
 import net.minecraftforge.client.model.generators.ModelFile;
 
 public class GeneratorItemModels extends ItemModelProvider {
@@ -18,6 +19,21 @@ public class GeneratorItemModels extends ItemModelProvider {
     protected void registerModels() {
         // Our block items
         registerBlockModel(ModBlocks.GOO_BLOCK.get());
+
+        //Our Item Models
+        String path = ModItems.GOO_REMOVER.get().getRegistryName().getPath();
+        singleTexture(path, mcLoc("item/handheld"), "layer0", modLoc("item/" + path)).transforms()
+                .transform(ModelBuilder.Perspective.THIRDPERSON_RIGHT)
+                .rotation(0, 80, 0)
+                .translation(0, 0, 0)
+                .scale(.5f)
+                .end()
+                .transform(ModelBuilder.Perspective.FIRSTPERSON_RIGHT)
+                .rotation(0, 80, 0)
+                .translation(6, 0, -7)
+                .scale(1f)
+                .end()
+                .end();
     }
 
     private void registerBlockModel(Block block) {
