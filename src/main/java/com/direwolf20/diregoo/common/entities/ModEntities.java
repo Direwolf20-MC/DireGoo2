@@ -13,7 +13,8 @@ import net.minecraftforge.fml.common.Mod;
 public class ModEntities {
     private ModEntities() {
     }
-    
+
+
     @SubscribeEvent
     public static void registerEntities(RegistryEvent.Register<EntityType<?>> event) {
         event.getRegistry().register(

@@ -64,6 +64,7 @@ public class GooBase extends Block {
         Direction direction = Direction.values()[x];
         //Direction direction = Direction.NORTH;
         System.out.println("randomTick Firing at " + pos + " Direction: " + direction);
+
         BlockPos checkPos = pos.offset(direction);
         BlockState oldState = worldIn.getBlockState(checkPos);
 
