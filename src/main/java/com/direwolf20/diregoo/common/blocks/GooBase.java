@@ -1,5 +1,6 @@
 package com.direwolf20.diregoo.common.blocks;
 
+import com.direwolf20.diregoo.common.entities.GooEntity;
 import com.direwolf20.diregoo.common.worldsave.BlockSave;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -29,6 +30,7 @@ public class GooBase extends Block {
     public static void resetBlock(ServerWorld world, BlockPos pos) {
         BlockSave blockSave = BlockSave.get(world);
         BlockState oldState = blockSave.getStateFromPos(pos);
+        world.addEntity(new GooEntity(world, pos));
         if (oldState == null) {
             world.setBlockState(pos, Blocks.AIR.getDefaultState());
             return;
@@ -41,6 +43,7 @@ public class GooBase extends Block {
         TileEntity te = world.getTileEntity(pos);
         te.func_230337_a_(oldState, oldNBT);
         blockSave.popTE(pos);
+
     }
 
     @Override
