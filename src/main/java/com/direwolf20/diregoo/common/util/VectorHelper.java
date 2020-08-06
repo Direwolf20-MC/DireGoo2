@@ -26,4 +26,14 @@ public class VectorHelper {
         RayTraceContext context = new RayTraceContext(start, end, RayTraceContext.BlockMode.COLLIDER, rayTraceFluid, player);
         return world.rayTraceBlocks(context);
     }
+
+    public static BlockRayTraceResult getLookingAt(PlayerEntity player, RayTraceContext.FluidMode rayTraceFluid, int range, Vector3d start) {
+        World world = player.world;
+
+        Vector3d look = player.getLookVec();
+
+        Vector3d end = new Vector3d(player.getPosX() + look.x * (double) range, player.getPosY() + player.getEyeHeight() + look.y * (double) range, player.getPosZ() + look.z * (double) range);
+        RayTraceContext context = new RayTraceContext(start, end, RayTraceContext.BlockMode.COLLIDER, rayTraceFluid, player);
+        return world.rayTraceBlocks(context);
+    }
 }

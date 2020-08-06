@@ -60,12 +60,11 @@ public class GooRemover extends Item {
         laserPos = laserPos.add(down);
         lookingAt = lookingAt.add(backward);
 
-        System.out.println(world);
-        LaserGunParticleData data = LaserGunParticleData.laserparticle(lookingAt.getX(), lookingAt.getY(), lookingAt.getZ(), 0.25f, 1f, 1f, 1f, 120, true);
+        Vector3d pathVec = lookingAt.subtract(laserPos);
 
-        //if (!world.isRemote) {
+        LaserGunParticleData data = LaserGunParticleData.laserparticle(pathVec.getX(), pathVec.getY(), pathVec.getZ(), 0.1f, 1f, 1f, 1f, 120, true);
         ServerWorld serverWorld = (ServerWorld) world;
         serverWorld.spawnParticle(data, laserPos.x, laserPos.y, laserPos.z, 1, 0, 0, 0, 0.025);
-        //}
+
     }
 }

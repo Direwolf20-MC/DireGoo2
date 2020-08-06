@@ -1,13 +1,14 @@
 package com.direwolf20.diregoo.client.particles.lasergunparticle;
 
 import com.mojang.blaze3d.vertex.IVertexBuilder;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.particle.IAnimatedSprite;
 import net.minecraft.client.particle.IParticleRenderType;
 import net.minecraft.client.particle.SpriteTexturedParticle;
 import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
 
 import java.util.Random;
 
@@ -50,7 +51,7 @@ public class LaserGunParticle extends SpriteTexturedParticle {
         this.targetX = targetX;
         this.targetY = targetY;
         this.targetZ = targetZ;
-        this.canCollide = collide;
+        this.canCollide = false;
         this.setGravity(0f);
         particlePicker = 1;
         this.spriteSet = sprite;
@@ -69,7 +70,6 @@ public class LaserGunParticle extends SpriteTexturedParticle {
     // [VanillaCopy] of super, without drag when onGround is true
     @Override
     public void tick() {
-        //System.out.println("I exist!" + posX+":"+posY+":"+posZ +"....."+targetX+":"+targetY+":"+targetZ);
         double moveX;
         double moveY;
         double moveZ;
@@ -78,7 +78,12 @@ public class LaserGunParticle extends SpriteTexturedParticle {
         if (this.age++ >= this.maxAge) {
             this.setExpired();
         }
-
+        BlockState inBlock = world.getBlockState(new BlockPos(posX, posY, posZ));
+        if (!inBlock.getMaterial().equals(Material.AIR)) {
+            System.out.println("I just hit a " + inBlock);
+            this.setExpired();
+            return;
+        }
         //prevPos is used in the render. if you don't do this your particle rubber bands (Like lag in an MMO).
         //This is used because ticks are 20 per second, and FPS is usually 60 or higher.
         this.prevPosX = this.posX;
@@ -86,24 +91,25 @@ public class LaserGunParticle extends SpriteTexturedParticle {
         this.prevPosZ = this.posZ;
 
         //Vector3d sourcePos = new Vector3d(sourceX, sourceY, sourceZ);
-        Vector3d targetPos = new Vector3d(targetX, targetY, targetZ);
+        //Vector3d targetPos = new Vector3d(targetX, targetY, targetZ);
 
         //Get the current position of the particle, and figure out the vector of where it's going
-        Vector3d partPos = new Vector3d(this.posX, this.posY, this.posZ);
-        Vector3d targetDirection = new Vector3d(targetPos.getX() - this.posX, targetPos.getY() - this.posY, targetPos.getZ() - this.posZ);
+        //Vector3d partPos = new Vector3d(this.posX, this.posY, this.posZ);
+        //Vector3d targetDirection = new Vector3d(targetPos.getX() - this.posX, targetPos.getY() - this.posY, targetPos.getZ() - this.posZ);
 
         //The total distance between the particle and target
-        double totalDistance = targetPos.distanceTo(partPos);
-        if (totalDistance < 0.1)
-            this.setExpired();
+        //double totalDistance = targetPos.distanceTo(partPos);
+        //if (totalDistance < 0.1)
+        //    this.setExpired();
 
-        double speedAdjust = 20;
+        //double speedAdjust = 20;
 
-        moveX = (targetX - this.posX) / speedAdjust;
-        moveY = (targetY - this.posY) / speedAdjust;
-        moveZ = (targetZ - this.posZ) / speedAdjust;
+        moveX = targetX * .125;
+        moveY = targetY * .125;
+        moveZ = targetZ * .125;
 
-        BlockPos nextPos = new BlockPos(this.posX + moveX, this.posY + moveY, this.posZ + moveZ);
+
+        //BlockPos nextPos = new BlockPos(this.posX + moveX, this.posY + moveY, this.posZ + moveZ);
 
         if (age > 40)
             //if (world.getBlockState(nextPos).getBlock() == ModBlocks.RENDERBLOCK)
