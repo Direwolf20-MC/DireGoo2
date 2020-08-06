@@ -5,7 +5,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
@@ -25,14 +24,14 @@ public class LaserGunParticleEntity extends Entity {
         super(type, world);
     }
 
-    public LaserGunParticleEntity(World world, BlockPos spawnPos, double tx, double ty, double tz) {
+    public LaserGunParticleEntity(World world, double spawnX, double spawnY, double spawnZ, double tx, double ty, double tz) {
         this(TYPE, world);
 
         targetX = tx;
         targetY = ty;
         targetZ = tz;
-        setVelocity(tx * 1, ty * 1, tz * 1);
-        setPosition(spawnPos.getX(), spawnPos.getY(), spawnPos.getZ());
+        setVelocity(tx, ty, tz);
+        setPosition(spawnX, spawnY, spawnZ);
     }
 
 

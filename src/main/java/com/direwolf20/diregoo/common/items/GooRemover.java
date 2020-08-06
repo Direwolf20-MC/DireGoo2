@@ -10,7 +10,6 @@ import net.minecraft.item.UseAction;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.vector.Vector3d;
@@ -60,9 +59,9 @@ public class GooRemover extends Item {
         laserPos = laserPos.add(down);
         lookingAt = lookingAt.add(backward);
 
-        Vector3d pathVec = lookingAt.add(0.5, 0, 0.5).subtract(laserPos).normalize();
+        Vector3d pathVec = lookingAt.add(-0.125, -0.125, -0.125).subtract(laserPos).normalize(); //Half of the particle size, so it adjusts to the actual center of the block
 
-        world.addEntity(new LaserGunParticleEntity(world, new BlockPos(laserPos.getX(), laserPos.getY(), laserPos.getZ()), pathVec.getX(), pathVec.getY(), pathVec.getZ()));
+        world.addEntity(new LaserGunParticleEntity(world, laserPos.getX(), laserPos.getY(), laserPos.getZ(), pathVec.getX(), pathVec.getY(), pathVec.getZ()));
 
     }
 }
