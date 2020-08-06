@@ -1,7 +1,7 @@
 package com.direwolf20.diregoo.common.items;
 
 import com.direwolf20.diregoo.DireGoo;
-import com.direwolf20.diregoo.client.particles.lasergunparticle.LaserGunParticleData;
+import com.direwolf20.diregoo.common.entities.LaserGunParticleEntity;
 import com.direwolf20.diregoo.common.util.VectorHelper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -10,11 +10,11 @@ import net.minecraft.item.UseAction;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
 
 public class GooRemover extends Item {
     public GooRemover() {
@@ -60,11 +60,9 @@ public class GooRemover extends Item {
         laserPos = laserPos.add(down);
         lookingAt = lookingAt.add(backward);
 
-        Vector3d pathVec = lookingAt.subtract(laserPos);
+        Vector3d pathVec = lookingAt.add(0.5, 0, 0.5).subtract(laserPos).normalize();
 
-        LaserGunParticleData data = LaserGunParticleData.laserparticle(pathVec.getX(), pathVec.getY(), pathVec.getZ(), 0.1f, 1f, 1f, 1f, 120, true);
-        ServerWorld serverWorld = (ServerWorld) world;
-        serverWorld.spawnParticle(data, laserPos.x, laserPos.y, laserPos.z, 1, 0, 0, 0, 0.025);
+        world.addEntity(new LaserGunParticleEntity(world, new BlockPos(laserPos.getX(), laserPos.getY(), laserPos.getZ()), pathVec.getX(), pathVec.getY(), pathVec.getZ()));
 
     }
 }

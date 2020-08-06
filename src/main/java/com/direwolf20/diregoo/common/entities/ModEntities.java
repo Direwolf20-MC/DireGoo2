@@ -26,10 +26,20 @@ public class ModEntities {
                         .build("")
                         .setRegistryName(DireGoo.MOD_ID + ":gooentity")
         );
+        event.getRegistry().register(
+                EntityType.Builder.<LaserGunParticleEntity>create(LaserGunParticleEntity::new, EntityClassification.MISC)
+                        .setTrackingRange(64)
+                        .setUpdateInterval(1)
+                        .setShouldReceiveVelocityUpdates(false)
+                        .setCustomClientFactory(((spawnEntity, world) -> new LaserGunParticleEntity(LaserGunParticleEntity.TYPE, world)))
+                        .build("")
+                        .setRegistryName(DireGoo.MOD_ID + ":lasergunparticleentity")
+        );
     }
 
     @SubscribeEvent
     public static void registerModels(ModelRegistryEvent evt) {
         RenderingRegistry.registerEntityRenderingHandler(GooEntity.TYPE, GooEntityRender::new);
+        RenderingRegistry.registerEntityRenderingHandler(LaserGunParticleEntity.TYPE, LaserGunParticleEntityRender::new);
     }
 }
