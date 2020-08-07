@@ -47,23 +47,49 @@ public class GooBase extends Block {
     }
 
     @Override
+    public boolean ticksRandomly(BlockState state) {
+        return true;
+    }
+
+    @Override
     public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult result) {
-        //if (world.isRemote) return ActionResultType.SUCCESS; //Server Side Only
-        //resetBlock((ServerWorld) world, pos);
+        if (world.isRemote) return ActionResultType.SUCCESS; //Server Side Only
+
+        world.getPendingBlockTicks().scheduleTick(pos, this, 0);
         return ActionResultType.SUCCESS;
     }
 
     /**
-     * Performs a random tick on a block.
+     * Performs a tick on a block. This method is called by randomTick by default. It can also be scheduled with world.getPendingBlockTicks().scheduleTick
      */
     @Override
-    public void randomTick(BlockState state, ServerWorld worldIn, BlockPos pos, Random random) {
+    public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
         if (!worldIn.isAreaLoaded(pos, 3))
             return; // Forge: prevent loading unloaded chunks when checking neighbor's light and spreading
-        int x = random.nextInt(Direction.values().length);
+
+        if (isSurrounded(worldIn, pos)) {
+            System.out.println(pos + " is surrounded!");
+            return;
+        }
+
+        BlockPos gooPos = spreadGoo(state, worldIn, pos, rand);
+        if (gooPos != BlockPos.ZERO)
+            worldIn.getPendingBlockTicks().scheduleTick(pos, this, 40); //Todo: config option, with random
+    }
+
+    public boolean isSurrounded(ServerWorld worldIn, BlockPos pos) {
+        for (Direction direction : Direction.values()) {
+            if (!worldIn.getBlockState(pos.offset(direction)).getBlock().equals(this)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public BlockPos spreadGoo(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
+        int x = rand.nextInt(Direction.values().length);
         Direction direction = Direction.values()[x];
-        //Direction direction = Direction.NORTH;
-        System.out.println("randomTick Firing at " + pos + " Direction: " + direction);
 
         BlockPos checkPos = pos.offset(direction);
         BlockState oldState = worldIn.getBlockState(checkPos);
@@ -82,6 +108,8 @@ public class GooBase extends Block {
                 blockSave.push(checkPos, oldState);
             if (nbtData != new CompoundNBT())
                 blockSave.pushTE(checkPos, nbtData);
+            return checkPos;
         }
+        return BlockPos.ZERO;
     }
 }
