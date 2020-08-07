@@ -11,6 +11,7 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
@@ -30,11 +31,11 @@ public class GooRemover extends Item {
         ItemStack itemstack = player.getHeldItem(hand);
 
 
-        if (world.isRemote) return new ActionResult<>(ActionResultType.SUCCESS, itemstack);
+        if (world.isRemote) return new ActionResult<>(ActionResultType.PASS, itemstack);
         //Server Side Only
         spawnLaserGunParticle(player, world, itemstack);
 
-        return new ActionResult<>(ActionResultType.SUCCESS, itemstack);
+        return new ActionResult<>(ActionResultType.PASS, itemstack);
     }
 
     private void spawnLaserGunParticle(PlayerEntity player, World world, ItemStack itemstack) {
@@ -49,10 +50,11 @@ public class GooRemover extends Item {
         Vector3d backward = look.mul(-1, 1, -1);
         Vector3d down = right.crossProduct(forward);
 
+        System.out.println(look + ":" + right);
         //Take the player's eye position, and shift it to where the end of the laser is (Roughly)
-        right = right.scale(0.65f);
-        forward = forward.scale(0.85f);
-        down = down.scale(-0.35);
+        right = right.scale(MathHelper.lerp((look.z + 1) / 2, 0.55f, 0.80f));
+        forward = forward.scale(1.25f);
+        down = down.scale(MathHelper.lerp((look.x + 1) / 2, -0.35, -0.45));
         backward = backward.scale(0.05);
         Vector3d laserPos = playerPos.add(right);
         laserPos = laserPos.add(forward);
