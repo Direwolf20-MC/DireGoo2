@@ -48,8 +48,8 @@ public class GooBase extends Block {
 
     @Override
     public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult result) {
-        if (world.isRemote) return ActionResultType.SUCCESS; //Server Side Only
-        resetBlock((ServerWorld) world, pos);
+        //if (world.isRemote) return ActionResultType.SUCCESS; //Server Side Only
+        //resetBlock((ServerWorld) world, pos);
         return ActionResultType.SUCCESS;
     }
 

@@ -1,12 +1,16 @@
 package com.direwolf20.diregoo.common.entities;
 
 import com.direwolf20.diregoo.DireGoo;
+import com.direwolf20.diregoo.common.blocks.GooBase;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.registries.ObjectHolder;
 
@@ -44,10 +48,21 @@ public class LaserGunParticleEntity extends Entity {
         } else if (despawning != -1 && ++despawning > 1)
             remove();
 
+        BlockPos pos = new BlockPos(this.getPosX(), this.getPosY(), this.getPosZ());
+        BlockState inBlockState = world.getBlockState(pos);
+        if (!inBlockState.isAir()) {
+            if (inBlockState.getBlock() instanceof GooBase && !world.isRemote)
+                GooBase.resetBlock((ServerWorld) world, pos);
+            remove();
+            return;
+        }
+
+        System.out.println(inBlockState);
         Vector3d vector3d = this.getMotion();
-        double d3 = vector3d.x;
-        double d4 = vector3d.y;
-        double d0 = vector3d.z;
+        double speedMultiplier = 1;
+        double d3 = vector3d.x * speedMultiplier;
+        double d4 = vector3d.y * speedMultiplier;
+        double d0 = vector3d.z * speedMultiplier;
 
         double d5 = this.getPosX() + d3;
         double d1 = this.getPosY() + d4;
