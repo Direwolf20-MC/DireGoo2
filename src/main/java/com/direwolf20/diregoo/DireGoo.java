@@ -1,6 +1,7 @@
 package com.direwolf20.diregoo;
 
 import com.direwolf20.diregoo.common.blocks.ModBlocks;
+import com.direwolf20.diregoo.common.commands.ModCommands;
 import com.direwolf20.diregoo.common.items.ModItems;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemGroup;
@@ -92,6 +93,7 @@ public class DireGoo
     @SubscribeEvent
     public void onServerStarting(FMLServerStartingEvent event) {
         // do something when the server starts
+        ModCommands.register(event.getServer().getCommandManager().getDispatcher());
     }
 
     // You can use EventBusSubscriber to automatically subscribe events on the contained class (this is subscribing to the MOD

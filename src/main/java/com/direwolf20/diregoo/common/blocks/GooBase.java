@@ -1,5 +1,6 @@
 package com.direwolf20.diregoo.common.blocks;
 
+import com.direwolf20.diregoo.Config;
 import com.direwolf20.diregoo.common.entities.GooEntity;
 import com.direwolf20.diregoo.common.worldsave.BlockSave;
 import net.minecraft.block.Block;
@@ -72,9 +73,13 @@ public class GooBase extends Block {
             return;
         }
 
-        BlockPos gooPos = spreadGoo(state, worldIn, pos, rand);
-        if (gooPos != BlockPos.ZERO)
-            worldIn.getPendingBlockTicks().scheduleTick(pos, this, 40); //Todo: config option, with random
+        if (Config.CAN_SPREAD.get()) {
+            BlockPos gooPos = spreadGoo(state, worldIn, pos, rand);
+            if (gooPos != BlockPos.ZERO)
+                worldIn.getPendingBlockTicks().scheduleTick(pos, this, Config.SPREAD_TICK_DELAY.get());
+        }
+
+
     }
 
     public boolean isSurrounded(ServerWorld worldIn, BlockPos pos) {
