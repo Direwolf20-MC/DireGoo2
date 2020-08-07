@@ -34,6 +34,9 @@ public class GeneratorItemModels extends ItemModelProvider {
                 .scale(1f)
                 .end()
                 .end();
+
+        String goopath = ModItems.GOONADE.get().getRegistryName().getPath();
+        singleTexture(goopath, mcLoc("item/handheld"), "layer0", modLoc("item/" + goopath));
     }
 
     private void registerBlockModel(Block block) {

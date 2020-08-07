@@ -20,5 +20,6 @@ public class ModItems {
 
     // Items
     public static final RegistryObject<Item> GOO_REMOVER = ITEMS.register("gooremover", GooRemover::new);
+    public static final RegistryObject<Item> GOONADE = ITEMS.register("goonade", Goonade::new);
 
 }

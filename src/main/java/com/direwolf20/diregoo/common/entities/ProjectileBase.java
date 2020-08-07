@@ -4,6 +4,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
@@ -28,7 +29,7 @@ public abstract class ProjectileBase extends Entity {
             remove();
 
         Vector3d vector3d = this.getMotion();
-        double speedMultiplier = 1;
+        double speedMultiplier = getSpeedMultiplier();
         double d3 = vector3d.x * speedMultiplier;
         double d4 = vector3d.y * speedMultiplier;
         double d0 = vector3d.z * speedMultiplier;
@@ -46,7 +47,7 @@ public abstract class ProjectileBase extends Entity {
 
     @Override
     public boolean hasNoGravity() {
-        return false;
+        return true;
     }
 
     protected boolean shouldSetDespawning() {
@@ -93,6 +94,11 @@ public abstract class ProjectileBase extends Entity {
     }
 
     protected float getGravityVelocity() {
-        return 0.03F;
+        float vel = (float) MathHelper.lerp((float) this.ticksExisted / this.getMaxLife(), 0.005, 0.8);
+        return vel;
+    }
+
+    protected float getSpeedMultiplier() {
+        return 1;
     }
 }
