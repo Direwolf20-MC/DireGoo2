@@ -54,10 +54,10 @@ public class GooBase extends Block {
 
     @Override
     public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult result) {
-        if (world.isRemote) return ActionResultType.SUCCESS; //Server Side Only
+        if (world.isRemote) return ActionResultType.PASS; //Server Side Only
 
         world.getPendingBlockTicks().scheduleTick(pos, this, 0);
-        return ActionResultType.SUCCESS;
+        return ActionResultType.PASS;
     }
 
     /**
@@ -69,7 +69,7 @@ public class GooBase extends Block {
             return; // Forge: prevent loading unloaded chunks when checking neighbor's light and spreading
 
         if (isSurrounded(worldIn, pos)) {
-            System.out.println(pos + " is surrounded!");
+            //System.out.println(pos + " is surrounded!");
             return;
         }
 
@@ -113,8 +113,7 @@ public class GooBase extends Block {
                 blockSave.push(checkPos, oldState);
             if (nbtData != new CompoundNBT())
                 blockSave.pushTE(checkPos, nbtData);
-            return checkPos;
         }
-        return BlockPos.ZERO;
+        return checkPos;
     }
 }

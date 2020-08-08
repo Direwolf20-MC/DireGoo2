@@ -50,7 +50,6 @@ public class GooRemover extends Item {
         Vector3d backward = look.mul(-1, 1, -1);
         Vector3d down = right.crossProduct(forward);
 
-        System.out.println(look + ":" + right);
         //Take the player's eye position, and shift it to where the end of the laser is (Roughly)
         right = right.scale(MathHelper.lerp((look.z + 1) / 2, 0.55f, 0.80f));
         forward = forward.scale(1.25f);

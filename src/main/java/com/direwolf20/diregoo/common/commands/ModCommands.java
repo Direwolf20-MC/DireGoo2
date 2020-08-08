@@ -11,7 +11,7 @@ public class ModCommands {
         LiteralCommandNode<CommandSource> cmdTut = dispatcher.register(
                 Commands.literal(DireGoo.MOD_ID)
                         .then(CommandCanSpread.register(dispatcher))
-                //.then(CommandTpDim.register(dispatcher))
+                        .then(CommandSpreadDelay.register(dispatcher))
                 //.then(CommandSpawner.register(dispatcher))
         );
 
