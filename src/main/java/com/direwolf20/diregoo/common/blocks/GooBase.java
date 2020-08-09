@@ -28,10 +28,11 @@ public class GooBase extends Block {
     }
 
     //Reset the block
-    public static void resetBlock(ServerWorld world, BlockPos pos) {
+    public static void resetBlock(ServerWorld world, BlockPos pos, boolean render) {
         BlockSave blockSave = BlockSave.get(world);
         BlockState oldState = blockSave.getStateFromPos(pos);
-        world.addEntity(new GooEntity(world, pos));
+        if (render)
+            world.addEntity(new GooEntity(world, pos));
         if (oldState == null) {
             world.setBlockState(pos, Blocks.AIR.getDefaultState());
             return;
@@ -76,7 +77,7 @@ public class GooBase extends Block {
         if (Config.CAN_SPREAD.get()) {
             BlockPos gooPos = spreadGoo(state, worldIn, pos, rand);
             if (gooPos != BlockPos.ZERO)
-                worldIn.getPendingBlockTicks().scheduleTick(pos, this, Config.SPREAD_TICK_DELAY.get());
+                worldIn.getPendingBlockTicks().scheduleTick(gooPos, this, Config.SPREAD_TICK_DELAY.get());
         }
 
 
@@ -98,7 +99,7 @@ public class GooBase extends Block {
 
         BlockPos checkPos = pos.offset(direction);
         BlockState oldState = worldIn.getBlockState(checkPos);
-
+        System.out.println(direction + ":" + checkPos);
         BlockSave blockSave = BlockSave.get(worldIn);
         //System.out.println(blockSave);
         if (!oldState.equals(this.getDefaultState())) {

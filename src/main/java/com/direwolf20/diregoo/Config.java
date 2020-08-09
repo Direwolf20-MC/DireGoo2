@@ -39,7 +39,7 @@ public class Config {
 
     private static void setupGooConfig() {
         SPREAD_TICK_DELAY = COMMON_BUILDER.comment("The max delay (in ticks) for good to spread - the higher the number the slower the spread")
-                .defineInRange("spreadTickDelay", 150, 10, Integer.MAX_VALUE);
+                .defineInRange("spreadTickDelay", 150, 0, Integer.MAX_VALUE);
         CAN_SPREAD = COMMON_BUILDER.comment("Can the goo spread. Set the false to disable all good spreading.")
                 .define("canSpread", true);
     }

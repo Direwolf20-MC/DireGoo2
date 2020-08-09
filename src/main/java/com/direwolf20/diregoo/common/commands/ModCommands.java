@@ -12,7 +12,7 @@ public class ModCommands {
                 Commands.literal(DireGoo.MOD_ID)
                         .then(CommandCanSpread.register(dispatcher))
                         .then(CommandSpreadDelay.register(dispatcher))
-                //.then(CommandSpawner.register(dispatcher))
+                        .then(CommandClearGoo.register(dispatcher))
         );
 
         dispatcher.register(Commands.literal("diregoo").redirect(cmdTut));
