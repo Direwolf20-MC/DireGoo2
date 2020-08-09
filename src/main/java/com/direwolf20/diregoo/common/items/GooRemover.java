@@ -62,7 +62,9 @@ public class GooRemover extends Item {
 
         Vector3d pathVec = lookingAt.add(-0.125, -0.125, -0.125).subtract(laserPos).normalize(); //Half of the particle size, so it adjusts to the actual center of the block
 
-        world.addEntity(new LaserGunParticleEntity(world, laserPos.getX(), laserPos.getY(), laserPos.getZ(), pathVec.getX(), pathVec.getY(), pathVec.getZ()));
+        LaserGunParticleEntity laserGunParticleEntity = new LaserGunParticleEntity(world, player, laserPos.getX(), laserPos.getY(), laserPos.getZ());
+        laserGunParticleEntity.shoot(pathVec.getX(), pathVec.getY(), pathVec.getZ(), 1f, 0f);
+        world.addEntity(laserGunParticleEntity);
 
     }
 }
