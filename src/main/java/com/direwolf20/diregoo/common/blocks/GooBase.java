@@ -93,6 +93,15 @@ public class GooBase extends Block {
         return true;
     }
 
+    public boolean canSpreadHere(BlockPos pos, BlockState oldState, World world) {
+        if (oldState.equals(this.getDefaultState()))
+            return false;
+        BlockSave blockSave = BlockSave.get(world);
+        if (blockSave.checkAnti(pos))
+            return false;
+        return true;
+    }
+
     public BlockPos spreadGoo(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
         int x = rand.nextInt(Direction.values().length);
         Direction direction = Direction.values()[x];
@@ -100,9 +109,10 @@ public class GooBase extends Block {
         BlockPos checkPos = pos.offset(direction);
         BlockState oldState = worldIn.getBlockState(checkPos);
         System.out.println(direction + ":" + checkPos);
-        BlockSave blockSave = BlockSave.get(worldIn);
+
         //System.out.println(blockSave);
-        if (!oldState.equals(this.getDefaultState())) {
+        if (canSpreadHere(checkPos, oldState, worldIn)) {
+            BlockSave blockSave = BlockSave.get(worldIn);
             TileEntity te = worldIn.getTileEntity(checkPos);
             CompoundNBT nbtData = new CompoundNBT();
             if (te != null) {

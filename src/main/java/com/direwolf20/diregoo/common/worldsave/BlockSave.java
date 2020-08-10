@@ -12,12 +12,16 @@ import net.minecraft.world.storage.WorldSavedData;
 import net.minecraftforge.common.util.Constants;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class BlockSave extends WorldSavedData {
     private static final String NAME = DireGoo.MOD_ID + "_blocksave";
     private final HashMap<BlockPos, BlockState> blockMap = new HashMap<>();
     private final HashMap<BlockPos, CompoundNBT> teMap = new HashMap<>();
+    private final Set<BlockPos> antigooList = new HashSet<>();
+
 
     public BlockSave() {
         super(NAME);
@@ -27,6 +31,7 @@ public class BlockSave extends WorldSavedData {
     public void read(CompoundNBT nbt) {
         blockMap.clear();
         teMap.clear();
+        antigooList.clear();
 
         ListNBT list = nbt.getList("blockmap", Constants.NBT.TAG_COMPOUND);
         for (int i = 0; i < list.size(); i++) {
@@ -43,6 +48,12 @@ public class BlockSave extends WorldSavedData {
 
             teMap.put(blockpos, teData);
         }
+
+        ListNBT antigoo = nbt.getList("antigoo", Constants.NBT.TAG_COMPOUND);
+        for (int i = 0; i < antigoo.size(); i++) {
+            BlockPos blockPos = NBTUtil.readBlockPos(antigoo.getCompound(i).getCompound("pos"));
+            antigooList.add(blockPos);
+        }
     }
 
     @Override
@@ -55,7 +66,6 @@ public class BlockSave extends WorldSavedData {
             comp.put("state", NBTUtil.writeBlockState(blockData.getValue()));
             nbt.add(comp);
         }
-
         compound.put("blockmap", nbt);
 
         ListNBT nbtTE = new ListNBT();
@@ -66,8 +76,16 @@ public class BlockSave extends WorldSavedData {
             comp.put("teData", teData.getValue());
             nbtTE.add(comp);
         }
-
         compound.put("temap", nbtTE);
+
+        ListNBT anti = new ListNBT();
+        for (BlockPos blockPos : antigooList) {
+            CompoundNBT comp = new CompoundNBT();
+            comp.put("pos", NBTUtil.writeBlockPos(blockPos));
+            anti.add(comp);
+        }
+        compound.put("antigoo", anti);
+
         return compound;
     }
 
@@ -105,6 +123,18 @@ public class BlockSave extends WorldSavedData {
     public void popTE(BlockPos pos) {
         this.teMap.remove(pos);
         this.markDirty();
+    }
+
+    public boolean addAnti(BlockPos pos) {
+        return this.antigooList.add(pos);
+    }
+
+    public boolean removeAnti(BlockPos pos) {
+        return this.antigooList.remove(pos);
+    }
+
+    public boolean checkAnti(BlockPos pos) {
+        return this.antigooList.contains(pos);
     }
 
     public BlockState getStateFromPos(BlockPos pos) {

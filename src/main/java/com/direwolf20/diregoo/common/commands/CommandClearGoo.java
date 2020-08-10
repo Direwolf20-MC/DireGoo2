@@ -39,7 +39,7 @@ public class CommandClearGoo implements Command<CommandSource> {
                 .collect(Collectors.toList());
         for (BlockPos pos : area)
             GooBase.resetBlock((ServerWorld) player.getEntityWorld(), pos, false);
-        context.getSource().sendFeedback(new TranslationTextComponent("message.diregoo.command.cleargoo " + range), false);
+        context.getSource().sendFeedback(new TranslationTextComponent("message.diregoo.command.cleargoo " + area.size()), false);
         return 0;
     }
 }

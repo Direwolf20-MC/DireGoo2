@@ -49,14 +49,12 @@ public abstract class ProjectileBase extends ProjectileItemEntity {
     public void readAdditional(CompoundNBT compound) {
         despawning = compound.getInt("despawning");
         ticksExisted = compound.getInt("ticksExisted");
-        System.out.println(compound);
     }
 
     @Override
     public void writeAdditional(CompoundNBT compound) {
         compound.putInt("despawning", despawning);
         compound.putInt("ticksExisted", ticksExisted);
-        System.out.println(compound);
     }
 
     @Override
