@@ -34,7 +34,7 @@ public class Goonade extends Item {
         if (world.isRemote) return new ActionResult<>(ActionResultType.SUCCESS, itemstack);
         //Server Side Only
         spawnGoonade(player, world, itemstack);
-
+        itemstack.shrink(1);
         return new ActionResult<>(ActionResultType.SUCCESS, itemstack);
     }
 
