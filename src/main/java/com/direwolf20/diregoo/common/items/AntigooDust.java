@@ -1,6 +1,7 @@
 package com.direwolf20.diregoo.common.items;
 
 import com.direwolf20.diregoo.DireGoo;
+import com.direwolf20.diregoo.common.blocks.GooBase;
 import com.direwolf20.diregoo.common.worldsave.BlockSave;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -30,8 +31,9 @@ public class AntigooDust extends Item {
         ItemStack itemStack = context.getItem();
         BlockPos targetPos = context.getPos();
 
+        if (world.getBlockState(targetPos).getBlock() instanceof GooBase) return ActionResultType.SUCCESS;
         BlockSave blockSave = BlockSave.get(world);
-        if (blockSave.addAnti(targetPos))
+        if (blockSave.addAnti(targetPos, world))
             itemStack.shrink(1);
         return ActionResultType.SUCCESS;
     }

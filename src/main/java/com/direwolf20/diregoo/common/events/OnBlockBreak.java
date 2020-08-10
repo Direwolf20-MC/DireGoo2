@@ -19,7 +19,7 @@ public class OnBlockBreak {
         BlockState state = event.getState();
         BlockSave blockSave = BlockSave.get(world);
         if (blockSave.checkAnti(pos))
-            blockSave.removeAnti(pos);
+            blockSave.removeAnti(pos, world);
         if (state.getBlock() instanceof GooBase) {
             blockSave.pop(pos);
             blockSave.popTE(pos);

@@ -1,6 +1,8 @@
 package com.direwolf20.diregoo.common.worldsave;
 
 import com.direwolf20.diregoo.DireGoo;
+import com.direwolf20.diregoo.common.network.PacketHandler;
+import com.direwolf20.diregoo.common.network.packets.AntigooSync;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
@@ -125,16 +127,26 @@ public class BlockSave extends WorldSavedData {
         this.markDirty();
     }
 
-    public boolean addAnti(BlockPos pos) {
-        return this.antigooList.add(pos);
+    public boolean addAnti(BlockPos pos, World world) {
+        boolean success = this.antigooList.add(pos);
+        if (success)
+            PacketHandler.sendToAll(new AntigooSync(this.antigooList), world);
+        return success;
     }
 
-    public boolean removeAnti(BlockPos pos) {
-        return this.antigooList.remove(pos);
+    public boolean removeAnti(BlockPos pos, World world) {
+        boolean success = this.antigooList.remove(pos);
+        if (success)
+            PacketHandler.sendToAll(new AntigooSync(this.antigooList), world);
+        return success;
     }
 
     public boolean checkAnti(BlockPos pos) {
         return this.antigooList.contains(pos);
+    }
+
+    public Set<BlockPos> getAntiGooList() {
+        return antigooList;
     }
 
     public BlockState getStateFromPos(BlockPos pos) {

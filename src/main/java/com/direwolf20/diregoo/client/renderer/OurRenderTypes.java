@@ -24,4 +24,16 @@ public class OurRenderTypes extends RenderType {
                     .cull(RenderState.CULL_ENABLED)
                     .writeMask(RenderState.COLOR_WRITE)
                     .build(false));
+
+    public static final RenderType BlockOverlay = makeType("MiningLaserBlockOverlay",
+            DefaultVertexFormats.POSITION_COLOR, GL11.GL_QUADS, 256,
+            RenderType.State.getBuilder()
+                    .layer(field_239235_M_)
+                    .transparency(TRANSLUCENT_TRANSPARENCY)
+                    .texture(NO_TEXTURE)
+                    .depthTest(DEPTH_LEQUAL)
+                    .cull(CULL_ENABLED)
+                    .lightmap(LIGHTMAP_DISABLED)
+                    .writeMask(COLOR_DEPTH_WRITE)
+                    .build(false));
 }
