@@ -108,7 +108,7 @@ public class GooBase extends Block {
 
         BlockPos checkPos = pos.offset(direction);
         BlockState oldState = worldIn.getBlockState(checkPos);
-        System.out.println(direction + ":" + checkPos);
+        //System.out.println(direction + ":" + checkPos);
 
         //System.out.println(blockSave);
         if (canSpreadHere(checkPos, oldState, worldIn)) {

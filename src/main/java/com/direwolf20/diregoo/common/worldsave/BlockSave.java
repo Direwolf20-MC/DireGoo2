@@ -31,6 +31,7 @@ public class BlockSave extends WorldSavedData {
 
     @Override
     public void read(CompoundNBT nbt) {
+        long startTime = System.nanoTime();
         blockMap.clear();
         teMap.clear();
         antigooList.clear();
@@ -42,6 +43,7 @@ public class BlockSave extends WorldSavedData {
 
             blockMap.put(blockpos, state);
         }
+        System.out.println("Read: " + list.size() + "GooBlocks");
 
         ListNBT telist = nbt.getList("temap", Constants.NBT.TAG_COMPOUND);
         for (int i = 0; i < telist.size(); i++) {
@@ -56,10 +58,13 @@ public class BlockSave extends WorldSavedData {
             BlockPos blockPos = NBTUtil.readBlockPos(antigoo.getCompound(i).getCompound("pos"));
             antigooList.add(blockPos);
         }
+        long elapsedTime = System.nanoTime() - startTime;
+        System.out.println("Elapsed time for Read = " + elapsedTime / 1000000);
     }
 
     @Override
     public CompoundNBT write(CompoundNBT compound) {
+        long startTime = System.nanoTime();
         ListNBT nbt = new ListNBT();
 
         for (Map.Entry<BlockPos, BlockState> blockData : blockMap.entrySet()) {
@@ -70,6 +75,7 @@ public class BlockSave extends WorldSavedData {
         }
         compound.put("blockmap", nbt);
 
+        System.out.println("Write: " + nbt.size() + " GooBlocks");
         ListNBT nbtTE = new ListNBT();
 
         for (Map.Entry<BlockPos, CompoundNBT> teData : teMap.entrySet()) {
@@ -87,8 +93,10 @@ public class BlockSave extends WorldSavedData {
             anti.add(comp);
         }
         compound.put("antigoo", anti);
-
+        long elapsedTime = System.nanoTime() - startTime;
+        System.out.println("Elapsed time for Write = " + elapsedTime / 1000000);
         return compound;
+
     }
 
     public static BlockSave get(World world) {
