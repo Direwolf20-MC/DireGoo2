@@ -3,6 +3,7 @@ package com.direwolf20.diregoo;
 import com.direwolf20.diregoo.client.events.ClientEvents;
 import com.direwolf20.diregoo.common.blocks.ModBlocks;
 import com.direwolf20.diregoo.common.commands.ModCommands;
+import com.direwolf20.diregoo.common.events.ServerEvents;
 import com.direwolf20.diregoo.common.items.ModItems;
 import com.direwolf20.diregoo.common.network.PacketHandler;
 import net.minecraft.block.Block;
@@ -77,6 +78,7 @@ public class DireGoo
     {
         // some preinit code
         PacketHandler.register();
+        MinecraftForge.EVENT_BUS.register(ServerEvents.class);
     }
 
     private void doClientStuff(final FMLClientSetupEvent event) {
