@@ -8,6 +8,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
@@ -18,6 +19,7 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
+import java.util.List;
 import java.util.Random;
 
 public class GooBase extends Block {
@@ -61,6 +63,17 @@ public class GooBase extends Block {
         return ActionResultType.PASS;
     }
 
+    public static boolean isPlayerInRange(ServerWorld world, BlockPos pos) {
+        List<ServerPlayerEntity> playerList = world.getPlayers();
+        for (ServerPlayerEntity player : playerList) {
+            BlockPos playerPos = new BlockPos(player.getPositionVec());
+            if (pos.withinDistance(playerPos, (double) Config.PLAYER_SPREAD_RANGE.get()))
+                return true;
+        }
+
+        return false;
+    }
+
     /**
      * Performs a tick on a block. This method is called by randomTick by default. It can also be scheduled with world.getPendingBlockTicks().scheduleTick
      */
@@ -71,6 +84,11 @@ public class GooBase extends Block {
 
         /*if (rand.nextInt(100) <= 50)
             return;*/
+
+        if (!isPlayerInRange(worldIn, pos)) {
+            //System.out.println("Stopping spread at " + pos + " because no players in range");
+            return;
+        }
 
         if (isSurrounded(worldIn, pos)) {
             //System.out.println(pos + " is surrounded!");
