@@ -117,6 +117,12 @@ public class GooBase extends Block {
     public boolean canSpreadHere(BlockPos pos, BlockState oldState, World world) {
         if (oldState.equals(this.getDefaultState()))
             return false;
+        if (oldState.getBlockHardness(world, pos) < 0)
+            return false;
+        if (pos.getY() < 0 || pos.getY() > 254)
+            return false; //No spreading below Y=0
+
+
         BlockSave blockSave = BlockSave.get(world);
         if (blockSave.checkAnti(pos))
             return false;

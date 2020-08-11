@@ -175,6 +175,7 @@ public class BlockSave extends WorldSavedData {
         boolean success = this.antigooList.add(pos);
         if (success)
             PacketHandler.sendToAll(new AntigooSync(this.antigooList), world);
+        this.markDirty();
         return success;
     }
 
@@ -182,6 +183,7 @@ public class BlockSave extends WorldSavedData {
         boolean success = this.antigooList.remove(pos);
         if (success)
             PacketHandler.sendToAll(new AntigooSync(this.antigooList), world);
+        this.markDirty();
         return success;
     }
 
