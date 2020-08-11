@@ -1,6 +1,7 @@
 package com.direwolf20.diregoo.common.blocks;
 
 import com.direwolf20.diregoo.DireGoo;
+import com.direwolf20.diregoo.common.tiles.TurretBlockTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraftforge.fml.RegistryObject;
@@ -18,8 +19,12 @@ public class ModBlocks {
      * Register our blocks to the above registers to be loaded when the mod is initialized
      */
     public static final RegistryObject<Block> GOO_BLOCK = BLOCKS.register("gooblock", GooBlock::new);
+    public static final RegistryObject<Block> TURRET_BLOCK = BLOCKS.register("turretblock", TurretBlock::new);
 
     /**
      * TileEntity Registers to the above deferred registers to be loaded in from the mods main class.
      */
+    public static final RegistryObject<TileEntityType<TurretBlockTileEntity>> TURRETBLOCK_TILE =
+            TILES_ENTITIES.register("turretblock", () -> TileEntityType.Builder.create(TurretBlockTileEntity::new, ModBlocks.TURRET_BLOCK.get()).build(null));
+
 }

@@ -19,6 +19,7 @@ public class GeneratorItemModels extends ItemModelProvider {
     protected void registerModels() {
         // Our block items
         registerBlockModel(ModBlocks.GOO_BLOCK.get());
+        registerBlockModel(ModBlocks.TURRET_BLOCK.get());
 
         //Our Item Models
         String path = ModItems.GOO_REMOVER.get().getRegistryName().getPath();
