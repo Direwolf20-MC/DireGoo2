@@ -66,7 +66,7 @@ public class GooBase extends Block {
     public static boolean isPlayerInRange(ServerWorld world, BlockPos pos) {
         List<ServerPlayerEntity> playerList = world.getPlayers();
         for (ServerPlayerEntity player : playerList) {
-            BlockPos playerPos = new BlockPos(player.getPositionVec());
+            BlockPos playerPos = new BlockPos(player.getPositionVec()); //new BlockPos(264, 63, -173);
             if (pos.withinDistance(playerPos, (double) Config.PLAYER_SPREAD_RANGE.get()))
                 return true;
         }
