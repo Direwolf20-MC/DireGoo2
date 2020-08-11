@@ -20,7 +20,8 @@ import java.util.Set;
 
 public class BlockSave extends WorldSavedData {
     private static final String NAME = DireGoo.MOD_ID + "_blocksave";
-    private final HashMap<BlockPos, BlockState> blockMap = new HashMap<>();
+    private final HashMap<Long, Short> blockMap = new HashMap<>();
+    private final HashMap<Short, BlockState> blockMapPalette = new HashMap<>();
     private final HashMap<BlockPos, CompoundNBT> teMap = new HashMap<>();
     private final Set<BlockPos> antigooList = new HashSet<>();
 
@@ -33,17 +34,26 @@ public class BlockSave extends WorldSavedData {
     public void read(CompoundNBT nbt) {
         long startTime = System.nanoTime();
         blockMap.clear();
+        blockMapPalette.clear();
         teMap.clear();
         antigooList.clear();
 
         ListNBT list = nbt.getList("blockmap", Constants.NBT.TAG_COMPOUND);
         for (int i = 0; i < list.size(); i++) {
-            BlockPos blockpos = NBTUtil.readBlockPos(list.getCompound(i).getCompound("pos"));
-            BlockState state = NBTUtil.readBlockState(list.getCompound(i).getCompound("state"));
+            Long blockpos = list.getCompound(i).getLong("pos");
+            short key = list.getCompound(i).getShort("key");
 
-            blockMap.put(blockpos, state);
+            blockMap.put(blockpos, key);
         }
         System.out.println("Read: " + list.size() + "GooBlocks");
+
+        ListNBT listPalette = nbt.getList("blockmappalette", Constants.NBT.TAG_COMPOUND);
+        for (int i = 0; i < listPalette.size(); i++) {
+            short key = listPalette.getCompound(i).getShort("key");
+            BlockState blockState = NBTUtil.readBlockState(listPalette.getCompound(i).getCompound("state"));
+
+            blockMapPalette.put(key, blockState);
+        }
 
         ListNBT telist = nbt.getList("temap", Constants.NBT.TAG_COMPOUND);
         for (int i = 0; i < telist.size(); i++) {
@@ -67,13 +77,22 @@ public class BlockSave extends WorldSavedData {
         long startTime = System.nanoTime();
         ListNBT nbt = new ListNBT();
 
-        for (Map.Entry<BlockPos, BlockState> blockData : blockMap.entrySet()) {
+        for (Map.Entry<Long, Short> blockData : blockMap.entrySet()) {
             CompoundNBT comp = new CompoundNBT();
-            comp.put("pos", NBTUtil.writeBlockPos(blockData.getKey()));
-            comp.put("state", NBTUtil.writeBlockState(blockData.getValue()));
+            comp.putLong("pos", blockData.getKey());
+            comp.putShort("key", blockData.getValue());
             nbt.add(comp);
         }
         compound.put("blockmap", nbt);
+
+        ListNBT nbtPalette = new ListNBT();
+        for (Map.Entry<Short, BlockState> blockData : blockMapPalette.entrySet()) {
+            CompoundNBT comp = new CompoundNBT();
+            comp.putShort("key", blockData.getKey());
+            comp.put("state", NBTUtil.writeBlockState(blockData.getValue()));
+            nbtPalette.add(comp);
+        }
+        compound.put("blockmappalette", nbtPalette);
 
         System.out.println("Write: " + nbt.size() + " GooBlocks");
         ListNBT nbtTE = new ListNBT();
@@ -111,17 +130,34 @@ public class BlockSave extends WorldSavedData {
         return storage;
     }
 
-    public HashMap<BlockPos, BlockState> getBlockMap() {
+    public HashMap<Long, Short> getBlockMap() {
         return blockMap;
     }
 
+    public HashMap<Short, BlockState> getBlockMapPalette() {
+        return blockMapPalette;
+    }
+
+    public short getPalettePosition(BlockState state) {
+        for (Map.Entry<Short, BlockState> entry : blockMapPalette.entrySet()) {
+            if (state.equals(entry.getValue()))
+                return entry.getKey();
+        }
+        return -1;
+    }
+
     public void push(BlockPos pos, BlockState state) {
-        this.blockMap.put(pos, state);
+        short palettePosition = getPalettePosition(state);
+        if (palettePosition == -1) {
+            blockMapPalette.put((short) blockMapPalette.values().size(), state);
+            palettePosition = (short) (blockMapPalette.values().size() - 1);
+        }
+        this.blockMap.put(pos.toLong(), palettePosition);
         this.markDirty();
     }
 
     public void pop(BlockPos pos) {
-        this.blockMap.remove(pos);
+        this.blockMap.remove(pos.toLong());
         this.markDirty();
     }
 
@@ -158,7 +194,7 @@ public class BlockSave extends WorldSavedData {
     }
 
     public BlockState getStateFromPos(BlockPos pos) {
-        return this.blockMap.get(pos);
+        return this.blockMapPalette.get(this.blockMap.get(pos.toLong()));
     }
 
     public CompoundNBT getTEFromPos(BlockPos pos) {

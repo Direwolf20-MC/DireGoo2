@@ -69,6 +69,9 @@ public class GooBase extends Block {
         if (!worldIn.isAreaLoaded(pos, 3))
             return; // Forge: prevent loading unloaded chunks when checking neighbor's light and spreading
 
+        /*if (rand.nextInt(100) <= 50)
+            return;*/
+
         if (isSurrounded(worldIn, pos)) {
             //System.out.println(pos + " is surrounded!");
             return;
