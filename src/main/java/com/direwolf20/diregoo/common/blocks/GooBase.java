@@ -41,7 +41,7 @@ public class GooBase extends Block {
         blockSave.pop(pos);
 
         CompoundNBT oldNBT = blockSave.getTEFromPos(pos);
-        if (oldNBT.isEmpty()) return;
+        if (oldNBT == null) return;
         TileEntity te = world.getTileEntity(pos);
         te.func_230337_a_(oldState, oldNBT);
         blockSave.popTE(pos);
@@ -118,12 +118,12 @@ public class GooBase extends Block {
             if (te != null) {
                 te.write(nbtData);
                 worldIn.removeTileEntity(checkPos);
+                blockSave.pushTE(checkPos, nbtData);
             }
             worldIn.setBlockState(checkPos, this.getDefaultState());
             if (!oldState.equals(Blocks.AIR.getDefaultState()))
                 blockSave.push(checkPos, oldState);
-            if (nbtData != new CompoundNBT())
-                blockSave.pushTE(checkPos, nbtData);
+
         }
         return checkPos;
     }
