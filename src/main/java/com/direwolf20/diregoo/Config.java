@@ -21,6 +21,7 @@ public class Config {
     public static ForgeConfigSpec CLIENT_CONFIG;
 
     public static ForgeConfigSpec.IntValue PLAYER_SPREAD_RANGE;
+    public static ForgeConfigSpec.IntValue TURRET_RANGE;
     public static ForgeConfigSpec.IntValue SPREAD_TICK_DELAY;
     public static ForgeConfigSpec.BooleanValue CAN_SPREAD;
 
@@ -43,6 +44,9 @@ public class Config {
                 .defineInRange("playerSpreadRange", 100, 0, Integer.MAX_VALUE);
         SPREAD_TICK_DELAY = COMMON_BUILDER.comment("The max delay (in ticks) for good to spread - the higher the number the slower the spread")
                 .defineInRange("spreadTickDelay", 150, 0, Integer.MAX_VALUE);
+        TURRET_RANGE = COMMON_BUILDER.comment("The range of the turret block (AKA Radius)")
+                .defineInRange("turretRange", 5, 0, 25);
+
         CAN_SPREAD = COMMON_BUILDER.comment("Can the goo spread. Set the false to disable all good spreading.")
                 .define("canSpread", true);
     }
