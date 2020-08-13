@@ -1,5 +1,6 @@
 package com.direwolf20.diregoo;
 
+import com.direwolf20.diregoo.client.ClientSetup;
 import com.direwolf20.diregoo.client.events.ClientEvents;
 import com.direwolf20.diregoo.common.blocks.ModBlocks;
 import com.direwolf20.diregoo.common.commands.ModCommands;
@@ -83,6 +84,7 @@ public class DireGoo
     }
 
     private void doClientStuff(final FMLClientSetupEvent event) {
+        ClientSetup.setup();
         MinecraftForge.EVENT_BUS.register(ClientEvents.class);
         // do something that can only be done on the client
     }

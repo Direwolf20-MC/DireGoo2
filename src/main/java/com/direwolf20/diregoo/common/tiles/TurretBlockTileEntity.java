@@ -45,7 +45,7 @@ public class TurretBlockTileEntity extends TileEntity implements ITickableTileEn
         BlockPos shootPos = clearBlocksQueue.remove();
         if (world.getBlockState(shootPos).getBlock() instanceof GooBase) {
             GooBase.resetBlock((ServerWorld) world, shootPos, true);
-            System.out.println("Clearing goo at: " + shootPos);
+            //System.out.println("Clearing goo at: " + shootPos);
         }
     }
 
@@ -60,9 +60,9 @@ public class TurretBlockTileEntity extends TileEntity implements ITickableTileEn
         if (!world.isRemote) {
             decrementCooldowns();
             if (searchCooldown == 0 && clearBlocksQueue.isEmpty()) {
-                System.out.println("Queue Empty - Making new queue");
+                //System.out.println("Queue Empty - Making new queue");
                 generateTurretQueue();
-                System.out.println("Found " + clearBlocksQueue.size() + " goo blocks to clear.");
+                //System.out.println("Found " + clearBlocksQueue.size() + " goo blocks to clear.");
                 searchCooldown = 200; //Ticks before we can search for goo again
             }
             if (shootCooldown == 0 && !clearBlocksQueue.isEmpty()) {
