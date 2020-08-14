@@ -21,13 +21,16 @@ public class TurretBlockTileEntityRender extends TileEntityRenderer<TurretBlockT
 
     @Override
     public void render(TurretBlockTileEntity tile, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int combinedLightsIn, int combinedOverlayIn) {
-        drawAllMiningLasers(tile, matrixStackIn, partialTicks);
+        drawAllMiningLasers(tile, matrixStackIn, partialTicks, bufferIn);
     }
 
-    public static void drawAllMiningLasers(TurretBlockTileEntity tile, MatrixStack matrixStackIn, float f) {
-        BlockPos targetBlock = new BlockPos(264, 67, -145);
+    public static void drawAllMiningLasers(TurretBlockTileEntity tile, MatrixStack matrixStackIn, float f, IRenderTypeBuffer bufferIn) {
+        if (tile.getFiringCooldown() == 0) return;
+        //OurRenderTypes.updateRenders();
+        BlockPos targetBlock = tile.getCurrentTarget();
+        //BlockPos targetBlock = new BlockPos(264, 66, -153);
 
-        IRenderTypeBuffer.Impl buffer = Minecraft.getInstance().getRenderTypeBuffers().getBufferSource();
+        //IRenderTypeBuffer.Impl buffer = Minecraft.getInstance().getRenderTypeBuffers().getBufferSource();
         IVertexBuilder builder;
 
         matrixStackIn.push();
@@ -39,16 +42,16 @@ public class TurretBlockTileEntityRender extends TileEntityRenderer<TurretBlockT
         float diffX = targetBlock.getX() + .5f - tile.getPos().getX();
         float diffY = targetBlock.getY() + .5f - tile.getPos().getY();
         float diffZ = targetBlock.getZ() + .5f - tile.getPos().getZ();
-        Vec3f startLaser = new Vec3f(0.5f, 1.25f, 0.5f);
+        Vec3f startLaser = new Vec3f(0.5f, .5f, 0.5f);
         Vec3f endLaser = new Vec3f(diffX, diffY, diffZ);
 
-        builder = buffer.getBuffer(OurRenderTypes.LASER_MAIN_BEAM);
+        builder = bufferIn.getBuffer(OurRenderTypes.LASER_MAIN_BEAM);
         drawMiningLaser(builder, positionMatrix2, endLaser, startLaser, 1, 0, 0, 1f, 0.1f, v, v + diffY * 1.5, tile);
-
-        builder = buffer.getBuffer(OurRenderTypes.LASER_MAIN_CORE);
+        builder = bufferIn.getBuffer(OurRenderTypes.LASER_MAIN_CORE);
         drawMiningLaser(builder, positionMatrix2, endLaser, startLaser, 1, 1, 1, 1f, 0.05f, v, v + diffY - 2.5 * 1.5, tile);
 
-        buffer.finish();
+
+        //buffer.finish();
         matrixStackIn.pop();
     }
 

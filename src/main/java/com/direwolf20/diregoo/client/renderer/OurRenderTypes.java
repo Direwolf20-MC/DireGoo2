@@ -18,6 +18,30 @@ public class OurRenderTypes extends RenderType {
         super(name, format, p_i225992_3_, p_i225992_4_, p_i225992_5_, p_i225992_6_, runnablePre, runnablePost);
     }
 
+    public static void updateRenders() {
+        //Used for debugging, so we can change the values without restarting instance. Not needed in normal use.
+        LASER_MAIN_BEAM = makeType("MiningLaserMainBeam",
+                DefaultVertexFormats.POSITION_COLOR_TEX, GL11.GL_QUADS, 256,
+                RenderType.State.getBuilder().texture(new TextureState(laserBeam2, false, false))
+                        .layer(field_239235_M_)
+                        .transparency(TRANSLUCENT_TRANSPARENCY)
+                        .depthTest(RenderState.DEPTH_LEQUAL)
+                        .cull(CULL_DISABLED)
+                        .lightmap(LIGHTMAP_DISABLED)
+                        .writeMask(COLOR_WRITE)
+                        .build(false));
+        LASER_MAIN_CORE = makeType("MiningLaserCoreBeam",
+                DefaultVertexFormats.POSITION_COLOR_TEX, GL11.GL_QUADS, 256,
+                RenderType.State.getBuilder().texture(new TextureState(laserBeam, false, false))
+                        .layer(field_239235_M_)
+                        .transparency(TRANSLUCENT_TRANSPARENCY)
+                        .depthTest(DEPTH_LEQUAL)
+                        .cull(CULL_DISABLED)
+                        .lightmap(LIGHTMAP_DISABLED)
+                        .writeMask(COLOR_DEPTH_WRITE)
+                        .build(false));
+    }
+
     public static final RenderType RenderBlock = makeType("GooEntity",
             DefaultVertexFormats.BLOCK, GL11.GL_QUADS, 256,
             RenderType.State.getBuilder()
@@ -43,12 +67,12 @@ public class OurRenderTypes extends RenderType {
                     .writeMask(COLOR_DEPTH_WRITE)
                     .build(false));
 
-    public static final RenderType LASER_MAIN_BEAM = makeType("MiningLaserMainBeam",
+    public static RenderType LASER_MAIN_BEAM = makeType("MiningLaserMainBeam",
             DefaultVertexFormats.POSITION_COLOR_TEX, GL11.GL_QUADS, 256,
             RenderType.State.getBuilder().texture(new TextureState(laserBeam2, false, false))
                     .layer(field_239235_M_)
                     .transparency(TRANSLUCENT_TRANSPARENCY)
-                    .depthTest(DEPTH_ALWAYS)
+                    .depthTest(RenderState.DEPTH_LEQUAL)
                     .cull(CULL_DISABLED)
                     .lightmap(LIGHTMAP_DISABLED)
                     .writeMask(COLOR_WRITE)
@@ -65,14 +89,14 @@ public class OurRenderTypes extends RenderType {
                     .writeMask(COLOR_WRITE)
                     .build(false));
 
-    public static final RenderType LASER_MAIN_CORE = makeType("MiningLaserCoreBeam",
+    public static RenderType LASER_MAIN_CORE = makeType("MiningLaserCoreBeam",
             DefaultVertexFormats.POSITION_COLOR_TEX, GL11.GL_QUADS, 256,
             RenderType.State.getBuilder().texture(new TextureState(laserBeam, false, false))
                     .layer(field_239235_M_)
                     .transparency(TRANSLUCENT_TRANSPARENCY)
-                    .depthTest(DEPTH_ALWAYS)
+                    .depthTest(DEPTH_LEQUAL)
                     .cull(CULL_DISABLED)
                     .lightmap(LIGHTMAP_DISABLED)
-                    .writeMask(COLOR_WRITE)
+                    .writeMask(COLOR_DEPTH_WRITE)
                     .build(false));
 }

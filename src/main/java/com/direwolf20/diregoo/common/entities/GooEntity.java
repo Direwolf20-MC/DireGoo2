@@ -12,6 +12,7 @@ import net.minecraftforge.registries.ObjectHolder;
 public class GooEntity extends EntityBase {
     @ObjectHolder(DireGoo.MOD_ID + ":gooentity")
     public static EntityType<GooEntity> TYPE;
+    public static int MAXLIFE = 80;
 
     public GooEntity(EntityType<?> type, World world) {
         super(type, world);
@@ -26,7 +27,7 @@ public class GooEntity extends EntityBase {
 
     @Override
     protected int getMaxLife() {
-        return 80;
+        return MAXLIFE;
     }
 
     @Override
