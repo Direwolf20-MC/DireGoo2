@@ -114,7 +114,7 @@ public class GooBase extends Block {
     }
 
     public boolean canSpreadHere(BlockPos pos, BlockState oldState, World world) {
-        if (oldState.equals(this.getDefaultState()))
+        if (oldState.getBlock() instanceof GooBase)
             return false;
         if (oldState.getBlockHardness(world, pos) < 0)
             return false;
