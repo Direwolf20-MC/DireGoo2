@@ -105,11 +105,10 @@ public class GooBase extends Block {
 
     public boolean isSurrounded(ServerWorld worldIn, BlockPos pos) {
         for (Direction direction : Direction.values()) {
-            if (!worldIn.getBlockState(pos.offset(direction)).getBlock().equals(this)) {
+            if (!(worldIn.getBlockState(pos.offset(direction)).getBlock() instanceof GooBase)) {
                 return false;
             }
         }
-
         return true;
     }
 
