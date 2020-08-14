@@ -47,7 +47,6 @@ public class GooBase extends Block {
         TileEntity te = world.getTileEntity(pos);
         te.func_230337_a_(oldState, oldNBT);
         blockSave.popTE(pos);
-
     }
 
     @Override
@@ -135,9 +134,7 @@ public class GooBase extends Block {
 
         BlockPos checkPos = pos.offset(direction);
         BlockState oldState = worldIn.getBlockState(checkPos);
-        //System.out.println(direction + ":" + checkPos);
 
-        //System.out.println(blockSave);
         if (canSpreadHere(checkPos, oldState, worldIn)) {
             BlockSave blockSave = BlockSave.get(worldIn);
             TileEntity te = worldIn.getTileEntity(checkPos);

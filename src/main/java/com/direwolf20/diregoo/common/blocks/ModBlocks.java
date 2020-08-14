@@ -19,6 +19,7 @@ public class ModBlocks {
      * Register our blocks to the above registers to be loaded when the mod is initialized
      */
     public static final RegistryObject<Block> GOO_BLOCK = BLOCKS.register("gooblock", GooBlock::new);
+    public static final RegistryObject<Block> GOO_BLOCK_TERRAIN = BLOCKS.register("gooblockterrain", GooBlockTerrain::new);
     public static final RegistryObject<Block> TURRET_BLOCK = BLOCKS.register("turretblock", TurretBlock::new);
 
     /**
