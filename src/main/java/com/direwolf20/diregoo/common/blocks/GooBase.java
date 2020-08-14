@@ -34,7 +34,7 @@ public class GooBase extends Block {
         BlockSave blockSave = BlockSave.get(world);
         BlockState oldState = blockSave.getStateFromPos(pos);
         if (render)
-            world.addEntity(new GooEntity(world, pos));
+            world.addEntity(new GooEntity(world, pos, world.getBlockState(pos)));
         if (oldState == null) {
             world.setBlockState(pos, Blocks.AIR.getDefaultState());
             return;

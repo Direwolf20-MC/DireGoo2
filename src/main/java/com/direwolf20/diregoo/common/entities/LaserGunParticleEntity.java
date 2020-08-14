@@ -8,6 +8,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
@@ -35,12 +36,15 @@ public class LaserGunParticleEntity extends ProjectileBase {
     @Override
     protected void onImpact(RayTraceResult result) {
         if (!world.isRemote) {
-            BlockPos pos = new BlockPos(result.getHitVec().getX(), result.getHitVec().getY(), result.getHitVec().getZ());
-            BlockState inBlockState = world.getBlockState(pos);
-            if (inBlockState.getBlock() instanceof GooBase)
-                GooBase.resetBlock((ServerWorld) world, pos, true);
-            remove();
-
+            RayTraceResult.Type raytraceresult$type = result.getType();
+            if (raytraceresult$type == RayTraceResult.Type.BLOCK) {
+                BlockRayTraceResult blockRayTraceResult = (BlockRayTraceResult) result;
+                BlockPos pos = blockRayTraceResult.getPos();
+                BlockState inBlockState = this.world.getBlockState(pos);
+                if (inBlockState.getBlock() instanceof GooBase)
+                    GooBase.resetBlock((ServerWorld) world, pos, true);
+                remove();
+            }
         }
     }
 

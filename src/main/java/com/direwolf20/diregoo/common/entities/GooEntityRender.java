@@ -2,10 +2,10 @@ package com.direwolf20.diregoo.common.entities;
 
 import com.direwolf20.diregoo.client.renderer.MyRenderMethods;
 import com.direwolf20.diregoo.client.renderer.OurRenderTypes;
-import com.direwolf20.diregoo.common.blocks.ModBlocks;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
@@ -34,7 +34,8 @@ public class GooEntityRender extends EntityRenderer<GooEntity> {
         IVertexBuilder builder;
         Minecraft mc = Minecraft.getInstance();
         builder = buffer.getBuffer(OurRenderTypes.RenderBlock);
-        BlockState renderBlockState = ModBlocks.GOO_BLOCK.get().getDefaultState();
+        BlockState gooBlockState = entityIn.getGooBlockState();
+        BlockState renderBlockState = gooBlockState != null ? gooBlockState : Blocks.AIR.getDefaultState();
         int teCounter = entityIn.ticksExisted;
         if (teCounter < 20) teCounter = 20; //Start somewhat transparent
         int maxLife = entityIn.getMaxLife();
