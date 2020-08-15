@@ -3,7 +3,6 @@ package com.direwolf20.diregoo.common.tiles;
 import com.direwolf20.diregoo.client.renderer.OurRenderTypes;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
-import com.sun.javafx.geom.Vec3f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -12,6 +11,7 @@ import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Matrix4f;
+import net.minecraft.util.math.vector.Vector3f;
 
 public class TurretBlockTileEntityRender extends TileEntityRenderer<TurretBlockTileEntity> {
 
@@ -42,8 +42,8 @@ public class TurretBlockTileEntityRender extends TileEntityRenderer<TurretBlockT
         float diffX = targetBlock.getX() + .5f - tile.getPos().getX();
         float diffY = targetBlock.getY() + .5f - tile.getPos().getY();
         float diffZ = targetBlock.getZ() + .5f - tile.getPos().getZ();
-        Vec3f startLaser = new Vec3f(0.5f, .5f, 0.5f);
-        Vec3f endLaser = new Vec3f(diffX, diffY, diffZ);
+        Vector3f startLaser = new Vector3f(0.5f, .5f, 0.5f);
+        Vector3f endLaser = new Vector3f(diffX, diffY, diffZ);
 
         builder = bufferIn.getBuffer(OurRenderTypes.LASER_MAIN_BEAM);
         drawMiningLaser(builder, positionMatrix2, endLaser, startLaser, 1, 0, 0, 1f, 0.1f, v, v + diffY * 1.5, tile);
@@ -55,54 +55,54 @@ public class TurretBlockTileEntityRender extends TileEntityRenderer<TurretBlockT
         matrixStackIn.pop();
     }
 
-    public static Vec3f adjustBeamToEyes(Vec3f from, Vec3f to, TurretBlockTileEntity tile) {
+    public static Vector3f adjustBeamToEyes(Vector3f from, Vector3f to, TurretBlockTileEntity tile) {
         //This method takes the player's position into account, and adjusts the beam so that its rendered properly whereever you stand
         PlayerEntity player = Minecraft.getInstance().player;
-        Vec3f P = new Vec3f((float) player.getPosX() - tile.getPos().getX(), (float) player.getPosYEye() - tile.getPos().getY(), (float) player.getPosZ() - tile.getPos().getZ());
+        Vector3f P = new Vector3f((float) player.getPosX() - tile.getPos().getX(), (float) player.getPosYEye() - tile.getPos().getY(), (float) player.getPosZ() - tile.getPos().getZ());
 
-        Vec3f PS = new Vec3f(from);
+        Vector3f PS = from.copy();
         PS.sub(P);
-        Vec3f SE = new Vec3f(to);
+        Vector3f SE = to.copy();
         SE.sub(from);
 
-        Vec3f adjustedVec = new Vec3f();
-        adjustedVec.cross(PS, SE);
+        Vector3f adjustedVec = PS.copy();
+        adjustedVec.cross(SE);
         adjustedVec.normalize();
         return adjustedVec;
     }
 
-    public static void drawMiningLaser(IVertexBuilder builder, Matrix4f positionMatrix, Vec3f from, Vec3f to, float r, float g, float b, float alpha, float thickness, double v1, double v2, TurretBlockTileEntity tile) {
-        Vec3f adjustedVec = adjustBeamToEyes(from, to, tile);
+    public static void drawMiningLaser(IVertexBuilder builder, Matrix4f positionMatrix, Vector3f from, Vector3f to, float r, float g, float b, float alpha, float thickness, double v1, double v2, TurretBlockTileEntity tile) {
+        Vector3f adjustedVec = adjustBeamToEyes(from, to, tile);
         adjustedVec.mul(thickness); //Determines how thick the beam is
 
-        Vec3f p1 = new Vec3f(from);
+        Vector3f p1 = from.copy();
         p1.add(adjustedVec);
-        Vec3f p2 = new Vec3f(from);
+        Vector3f p2 = from.copy();
         p2.sub(adjustedVec);
-        Vec3f p3 = new Vec3f(to);
+        Vector3f p3 = to.copy();
         p3.add(adjustedVec);
-        Vec3f p4 = new Vec3f(to);
+        Vector3f p4 = to.copy();
         p4.sub(adjustedVec);
 
-        builder.pos(positionMatrix, p1.x, p1.y, p1.z)
+        builder.pos(positionMatrix, p1.getX(), p1.getY(), p1.getZ())
                 .color(r, g, b, alpha)
                 .tex(1, (float) v1)
                 .overlay(OverlayTexture.NO_OVERLAY)
                 .lightmap(15728880)
                 .endVertex();
-        builder.pos(positionMatrix, p3.x, p3.y, p3.z)
+        builder.pos(positionMatrix, p3.getX(), p3.getY(), p3.getZ())
                 .color(r, g, b, alpha)
                 .tex(1, (float) v2)
                 .overlay(OverlayTexture.NO_OVERLAY)
                 .lightmap(15728880)
                 .endVertex();
-        builder.pos(positionMatrix, p4.x, p4.y, p4.z)
+        builder.pos(positionMatrix, p4.getX(), p4.getY(), p4.getZ())
                 .color(r, g, b, alpha)
                 .tex(0, (float) v2)
                 .overlay(OverlayTexture.NO_OVERLAY)
                 .lightmap(15728880)
                 .endVertex();
-        builder.pos(positionMatrix, p2.x, p2.y, p2.z)
+        builder.pos(positionMatrix, p2.getX(), p2.getY(), p2.getZ())
                 .color(r, g, b, alpha)
                 .tex(0, (float) v1)
                 .overlay(OverlayTexture.NO_OVERLAY)
