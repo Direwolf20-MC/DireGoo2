@@ -2,6 +2,7 @@ package com.direwolf20.diregoo.common.entities;
 
 import com.direwolf20.diregoo.DireGoo;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.NBTUtil;
@@ -41,7 +42,7 @@ public class GooEntity extends EntityBase {
 
     @Override
     protected void registerData() {
-        dataManager.register(gooBlockState, null);
+        dataManager.register(gooBlockState, Optional.of(Blocks.AIR.getDefaultState()));
     }
 
     @Override
