@@ -30,11 +30,11 @@ public class GooBase extends Block {
     }
 
     //Reset the block
-    public static void resetBlock(ServerWorld world, BlockPos pos, boolean render) {
+    public static void resetBlock(ServerWorld world, BlockPos pos, boolean render, int gooRenderLife) {
         BlockSave blockSave = BlockSave.get(world);
         BlockState oldState = blockSave.getStateFromPos(pos);
         if (render)
-            world.addEntity(new GooEntity(world, pos, world.getBlockState(pos)));
+            world.addEntity(new GooEntity(world, pos, world.getBlockState(pos), gooRenderLife));
         if (oldState == null) {
             world.setBlockState(pos, Blocks.AIR.getDefaultState());
             return;

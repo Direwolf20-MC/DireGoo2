@@ -37,7 +37,7 @@ public class GoonadeEntity extends ProjectileBase {
                     .map(BlockPos::toImmutable)
                     .collect(Collectors.toList());
             for (BlockPos pos : area)
-                GooBase.resetBlock((ServerWorld) world, pos, true);
+                GooBase.resetBlock((ServerWorld) world, pos, true, 80);
             remove();
         }
     }

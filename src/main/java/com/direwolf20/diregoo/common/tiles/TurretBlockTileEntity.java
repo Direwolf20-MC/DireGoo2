@@ -3,7 +3,6 @@ package com.direwolf20.diregoo.common.tiles;
 import com.direwolf20.diregoo.Config;
 import com.direwolf20.diregoo.common.blocks.GooBase;
 import com.direwolf20.diregoo.common.blocks.ModBlocks;
-import com.direwolf20.diregoo.common.entities.GooEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.NBTUtil;
@@ -66,9 +65,10 @@ public class TurretBlockTileEntity extends TileEntity implements ITickableTileEn
 
     public void shoot() {
         BlockPos shootPos = clearBlocksQueue.remove();
+        int shootDuration = 80;
         if (world.getBlockState(shootPos).getBlock() instanceof GooBase) {
-            GooBase.resetBlock((ServerWorld) world, shootPos, true);
-            firingCooldown = GooEntity.MAXLIFE;
+            GooBase.resetBlock((ServerWorld) world, shootPos, true, shootDuration);
+            firingCooldown = shootDuration;
             currentTarget = shootPos;
             markDirtyClient();
         }

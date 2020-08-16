@@ -32,12 +32,10 @@ public class GooEntityRender extends EntityRenderer<GooEntity> {
         BlockRendererDispatcher blockrendererdispatcher = Minecraft.getInstance().getBlockRendererDispatcher();
         IRenderTypeBuffer.Impl buffer = Minecraft.getInstance().getRenderTypeBuffers().getBufferSource();
         IVertexBuilder builder;
-        Minecraft mc = Minecraft.getInstance();
         builder = buffer.getBuffer(OurRenderTypes.RenderBlock);
         BlockState gooBlockState = entityIn.getGooBlockState();
         BlockState renderBlockState = gooBlockState != null ? gooBlockState : Blocks.AIR.getDefaultState();
         int teCounter = entityIn.ticksExisted;
-        if (teCounter < 20) teCounter = 20; //Start somewhat transparent
         int maxLife = entityIn.getMaxLife();
         teCounter = Math.min(teCounter, maxLife);
         float scale = (float) (maxLife - teCounter) / maxLife;

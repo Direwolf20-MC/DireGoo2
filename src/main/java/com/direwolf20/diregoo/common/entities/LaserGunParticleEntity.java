@@ -42,7 +42,7 @@ public class LaserGunParticleEntity extends ProjectileBase {
                 BlockPos pos = blockRayTraceResult.getPos();
                 BlockState inBlockState = this.world.getBlockState(pos);
                 if (inBlockState.getBlock() instanceof GooBase)
-                    GooBase.resetBlock((ServerWorld) world, pos, true);
+                    GooBase.resetBlock((ServerWorld) world, pos, true, 80);
                 remove();
             }
         }

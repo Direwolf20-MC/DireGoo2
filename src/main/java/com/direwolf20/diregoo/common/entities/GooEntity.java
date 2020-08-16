@@ -20,20 +20,21 @@ import java.util.Optional;
 public class GooEntity extends EntityBase {
     @ObjectHolder(DireGoo.MOD_ID + ":gooentity")
     public static EntityType<GooEntity> TYPE;
-    public static int MAXLIFE = 80;
 
     private static final DataParameter<Optional<BlockState>> gooBlockState = EntityDataManager.createKey(GooEntity.class, DataSerializers.OPTIONAL_BLOCK_STATE);
+    private static final DataParameter<Integer> MAXLIFE = EntityDataManager.createKey(GooEntity.class, DataSerializers.VARINT);
 
     public GooEntity(EntityType<?> type, World world) {
         super(type, world);
     }
 
-    public GooEntity(World world, BlockPos spawnPos, BlockState gooBlock) {
+    public GooEntity(World world, BlockPos spawnPos, BlockState gooBlock, int maxLife) {
         this(TYPE, world);
 
         setPosition(spawnPos.getX(), spawnPos.getY(), spawnPos.getZ());
         targetPos = spawnPos;
         dataManager.set(gooBlockState, Optional.of(gooBlock));
+        dataManager.set(MAXLIFE, maxLife);
     }
 
     public BlockState getGooBlockState() {
@@ -43,11 +44,12 @@ public class GooEntity extends EntityBase {
     @Override
     protected void registerData() {
         dataManager.register(gooBlockState, Optional.of(Blocks.AIR.getDefaultState()));
+        dataManager.register(MAXLIFE, 80);
     }
 
     @Override
     protected int getMaxLife() {
-        return MAXLIFE;
+        return dataManager.get(MAXLIFE);
     }
 
     @Override
@@ -59,11 +61,13 @@ public class GooEntity extends EntityBase {
     protected void readAdditional(CompoundNBT compound) {
         super.readAdditional(compound);
         dataManager.set(gooBlockState, Optional.ofNullable(NBTUtil.readBlockState(compound.getCompound("gooblockstate"))));
+        dataManager.set(MAXLIFE, compound.getInt("maxlife"));
     }
 
     @Override
     protected void writeAdditional(CompoundNBT compound) {
         compound.put("gooblockstate", NBTUtil.writeBlockState(dataManager.get(gooBlockState).get()));
+        compound.putInt("maxlife", dataManager.get(MAXLIFE));
         super.writeAdditional(compound);
     }
 
