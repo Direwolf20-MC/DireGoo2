@@ -45,7 +45,7 @@ public class Config {
         PLAYER_SPREAD_RANGE = COMMON_BUILDER.comment("The range from players in which Goo can spread.")
                 .defineInRange("playerSpreadRange", 100, 0, Integer.MAX_VALUE);
         SPREAD_TICK_DELAY = COMMON_BUILDER.comment("The max delay (in ticks) for good to spread - the higher the number the slower the spread")
-                .defineInRange("spreadTickDelay", 150, 0, Integer.MAX_VALUE);
+                .defineInRange("spreadTickDelay", 150, -1, Integer.MAX_VALUE);
         TURRET_RANGE = COMMON_BUILDER.comment("The range of the turret block (AKA Radius)")
                 .defineInRange("turretRange", 5, 0, 25);
         MINBURST = COMMON_BUILDER.comment("The minimum number of blocks BurstGoo can do at once - it will randomly pick a number between Min and Max")

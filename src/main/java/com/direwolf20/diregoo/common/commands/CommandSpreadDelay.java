@@ -18,7 +18,7 @@ public class CommandSpreadDelay implements Command<CommandSource> {
     public static ArgumentBuilder<CommandSource, ?> register(CommandDispatcher<CommandSource> dispatcher) {
         return Commands.literal("spreadDelay")
                 .requires(cs -> cs.hasPermissionLevel(0))
-                .then(Commands.argument("spreaddelay", IntegerArgumentType.integer(0, Integer.MAX_VALUE))
+                .then(Commands.argument("spreaddelay", IntegerArgumentType.integer(-1, Integer.MAX_VALUE))
                         .executes(CMD));
     }
 

@@ -121,7 +121,8 @@ public class GooBase extends Block {
             return;
         BlockPos gooPos = spreadGoo(state, worldIn, pos, rand);
         if (gooPos != BlockPos.ZERO)
-            worldIn.getPendingBlockTicks().scheduleTick(gooPos, this, Config.SPREAD_TICK_DELAY.get());
+            if (Config.SPREAD_TICK_DELAY.get() != -1)
+                worldIn.getPendingBlockTicks().scheduleTick(gooPos, this, Config.SPREAD_TICK_DELAY.get());
     }
 
     /**
