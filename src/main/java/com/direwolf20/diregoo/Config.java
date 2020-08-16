@@ -23,6 +23,8 @@ public class Config {
     public static ForgeConfigSpec.IntValue PLAYER_SPREAD_RANGE;
     public static ForgeConfigSpec.IntValue TURRET_RANGE;
     public static ForgeConfigSpec.IntValue SPREAD_TICK_DELAY;
+    public static ForgeConfigSpec.IntValue MINBURST;
+    public static ForgeConfigSpec.IntValue MAXBURST;
     public static ForgeConfigSpec.BooleanValue CAN_SPREAD;
 
 
@@ -46,6 +48,10 @@ public class Config {
                 .defineInRange("spreadTickDelay", 150, 0, Integer.MAX_VALUE);
         TURRET_RANGE = COMMON_BUILDER.comment("The range of the turret block (AKA Radius)")
                 .defineInRange("turretRange", 5, 0, 25);
+        MINBURST = COMMON_BUILDER.comment("The minimum number of blocks BurstGoo can do at once - it will randomly pick a number between Min and Max")
+                .defineInRange("minBurst", 5, 1, 25);
+        MAXBURST = COMMON_BUILDER.comment("The maximum number of blocks BurstGoo can do at once - it will randomly pick a number between Min and Max")
+                .defineInRange("maxBurst", 15, 1, 25);
 
         CAN_SPREAD = COMMON_BUILDER.comment("Can the goo spread. Set the false to disable all good spreading.")
                 .define("canSpread", true);

@@ -74,56 +74,65 @@ public class GooBase extends Block {
     }
 
     /**
+     * Checks to see if goo should spread, before attempting to spread
+     */
+    public static boolean shouldGooSpread(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
+        if (!worldIn.isAreaLoaded(pos, 3))
+            return false; // Forge: prevent loading unloaded chunks when checking neighbor's light and spreading
+
+        /*if (rand.nextInt(100) <= 50) //Todo add a % chance for goo to spread, which slows it down even further
+            return;*/
+
+        if (!isPlayerInRange(worldIn, pos)) {
+            return false;
+        }
+
+        if (isSurrounded(worldIn, pos)) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Determines if goo can spread to the target POS in the world, this runs after calculating where to spread to
+     */
+    public boolean canSpreadHere(BlockPos pos, BlockState oldState, World world) {
+        if (oldState.getBlock() instanceof GooBase)
+            return false; //No eating other goo blocks
+        if (oldState.getBlockHardness(world, pos) < 0)
+            return false; //No Eating bedrock
+        if (pos.getY() < 0 || pos.getY() > 254)
+            return false; //No spreading below Y=0
+        if (!Config.CAN_SPREAD.get())
+            return false; //Check the config options to see if goo spreading is disabled
+
+        BlockSave blockSave = BlockSave.get(world);
+        if (blockSave.checkAnti(pos))
+            return false; //Check the antiGoo list
+        return true;
+    }
+
+    /**
      * Performs a tick on a block. This method is called by randomTick by default. It can also be scheduled with world.getPendingBlockTicks().scheduleTick
      */
     @Override
     public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
-        if (!worldIn.isAreaLoaded(pos, 3))
-            return; // Forge: prevent loading unloaded chunks when checking neighbor's light and spreading
-
-        /*if (rand.nextInt(100) <= 50)
-            return;*/
-
-        if (!isPlayerInRange(worldIn, pos)) {
-            //System.out.println("Stopping spread at " + pos + " because no players in range");
+        if (!shouldGooSpread(state, worldIn, pos, rand))
             return;
-        }
-
-        if (isSurrounded(worldIn, pos)) {
-            //System.out.println(pos + " is surrounded!");
-            return;
-        }
-
-        if (Config.CAN_SPREAD.get()) {
-            BlockPos gooPos = spreadGoo(state, worldIn, pos, rand);
-            if (gooPos != BlockPos.ZERO)
-                worldIn.getPendingBlockTicks().scheduleTick(gooPos, this, Config.SPREAD_TICK_DELAY.get());
-        }
-
-
+        BlockPos gooPos = spreadGoo(state, worldIn, pos, rand);
+        if (gooPos != BlockPos.ZERO)
+            worldIn.getPendingBlockTicks().scheduleTick(gooPos, this, Config.SPREAD_TICK_DELAY.get());
     }
 
-    public boolean isSurrounded(ServerWorld worldIn, BlockPos pos) {
+    /**
+     * Checks to see if a gooBlock is surrounded by any other kind of gooblock - if so don't bother doing any other calculations
+     */
+    public static boolean isSurrounded(ServerWorld worldIn, BlockPos pos) {
         for (Direction direction : Direction.values()) {
             if (!(worldIn.getBlockState(pos.offset(direction)).getBlock() instanceof GooBase)) {
                 return false;
             }
         }
-        return true;
-    }
-
-    public boolean canSpreadHere(BlockPos pos, BlockState oldState, World world) {
-        if (oldState.getBlock() instanceof GooBase)
-            return false;
-        if (oldState.getBlockHardness(world, pos) < 0)
-            return false;
-        if (pos.getY() < 0 || pos.getY() > 254)
-            return false; //No spreading below Y=0
-
-
-        BlockSave blockSave = BlockSave.get(world);
-        if (blockSave.checkAnti(pos))
-            return false;
         return true;
     }
 
@@ -147,6 +156,8 @@ public class GooBase extends Block {
             if (!oldState.equals(Blocks.AIR.getDefaultState()))
                 blockSave.push(checkPos, oldState);
 
+        } else {
+            return BlockPos.ZERO;
         }
         return checkPos;
     }
