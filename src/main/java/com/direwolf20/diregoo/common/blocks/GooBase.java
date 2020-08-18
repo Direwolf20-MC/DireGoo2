@@ -45,7 +45,7 @@ public class GooBase extends Block {
         CompoundNBT oldNBT = blockSave.getTEFromPos(pos);
         if (oldNBT == null) return;
         TileEntity te = world.getTileEntity(pos);
-        te.func_230337_a_(oldState, oldNBT);
+        te.read(oldState, oldNBT);
         blockSave.popTE(pos);
     }
 

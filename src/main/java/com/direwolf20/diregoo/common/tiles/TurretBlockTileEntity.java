@@ -114,7 +114,7 @@ public class TurretBlockTileEntity extends TileEntity implements ITickableTileEn
 
     @Override
     public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
-        func_230337_a_(this.getBlockState(), pkt.getNbtCompound());
+        read(this.getBlockState(), pkt.getNbtCompound());
     }
 
     public void markDirtyClient() {
@@ -126,8 +126,8 @@ public class TurretBlockTileEntity extends TileEntity implements ITickableTileEn
     }
 
     @Override
-    public void func_230337_a_(BlockState state, CompoundNBT tag) {
-        super.func_230337_a_(state, tag);
+    public void read(BlockState state, CompoundNBT tag) {
+        super.read(state, tag);
         currentTarget = NBTUtil.readBlockPos(tag.getCompound("currentTarget"));
         searchCooldown = tag.getInt("searchCooldown");
         shootCooldown = tag.getInt("shootCooldown");
