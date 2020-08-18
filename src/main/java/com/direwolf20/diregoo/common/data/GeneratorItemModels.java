@@ -22,6 +22,7 @@ public class GeneratorItemModels extends ItemModelProvider {
         registerBlockModel(ModBlocks.GOO_BLOCK_TERRAIN.get());
         registerBlockModel(ModBlocks.GOO_BLOCK_BURST.get());
         registerBlockModel(ModBlocks.TURRET_BLOCK.get());
+        registerBlockModel(ModBlocks.ANTI_GOO_FIELD_GEN.get());
 
         //Our Item Models
         String path = ModItems.GOO_REMOVER.get().getRegistryName().getPath();

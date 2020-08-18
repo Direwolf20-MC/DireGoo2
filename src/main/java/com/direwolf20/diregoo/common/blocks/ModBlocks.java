@@ -1,6 +1,7 @@
 package com.direwolf20.diregoo.common.blocks;
 
 import com.direwolf20.diregoo.DireGoo;
+import com.direwolf20.diregoo.common.tiles.AntiGooFieldGenTileEntity;
 import com.direwolf20.diregoo.common.tiles.TurretBlockTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntityType;
@@ -22,11 +23,14 @@ public class ModBlocks {
     public static final RegistryObject<Block> GOO_BLOCK_TERRAIN = BLOCKS.register("gooblockterrain", GooBlockTerrain::new);
     public static final RegistryObject<Block> GOO_BLOCK_BURST = BLOCKS.register("gooblockburst", GooBlockBurst::new);
     public static final RegistryObject<Block> TURRET_BLOCK = BLOCKS.register("turretblock", TurretBlock::new);
+    public static final RegistryObject<Block> ANTI_GOO_FIELD_GEN = BLOCKS.register("antigoofieldgen", AntiGooFieldGen::new);
 
     /**
      * TileEntity Registers to the above deferred registers to be loaded in from the mods main class.
      */
     public static final RegistryObject<TileEntityType<TurretBlockTileEntity>> TURRETBLOCK_TILE =
             TILES_ENTITIES.register("turretblock", () -> TileEntityType.Builder.create(TurretBlockTileEntity::new, ModBlocks.TURRET_BLOCK.get()).build(null));
+    public static final RegistryObject<TileEntityType<AntiGooFieldGenTileEntity>> ANTI_GOO_FIELD_GEN_TILE =
+            TILES_ENTITIES.register("antigoofieldgen", () -> TileEntityType.Builder.create(AntiGooFieldGenTileEntity::new, ModBlocks.ANTI_GOO_FIELD_GEN.get()).build(null));
 
 }

@@ -20,6 +20,7 @@ public class GeneratorBlockStates extends BlockStateProvider {
         buildCubeAll(ModBlocks.GOO_BLOCK_TERRAIN.get());
         buildCubeAll(ModBlocks.GOO_BLOCK_BURST.get());
         buildCubeAll(ModBlocks.TURRET_BLOCK.get());
+        buildCubeAll(ModBlocks.ANTI_GOO_FIELD_GEN.get());
     }
 
     private void buildCubeAll(Block block) {
