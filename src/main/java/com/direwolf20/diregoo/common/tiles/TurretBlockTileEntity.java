@@ -75,12 +75,15 @@ public class TurretBlockTileEntity extends FETileBase implements ITickableTileEn
     }
 
     public void shoot() {
+        if (energyStorage.getEnergyStored() < Config.TURRET_RFCOST.get())
+            return;
         BlockPos shootPos = clearBlocksQueue.remove();
         int shootDuration = 80;
         if (world.getBlockState(shootPos).getBlock() instanceof GooBase) {
             GooBase.resetBlock((ServerWorld) world, shootPos, true, shootDuration);
             firingCooldown = shootDuration;
             currentTarget = shootPos;
+            energyStorage.consumeEnergy(Config.TURRET_RFCOST.get(), false);
             markDirtyClient();
         }
     }
@@ -94,7 +97,7 @@ public class TurretBlockTileEntity extends FETileBase implements ITickableTileEn
 
         //Server Only
         if (!world.isRemote) {
-            //energyStorage.receiveEnergy(625, false); //Testing
+            energyStorage.receiveEnergy(625, false); //Testing
             if (firingCooldown > 0)
                 decrementFiring();
             else {
