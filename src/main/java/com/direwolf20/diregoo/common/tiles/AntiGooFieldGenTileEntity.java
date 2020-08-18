@@ -18,10 +18,6 @@ import javax.annotation.Nullable;
 
 public class AntiGooFieldGenTileEntity extends FETileBase implements ITickableTileEntity, INamedContainerProvider {
 
-    /*public ChargerEnergyStorage energyStorage;
-    private LazyOptional<ChargerEnergyStorage> energy;*/
-
-
     public AntiGooFieldGenTileEntity() {
         super(ModBlocks.ANTI_GOO_FIELD_GEN_TILE.get());
     }
@@ -42,6 +38,7 @@ public class AntiGooFieldGenTileEntity extends FETileBase implements ITickableTi
 
         //Server Only
         if (!world.isRemote) {
+            //energyStorage.receiveEnergy(625, false); //Testing
             //System.out.println("I'm here!");
         }
     }

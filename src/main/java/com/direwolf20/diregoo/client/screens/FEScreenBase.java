@@ -46,12 +46,6 @@ public abstract class FEScreenBase<T extends FEContainerBase> extends ContainerS
         getMinecraft().getTextureManager().bindTexture(background);
         this.blit(stack, guiLeft, guiTop, 0, 0, xSize, ySize);
 
-        int maxHeight = 13;
-        /*if (this.container.getMaxBurn() > 0) {
-            int remaining = (this.container.getRemaining() * maxHeight) / this.container.getMaxBurn();
-            this.blit(stack, guiLeft + 66, guiTop + 26 + 13 - remaining, 176, 13 - remaining, 14, remaining + 1);
-        }*/
-
         int maxEnergy = this.container.getMaxPower(), height = 70;
         if (maxEnergy > 0) {
             int remaining = (this.container.getEnergy() * height) / maxEnergy;

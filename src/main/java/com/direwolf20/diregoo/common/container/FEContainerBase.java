@@ -44,9 +44,6 @@ public abstract class FEContainerBase extends Container {
     }
 
     public void setup(PlayerInventory inventory) {
-        //addSlot(new RestrictedSlot(handler, 0, 65, 43));
-        //addSlot(new RestrictedSlot(handler, 1, 119, 43));
-
         // Slots for the hotbar
         for (int row = 0; row < 9; ++row) {
             int x = 8 + row * 18;
@@ -103,13 +100,4 @@ public abstract class FEContainerBase extends Container {
     public int getEnergy() {
         return this.data.get(0) * 32;
     }
-
-    /*public int getMaxBurn() {
-        return this.data.get(3);
-    }
-
-    public int getRemaining() {
-        return this.data.get(2);
-    }*/
-
 }

@@ -64,7 +64,6 @@ public abstract class FETileBase extends TileEntity implements ITickableTileEnti
     }
 
     //Misc Methods for TE's
-
     @Override
     public void read(BlockState state, CompoundNBT tag) {
         super.read(state, tag);
