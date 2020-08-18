@@ -50,6 +50,7 @@ public class DireGoo
         ModBlocks.BLOCKS.register(event);
         ModItems.ITEMS.register(event);
         ModBlocks.TILES_ENTITIES.register(event);
+        ModBlocks.CONTAINERS.register(event);
 
         //This does stuff with the Config somehow?
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, Config.CLIENT_CONFIG);
