@@ -1,10 +1,10 @@
 package com.direwolf20.diregoo.common.container;
 
-import com.direwolf20.diregoo.common.blocks.ModBlocks;
 import com.direwolf20.diregoo.common.tiles.FETileBase;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.util.IIntArray;
 import net.minecraft.util.math.BlockPos;
@@ -20,8 +20,8 @@ public abstract class FEContainerBase extends Container {
     // Tile can be null and shouldn't be used for accessing any data that needs to be up to date on both sides
     protected FETileBase tile;
 
-    public FEContainerBase(@Nullable FETileBase tile, IIntArray FETileData, int windowId, PlayerInventory playerInventory) {
-        super(ModBlocks.ANTI_GOO_FIELD_GEN_CONTAINER.get(), windowId);
+    public FEContainerBase(ContainerType<?> container, @Nullable FETileBase tile, IIntArray FETileData, int windowId, PlayerInventory playerInventory) {
+        super(container, windowId);
 
         this.tile = tile;
 
@@ -31,16 +31,16 @@ public abstract class FEContainerBase extends Container {
         trackIntArray(FETileData);
     }
 
-    public FEContainerBase(@Nullable FETileBase tile, IIntArray antiGooFieldGenData, int windowId, PlayerInventory playerInventory, ItemStackHandler handler) {
-        super(ModBlocks.ANTI_GOO_FIELD_GEN_CONTAINER.get(), windowId);
+    public FEContainerBase(ContainerType<?> container, @Nullable FETileBase tile, IIntArray FETileData, int windowId, PlayerInventory playerInventory, ItemStackHandler handler) {
+        super(container, windowId);
 
         this.handler = handler;
         this.tile = tile;
 
-        this.data = antiGooFieldGenData;
+        this.data = FETileData;
         this.setup(playerInventory);
 
-        trackIntArray(antiGooFieldGenData);
+        trackIntArray(FETileData);
     }
 
     public void setup(PlayerInventory inventory) {

@@ -1,7 +1,7 @@
 package com.direwolf20.diregoo.common.container;
 
 import com.direwolf20.diregoo.common.blocks.ModBlocks;
-import com.direwolf20.diregoo.common.tiles.AntiGooFieldGenTileEntity;
+import com.direwolf20.diregoo.common.tiles.TurretBlockTileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.network.PacketBuffer;
@@ -12,19 +12,19 @@ import net.minecraft.util.math.vector.Vector3d;
 
 import javax.annotation.Nullable;
 
-public class AntiGooFieldGenContainer extends FEContainerBase {
+public class TurretContainer extends FEContainerBase {
     //private static final int SLOTS = 0;
 
-    public AntiGooFieldGenContainer(int windowId, PlayerInventory playerInventory, PacketBuffer extraData) {
-        this((AntiGooFieldGenTileEntity) playerInventory.player.world.getTileEntity(extraData.readBlockPos()), new IntArray(4), windowId, playerInventory);
+    public TurretContainer(int windowId, PlayerInventory playerInventory, PacketBuffer extraData) {
+        this((TurretBlockTileEntity) playerInventory.player.world.getTileEntity(extraData.readBlockPos()), new IntArray(4), windowId, playerInventory);
     }
 
-    public AntiGooFieldGenContainer(@Nullable AntiGooFieldGenTileEntity tile, IIntArray antiGooFieldGenData, int windowId, PlayerInventory playerInventory) {
-        super(ModBlocks.ANTI_GOO_FIELD_GEN_CONTAINER.get(), tile, antiGooFieldGenData, windowId, playerInventory);
+    public TurretContainer(@Nullable TurretBlockTileEntity tile, IIntArray turretData, int windowId, PlayerInventory playerInventory) {
+        super(ModBlocks.TURRET_CONTAINER.get(), tile, turretData, windowId, playerInventory);
         this.tile = tile;
-        this.data = antiGooFieldGenData;
+        this.data = turretData;
         this.setup(playerInventory);
-        trackIntArray(antiGooFieldGenData);
+        trackIntArray(turretData);
     }
 
     @Override

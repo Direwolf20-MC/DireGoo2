@@ -1,6 +1,7 @@
 package com.direwolf20.diregoo.client;
 
 import com.direwolf20.diregoo.client.screens.AntiGooFieldGenScreen;
+import com.direwolf20.diregoo.client.screens.TurretScreen;
 import com.direwolf20.diregoo.common.blocks.ModBlocks;
 import com.direwolf20.diregoo.common.tiles.TurretBlockTileEntityRender;
 import net.minecraft.client.gui.ScreenManager;
@@ -20,6 +21,7 @@ public final class ClientSetup {
      */
     private static void registerContainerScreens() {
         ScreenManager.registerFactory(ModBlocks.ANTI_GOO_FIELD_GEN_CONTAINER.get(), AntiGooFieldGenScreen::new);
+        ScreenManager.registerFactory(ModBlocks.TURRET_CONTAINER.get(), TurretScreen::new);
         //ScreenManager.registerFactory(ModContainers.MODIFICATIONTABLE_CONTAINER.get(), ModificationTableScreen::new);
         //ScreenManager.registerFactory(ModContainers.FILTER_CONTAINER.get(), FilterScreen::new);
     }

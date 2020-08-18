@@ -2,6 +2,7 @@ package com.direwolf20.diregoo.common.blocks;
 
 import com.direwolf20.diregoo.DireGoo;
 import com.direwolf20.diregoo.common.container.AntiGooFieldGenContainer;
+import com.direwolf20.diregoo.common.container.TurretContainer;
 import com.direwolf20.diregoo.common.tiles.AntiGooFieldGenTileEntity;
 import com.direwolf20.diregoo.common.tiles.TurretBlockTileEntity;
 import net.minecraft.block.Block;
@@ -41,5 +42,7 @@ public class ModBlocks {
      * Containers
      */
     public static final RegistryObject<ContainerType<AntiGooFieldGenContainer>> ANTI_GOO_FIELD_GEN_CONTAINER = CONTAINERS.register("anti_goo_field_gen_container", () -> IForgeContainerType.create(AntiGooFieldGenContainer::new));
+    public static final RegistryObject<ContainerType<TurretContainer>> TURRET_CONTAINER = CONTAINERS.register("turret_container", () -> IForgeContainerType.create(TurretContainer::new));
+
 
 }
