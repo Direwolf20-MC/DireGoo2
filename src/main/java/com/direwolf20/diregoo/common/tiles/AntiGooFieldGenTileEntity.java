@@ -38,7 +38,7 @@ public class AntiGooFieldGenTileEntity extends FETileBase implements ITickableTi
 
         //Server Only
         if (!world.isRemote) {
-            energyStorage.receiveEnergy(625, false); //Testing
+            //energyStorage.receiveEnergy(625, false); //Testing
             //System.out.println("I'm here!");
         }
     }
