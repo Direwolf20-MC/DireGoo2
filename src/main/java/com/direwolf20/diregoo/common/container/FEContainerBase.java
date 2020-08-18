@@ -20,15 +20,15 @@ public abstract class FEContainerBase extends Container {
     // Tile can be null and shouldn't be used for accessing any data that needs to be up to date on both sides
     protected FETileBase tile;
 
-    public FEContainerBase(@Nullable FETileBase tile, IIntArray antiGooFieldGenData, int windowId, PlayerInventory playerInventory) {
+    public FEContainerBase(@Nullable FETileBase tile, IIntArray FETileData, int windowId, PlayerInventory playerInventory) {
         super(ModBlocks.ANTI_GOO_FIELD_GEN_CONTAINER.get(), windowId);
 
         this.tile = tile;
 
-        this.data = antiGooFieldGenData;
+        this.data = FETileData;
         this.setup(playerInventory);
 
-        trackIntArray(antiGooFieldGenData);
+        trackIntArray(FETileData);
     }
 
     public FEContainerBase(@Nullable FETileBase tile, IIntArray antiGooFieldGenData, int windowId, PlayerInventory playerInventory, ItemStackHandler handler) {
@@ -96,7 +96,7 @@ public abstract class FEContainerBase extends Container {
         return this.tile != null && !this.tile.isRemoved() && playerIn.getDistanceSq(new Vector3d(pos.getX(), pos.getY(), pos.getZ()).add(0.5D, 0.5D, 0.5D)) <= 64D;
     }
 
-    /*public int getMaxPower() {
+    public int getMaxPower() {
         return this.data.get(1) * 32;
     }
 
@@ -104,7 +104,7 @@ public abstract class FEContainerBase extends Container {
         return this.data.get(0) * 32;
     }
 
-    public int getMaxBurn() {
+    /*public int getMaxBurn() {
         return this.data.get(3);
     }
 

@@ -27,6 +27,8 @@ public class Config {
     public static ForgeConfigSpec.IntValue MAXBURST;
     public static ForgeConfigSpec.BooleanValue CAN_SPREAD;
 
+    public static ForgeConfigSpec.IntValue TILEMAXENERGY;
+
 
     static {
 
@@ -55,6 +57,9 @@ public class Config {
 
         CAN_SPREAD = COMMON_BUILDER.comment("Can the goo spread. Set the false to disable all good spreading.")
                 .define("canSpread", true);
+
+        TILEMAXENERGY = COMMON_BUILDER.comment("The max amount of RF in the Tile Entities")
+                .defineInRange("tileMaxEnergy", 1000000, 0, Integer.MAX_VALUE);
     }
 
     public static void loadConfig(ForgeConfigSpec spec, Path path) {
