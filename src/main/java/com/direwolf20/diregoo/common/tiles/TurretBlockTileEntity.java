@@ -6,10 +6,7 @@ import com.direwolf20.diregoo.common.blocks.ModBlocks;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.NBTUtil;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.ITickableTileEntity;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.server.ServerWorld;
@@ -19,7 +16,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.stream.Collectors;
 
-public class TurretBlockTileEntity extends TileEntity implements ITickableTileEntity {
+public class TurretBlockTileEntity extends FETileBase implements ITickableTileEntity {
 
     Queue<BlockPos> clearBlocksQueue = new LinkedList<>();
     private int searchCooldown;
@@ -101,30 +98,6 @@ public class TurretBlockTileEntity extends TileEntity implements ITickableTileEn
 
 
     //Misc Methods for TE's
-    @Override
-    public SUpdateTileEntityPacket getUpdatePacket() {
-        // Vanilla uses the type parameter to indicate which type of tile entity (command block, skull, or beacon?) is receiving the packet, but it seems like Forge has overridden this behavior
-        return new SUpdateTileEntityPacket(pos, 0, getUpdateTag());
-    }
-
-    @Override
-    public CompoundNBT getUpdateTag() {
-        return write(new CompoundNBT());
-    }
-
-    @Override
-    public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
-        read(this.getBlockState(), pkt.getNbtCompound());
-    }
-
-    public void markDirtyClient() {
-        markDirty();
-        if (getWorld() != null) {
-            BlockState state = getWorld().getBlockState(getPos());
-            getWorld().notifyBlockUpdate(getPos(), state, state, 3);
-        }
-    }
-
     @Override
     public void read(BlockState state, CompoundNBT tag) {
         super.read(state, tag);

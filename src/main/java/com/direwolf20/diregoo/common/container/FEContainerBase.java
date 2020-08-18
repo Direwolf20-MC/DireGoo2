@@ -1,32 +1,38 @@
 package com.direwolf20.diregoo.common.container;
 
-import com.direwolf20.diregoo.common.tiles.AntiGooFieldGenTileEntity;
+import com.direwolf20.diregoo.common.blocks.ModBlocks;
+import com.direwolf20.diregoo.common.tiles.FETileBase;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.Slot;
-import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.IIntArray;
-import net.minecraft.util.IntArray;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nullable;
 
-public class AntiGooFieldGenContainer extends FEContainerBase {
-    private static final int SLOTS = 0;
-
-    //public final IIntArray data;
-    //public ItemStackHandler handler;
+public abstract class FEContainerBase extends Container {
+    public IIntArray data;
+    public ItemStackHandler handler;
 
     // Tile can be null and shouldn't be used for accessing any data that needs to be up to date on both sides
-    //private AntiGooFieldGenTileEntity tile;
+    protected FETileBase tile;
 
-    public AntiGooFieldGenContainer(int windowId, PlayerInventory playerInventory, PacketBuffer extraData) {
-        this((AntiGooFieldGenTileEntity) playerInventory.player.world.getTileEntity(extraData.readBlockPos()), new IntArray(4), windowId, playerInventory);
+    public FEContainerBase(@Nullable FETileBase tile, IIntArray antiGooFieldGenData, int windowId, PlayerInventory playerInventory) {
+        super(ModBlocks.ANTI_GOO_FIELD_GEN_CONTAINER.get(), windowId);
+
+        this.tile = tile;
+
+        this.data = antiGooFieldGenData;
+        this.setup(playerInventory);
+
+        trackIntArray(antiGooFieldGenData);
     }
 
-    public AntiGooFieldGenContainer(@Nullable AntiGooFieldGenTileEntity tile, IIntArray antiGooFieldGenData, int windowId, PlayerInventory playerInventory) {
-        super(tile, antiGooFieldGenData, windowId, playerInventory);
+    public FEContainerBase(@Nullable FETileBase tile, IIntArray antiGooFieldGenData, int windowId, PlayerInventory playerInventory, ItemStackHandler handler) {
+        super(ModBlocks.ANTI_GOO_FIELD_GEN_CONTAINER.get(), windowId);
 
         this.handler = handler;
         this.tile = tile;
@@ -106,20 +112,4 @@ public class AntiGooFieldGenContainer extends FEContainerBase {
         return this.data.get(2);
     }*/
 
-    /*static class RestrictedSlot extends SlotItemHandler {
-        public RestrictedSlot(IItemHandler itemHandler, int index, int xPosition, int yPosition) {
-            super(itemHandler, index, xPosition, yPosition);
-        }
-
-        @Override
-        public boolean isItemValid(@Nonnull ItemStack stack) {
-            if( getSlotIndex() == ChargingStationTile.Slots.CHARGE.getId() )
-                return stack.getCapability(CapabilityEnergy.ENERGY).isPresent();
-
-            if( getSlotIndex() == ChargingStationTile.Slots.FUEL.getId() )
-                return ForgeHooks.getBurnTime(stack) != 0;
-
-            return super.isItemValid(stack);
-        }
-    }*/
 }
