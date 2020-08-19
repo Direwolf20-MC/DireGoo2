@@ -18,7 +18,7 @@ public abstract class FEContainerBase extends Container {
     public ItemStackHandler handler;
 
     // Tile can be null and shouldn't be used for accessing any data that needs to be up to date on both sides
-    protected FETileBase tile;
+    public FETileBase tile;
 
     public FEContainerBase(ContainerType<?> container, @Nullable FETileBase tile, IIntArray FETileData, int windowId, PlayerInventory playerInventory) {
         super(container, windowId);

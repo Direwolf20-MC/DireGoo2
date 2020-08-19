@@ -32,9 +32,18 @@ public class AntiGooFieldGenTileEntity extends FETileBase implements ITickableTi
     }
 
     private boolean isActive = false;
+
     private int range = 5;
 
     private Set<BlockPos> protectedBlocksList = new HashSet<>();
+
+    public int getRange() {
+        return range;
+    }
+
+    public void setRange(int range) {
+        this.range = range;
+    }
 
     public boolean isActive() {
         return isActive;

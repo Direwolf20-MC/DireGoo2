@@ -21,6 +21,7 @@ public class AntiGooFieldGenTileEntityRender extends TileEntityRenderer<AntiGooF
         if (tile.getProtectedBlocksList().isEmpty()) return;
         IVertexBuilder builder;
         builder = bufferIn.getBuffer(OurRenderTypes.AntiGooLines);
+        OurRenderTypes.updateRenders();
         matrixStackIn.push();
         Matrix4f positionMatrix2 = matrixStackIn.getLast().getMatrix();
         BlockPos startPos = new BlockPos(-5, -5, -5);

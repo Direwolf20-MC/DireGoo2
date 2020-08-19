@@ -52,4 +52,8 @@ public abstract class FEScreenBase<T extends FEContainerBase> extends ContainerS
             this.blit(stack, guiLeft + 8, guiTop + 78 - remaining, 176, 84 - remaining, 16, remaining + 1);
         }
     }
+
+    protected static TranslationTextComponent getTrans(String key, Object... args) {
+        return new TranslationTextComponent(DireGoo.MOD_ID + "." + key, args);
+    }
 }
