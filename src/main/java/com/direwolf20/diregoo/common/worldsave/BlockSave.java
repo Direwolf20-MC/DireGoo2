@@ -3,6 +3,8 @@ package com.direwolf20.diregoo.common.worldsave;
 import com.direwolf20.diregoo.DireGoo;
 import com.direwolf20.diregoo.common.network.PacketHandler;
 import com.direwolf20.diregoo.common.network.packets.AntigooSync;
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.SetMultimap;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
@@ -24,6 +26,7 @@ public class BlockSave extends WorldSavedData {
     private final HashMap<Short, BlockState> blockMapPalette = new HashMap<>();
     private final HashMap<BlockPos, CompoundNBT> teMap = new HashMap<>();
     private final Set<BlockPos> antigooList = new HashSet<>();
+    private final SetMultimap<BlockPos, BlockPos> antigooFieldList = HashMultimap.create();
 
 
     public BlockSave() {
@@ -68,6 +71,14 @@ public class BlockSave extends WorldSavedData {
             BlockPos blockPos = NBTUtil.readBlockPos(antigoo.getCompound(i).getCompound("pos"));
             antigooList.add(blockPos);
         }
+
+        ListNBT antigooField = nbt.getList("antigoofield", Constants.NBT.TAG_COMPOUND);
+        for (int i = 0; i < antigooField.size(); i++) {
+            BlockPos sourcePos = NBTUtil.readBlockPos(antigooField.getCompound(i).getCompound("sourcePos"));
+            BlockPos protectedPos = NBTUtil.readBlockPos(antigooField.getCompound(i).getCompound("protectedPos"));
+            antigooFieldList.put(sourcePos, protectedPos);
+        }
+
         long elapsedTime = System.nanoTime() - startTime;
         System.out.println("Elapsed time for Read = " + elapsedTime / 1000000);
     }
@@ -112,6 +123,16 @@ public class BlockSave extends WorldSavedData {
             anti.add(comp);
         }
         compound.put("antigoo", anti);
+
+        ListNBT antiField = new ListNBT();
+        for (Map.Entry<BlockPos, BlockPos> blockData : antigooFieldList.entries()) {
+            CompoundNBT comp = new CompoundNBT();
+            comp.put("sourcePos", NBTUtil.writeBlockPos(blockData.getKey()));
+            comp.put("protectedPos", NBTUtil.writeBlockPos(blockData.getValue()));
+            antiField.add(comp);
+        }
+        compound.put("antigoofield", antiField);
+
         long elapsedTime = System.nanoTime() - startTime;
         System.out.println("Elapsed time for Write = " + elapsedTime / 1000000);
         return compound;
@@ -187,12 +208,8 @@ public class BlockSave extends WorldSavedData {
         return success;
     }
 
-    public boolean addAnti(Set<BlockPos> posList, World world) {
-        boolean success = false;
-        for (BlockPos pos : posList) {
-            if (this.antigooList.add(pos))
-                success = true;
-        }
+    public boolean addAntiField(BlockPos sourcePos, Set<BlockPos> posList, World world) {
+        boolean success = antigooFieldList.putAll(sourcePos, posList);
         if (success) {
             PacketHandler.sendToAll(new AntigooSync(this.antigooList), world);
             this.markDirty();
@@ -200,11 +217,11 @@ public class BlockSave extends WorldSavedData {
         return success;
     }
 
-    public boolean removeAnti(Set<BlockPos> posList, World world) {
+    public boolean removeAntiField(BlockPos sourcePos, Set<BlockPos> posList, World world) {
         boolean success = false;
         for (BlockPos pos : posList) {
-            if (this.antigooList.remove(pos))
-                success = true;
+            if (this.antigooFieldList.remove(sourcePos, pos)) ;
+            success = true;
         }
         if (success) {
             PacketHandler.sendToAll(new AntigooSync(this.antigooList), world);
@@ -214,7 +231,7 @@ public class BlockSave extends WorldSavedData {
     }
 
     public boolean checkAnti(BlockPos pos) {
-        return this.antigooList.contains(pos);
+        return (this.antigooList.contains(pos) || this.antigooFieldList.containsValue(pos));
     }
 
     public Set<BlockPos> getAntiGooList() {

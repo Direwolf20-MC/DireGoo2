@@ -69,7 +69,6 @@ public class AntiGooFieldGenTileEntity extends FETileBase implements ITickableTi
     }
 
     public void createBlockList() {
-        range = 5;
         protectedBlocksList = BlockPos.getAllInBox(this.pos.add(range, -range, range), this.pos.add(-range, range, -range))
                 .map(BlockPos::toImmutable)
                 .collect(Collectors.toSet());
@@ -82,13 +81,13 @@ public class AntiGooFieldGenTileEntity extends FETileBase implements ITickableTi
             return;
         createBlockList();
         BlockSave blockSave = BlockSave.get(world);
-        blockSave.addAnti(protectedBlocksList, world);
+        blockSave.addAntiField(this.pos, protectedBlocksList, world);
         isActive = true;
     }
 
     public void removeField() {
         BlockSave blockSave = BlockSave.get(world);
-        blockSave.removeAnti(protectedBlocksList, world);
+        blockSave.removeAntiField(this.pos, protectedBlocksList, world);
         protectedBlocksList = new HashSet<>();
         isActive = false;
     }
