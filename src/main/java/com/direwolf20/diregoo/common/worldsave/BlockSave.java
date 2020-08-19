@@ -187,6 +187,32 @@ public class BlockSave extends WorldSavedData {
         return success;
     }
 
+    public boolean addAnti(Set<BlockPos> posList, World world) {
+        boolean success = false;
+        for (BlockPos pos : posList) {
+            if (this.antigooList.add(pos))
+                success = true;
+        }
+        if (success) {
+            PacketHandler.sendToAll(new AntigooSync(this.antigooList), world);
+            this.markDirty();
+        }
+        return success;
+    }
+
+    public boolean removeAnti(Set<BlockPos> posList, World world) {
+        boolean success = false;
+        for (BlockPos pos : posList) {
+            if (this.antigooList.remove(pos))
+                success = true;
+        }
+        if (success) {
+            PacketHandler.sendToAll(new AntigooSync(this.antigooList), world);
+            this.markDirty();
+        }
+        return success;
+    }
+
     public boolean checkAnti(BlockPos pos) {
         return this.antigooList.contains(pos);
     }

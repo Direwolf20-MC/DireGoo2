@@ -27,6 +27,7 @@ public class Config {
     public static ForgeConfigSpec.IntValue MINBURST;
     public static ForgeConfigSpec.IntValue MAXBURST;
     public static ForgeConfigSpec.BooleanValue CAN_SPREAD;
+    public static ForgeConfigSpec.DoubleValue ANTIGOOFIELDGENRF;
 
     public static ForgeConfigSpec.IntValue TILEMAXENERGY;
 
@@ -53,6 +54,8 @@ public class Config {
                 .defineInRange("turretRange", 5, 0, 25);
         TURRET_RFCOST = COMMON_BUILDER.comment("The RF cost per shot (Per block removed)")
                 .defineInRange("turretRFCost", 10000, 0, Integer.MAX_VALUE);
+        ANTIGOOFIELDGENRF = COMMON_BUILDER.comment("The RF cost per block protected by the Anti Goo Field Generator")
+                .defineInRange("antiGooFieldCost", 1, 0, Double.MAX_VALUE);
         MINBURST = COMMON_BUILDER.comment("The minimum number of blocks BurstGoo can do at once - it will randomly pick a number between Min and Max")
                 .defineInRange("minBurst", 5, 1, 25);
         MAXBURST = COMMON_BUILDER.comment("The maximum number of blocks BurstGoo can do at once - it will randomly pick a number between Min and Max")

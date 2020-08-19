@@ -40,16 +40,43 @@ public class AntiGooFieldGen extends Block {
 
     @Override
     @SuppressWarnings("deprecation")
+    public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
+        if (newState.getBlock() != this) {
+            TileEntity tileEntity = worldIn.getTileEntity(pos);
+            if (tileEntity != null) {
+                if (tileEntity instanceof AntiGooFieldGenTileEntity) {
+                    ((AntiGooFieldGenTileEntity) tileEntity).removeField();
+                }
+            }
+            super.onReplaced(state, worldIn, pos, newState, isMoving);
+        }
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
     public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult blockRayTraceResult) {
-        // Only execute on the server
-        if (worldIn.isRemote)
+        // Client Only
+        if (worldIn.isRemote) {
             return ActionResultType.SUCCESS;
+        }
 
-        TileEntity te = worldIn.getTileEntity(pos);
-        if (!(te instanceof AntiGooFieldGenTileEntity))
-            return ActionResultType.FAIL;
+        //Server only
+        if (!worldIn.isRemote) {
+            TileEntity te = worldIn.getTileEntity(pos);
+            if (!(te instanceof AntiGooFieldGenTileEntity))
+                return ActionResultType.FAIL;
 
-        NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider) te, pos);
+            if (player.isSneaking()) {
+                if (((AntiGooFieldGenTileEntity) te).isActive())
+                    ((AntiGooFieldGenTileEntity) te).removeField();
+                else
+                    ((AntiGooFieldGenTileEntity) te).addField();
+                return ActionResultType.SUCCESS;
+            } else {
+                NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider) te, pos);
+                return ActionResultType.SUCCESS;
+            }
+        }
         return ActionResultType.SUCCESS;
     }
 }
