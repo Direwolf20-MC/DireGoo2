@@ -3,6 +3,7 @@ package com.direwolf20.diregoo.client;
 import com.direwolf20.diregoo.client.screens.AntiGooFieldGenScreen;
 import com.direwolf20.diregoo.client.screens.TurretScreen;
 import com.direwolf20.diregoo.common.blocks.ModBlocks;
+import com.direwolf20.diregoo.common.tiles.AntiGooFieldGenTileEntityRender;
 import com.direwolf20.diregoo.common.tiles.TurretBlockTileEntityRender;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
@@ -31,5 +32,6 @@ public final class ClientSetup {
      */
     private static void registerRenderers() {
         ClientRegistry.bindTileEntityRenderer(ModBlocks.TURRETBLOCK_TILE.get(), TurretBlockTileEntityRender::new);
+        ClientRegistry.bindTileEntityRenderer(ModBlocks.ANTI_GOO_FIELD_GEN_TILE.get(), AntiGooFieldGenTileEntityRender::new);
     }
 }

@@ -1,6 +1,7 @@
 package com.direwolf20.diregoo.common.data;
 
 import com.direwolf20.diregoo.DireGoo;
+import com.direwolf20.diregoo.common.blocks.ModBlocks;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.common.data.LanguageProvider;
 
@@ -12,6 +13,7 @@ public class GeneratorLanguage extends LanguageProvider {
     @Override
     protected void addTranslations() {
         add("screen.diregoo.energy", "Energy: %s/%s FE");
+        addBlock(ModBlocks.ANTI_GOO_FIELD_GEN, "Antigoo Field Generator");
         //addBlock(ModBlocks.CHARGING_STATION, "Charging Station");
         //add("itemGroup.charginggadgets", "Charging Gadgets");
         //add("screen.charginggadgets.energy", "Energy: %s/%s FE");

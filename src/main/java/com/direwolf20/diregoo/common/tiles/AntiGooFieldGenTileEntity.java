@@ -33,10 +33,15 @@ public class AntiGooFieldGenTileEntity extends FETileBase implements ITickableTi
 
     private boolean isActive = false;
     private int range = 5;
+
     private Set<BlockPos> protectedBlocksList = new HashSet<>();
 
     public boolean isActive() {
         return isActive;
+    }
+
+    public Set<BlockPos> getProtectedBlocksList() {
+        return protectedBlocksList;
     }
 
     @Nullable
@@ -83,13 +88,15 @@ public class AntiGooFieldGenTileEntity extends FETileBase implements ITickableTi
         BlockSave blockSave = BlockSave.get(world);
         blockSave.addAntiField(this.pos, protectedBlocksList, world);
         isActive = true;
+        markDirtyClient();
     }
 
     public void removeField() {
         BlockSave blockSave = BlockSave.get(world);
         blockSave.removeAntiField(this.pos, protectedBlocksList, world);
-        protectedBlocksList = new HashSet<>();
+        this.protectedBlocksList = new HashSet<>();
         isActive = false;
+        markDirtyClient();
     }
 
     @Override
@@ -97,6 +104,7 @@ public class AntiGooFieldGenTileEntity extends FETileBase implements ITickableTi
         super.read(state, tag);
         isActive = tag.getBoolean("active");
         range = tag.getInt("range");
+        protectedBlocksList = new HashSet<>();
         ListNBT antigoo = tag.getList("protectedblockslist", Constants.NBT.TAG_COMPOUND);
         for (int i = 0; i < antigoo.size(); i++) {
             BlockPos blockPos = NBTUtil.readBlockPos(antigoo.getCompound(i).getCompound("pos"));
