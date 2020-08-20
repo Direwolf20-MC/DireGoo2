@@ -24,8 +24,9 @@ public class AntiGooFieldGenTileEntityRender extends TileEntityRenderer<AntiGooF
         OurRenderTypes.updateRenders();
         matrixStackIn.push();
         Matrix4f positionMatrix2 = matrixStackIn.getLast().getMatrix();
-        BlockPos startPos = new BlockPos(-5, -5, -5);
-        BlockPos endPos = new BlockPos(5, 5, 5);
+        int[] ranges = tile.getRanges();
+        BlockPos startPos = new BlockPos(-ranges[2], -ranges[5], -ranges[0]);
+        BlockPos endPos = new BlockPos(ranges[3], ranges[4], ranges[1]);
         AntiGooRender.renderBox(positionMatrix2, builder, startPos, endPos);
 
         matrixStackIn.pop();

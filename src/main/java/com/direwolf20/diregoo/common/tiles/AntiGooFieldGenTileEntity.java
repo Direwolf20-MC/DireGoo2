@@ -27,22 +27,21 @@ import java.util.stream.Collectors;
 
 public class AntiGooFieldGenTileEntity extends FETileBase implements ITickableTileEntity, INamedContainerProvider {
 
+    private boolean isActive = false;
+    private boolean renderArea = false;
+    private Set<BlockPos> protectedBlocksList = new HashSet<>();
+    private int[] ranges = {0, 0, 0, 0, 0, 0}; //N,S,W,E,U,D
+
     public AntiGooFieldGenTileEntity() {
         super(ModBlocks.ANTI_GOO_FIELD_GEN_TILE.get());
     }
 
-    private boolean isActive = false;
-
-    private int range = 5;
-
-    private Set<BlockPos> protectedBlocksList = new HashSet<>();
-
-    public int getRange() {
-        return range;
+    public int[] getRanges() {
+        return ranges;
     }
 
-    public void setRange(int range) {
-        this.range = range;
+    public void setRanges(int[] ranges) {
+        this.ranges = ranges;
     }
 
     public boolean isActive() {
@@ -60,6 +59,10 @@ public class AntiGooFieldGenTileEntity extends FETileBase implements ITickableTi
         return new AntiGooFieldGenContainer(this, this.FETileData, i, playerInventory);
     }
 
+    public double getNumBlocks() {
+        return (ranges[0] + ranges[1] + 1) * (ranges[2] + ranges[3] + 1) * (ranges[4] + ranges[5] + 1);
+    }
+
     @Override
     public void tick() {
         //Client only
@@ -71,8 +74,7 @@ public class AntiGooFieldGenTileEntity extends FETileBase implements ITickableTi
         if (!world.isRemote) {
             energyStorage.receiveEnergy(1000, false); //Test
             if (isActive) {
-                double numBlocks = Math.pow(range * 2 + 1, 3);
-                double rfCost = numBlocks * Config.ANTIGOOFIELDGENRF.get();
+                double rfCost = getNumBlocks() * Config.ANTIGOOFIELDGENRF.get();
                 if (energyStorage.getEnergyStored() >= rfCost)
                     energyStorage.consumeEnergy((int) Math.floor(rfCost), false);
                 else {
@@ -83,14 +85,13 @@ public class AntiGooFieldGenTileEntity extends FETileBase implements ITickableTi
     }
 
     public void createBlockList() {
-        protectedBlocksList = BlockPos.getAllInBox(this.pos.add(range, -range, range), this.pos.add(-range, range, -range))
+        protectedBlocksList = BlockPos.getAllInBox(this.pos.add(-ranges[2], -ranges[5], -ranges[0]), this.pos.add(ranges[3], ranges[4], ranges[1]))
                 .map(BlockPos::toImmutable)
                 .collect(Collectors.toSet());
     }
 
     public void addField() {
-        double numBlocks = Math.pow(range * 2 + 1, 3);
-        double rfCost = numBlocks * Config.ANTIGOOFIELDGENRF.get();
+        double rfCost = getNumBlocks() * Config.ANTIGOOFIELDGENRF.get();
         if (energyStorage.getEnergyStored() < rfCost)
             return;
         createBlockList();
@@ -108,11 +109,21 @@ public class AntiGooFieldGenTileEntity extends FETileBase implements ITickableTi
         markDirtyClient();
     }
 
+    public void updateRanges(int[] newRanges) {
+        if (isActive) {
+            removeField();
+            ranges = newRanges;
+            addField();
+        } else
+            ranges = newRanges;
+        markDirtyClient();
+    }
+
     @Override
     public void read(BlockState state, CompoundNBT tag) {
         super.read(state, tag);
         isActive = tag.getBoolean("active");
-        range = tag.getInt("range");
+        ranges = tag.getIntArray("ranges");
         protectedBlocksList = new HashSet<>();
         ListNBT antigoo = tag.getList("protectedblockslist", Constants.NBT.TAG_COMPOUND);
         for (int i = 0; i < antigoo.size(); i++) {
@@ -124,7 +135,7 @@ public class AntiGooFieldGenTileEntity extends FETileBase implements ITickableTi
     @Override
     public CompoundNBT write(CompoundNBT tag) {
         tag.putBoolean("active", isActive);
-        tag.putInt("range", range);
+        tag.putIntArray("ranges", ranges);
         ListNBT anti = new ListNBT();
         for (BlockPos blockPos : protectedBlocksList) {
             CompoundNBT comp = new CompoundNBT();

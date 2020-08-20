@@ -16,7 +16,7 @@ import java.util.Arrays;
 public abstract class FEScreenBase<T extends FEContainerBase> extends ContainerScreen<T> {
     private static final ResourceLocation background = new ResourceLocation(DireGoo.MOD_ID, "textures/gui/antigoofieldgen.png");
 
-    private final T container;
+    protected final T container;
 
     public FEScreenBase(T container, PlayerInventory playerInventory, ITextComponent title) {
         super(container, playerInventory, title);

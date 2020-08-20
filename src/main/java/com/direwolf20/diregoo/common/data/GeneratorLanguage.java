@@ -13,6 +13,7 @@ public class GeneratorLanguage extends LanguageProvider {
     @Override
     protected void addTranslations() {
         add("screen.diregoo.energy", "Energy: %s/%s FE");
+        add("diregoo.tooltip.screen.xrange", "Range X");
         addBlock(ModBlocks.ANTI_GOO_FIELD_GEN, "Antigoo Field Generator");
         //addBlock(ModBlocks.CHARGING_STATION, "Charging Station");
         //add("itemGroup.charginggadgets", "Charging Gadgets");

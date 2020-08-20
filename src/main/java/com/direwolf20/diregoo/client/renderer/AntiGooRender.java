@@ -112,11 +112,6 @@ public class AntiGooRender {
     }
 
     public static void renderBox(Matrix4f matrix, IVertexBuilder builder, BlockPos startPos, BlockPos endPos) {
-        BlockPos blankPos = new BlockPos(0, 0, 0);
-
-        if (startPos.equals(blankPos) || endPos.equals(blankPos))
-            return;
-
         //We want to draw from the starting position to the (ending position)+1
         int x = Math.min(startPos.getX(), endPos.getX()), y = Math.min(startPos.getY(), endPos.getY()), z = Math.min(startPos.getZ(), endPos.getZ());
 
