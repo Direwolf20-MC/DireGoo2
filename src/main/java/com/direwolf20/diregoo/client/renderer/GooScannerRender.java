@@ -24,12 +24,11 @@ import java.util.stream.Collectors;
 
 public class GooScannerRender {
 
-    public static int gooVisibleTimeRemaining;
+    public static long gooVisibleStartTime;
     public static List<BlockPos> gooBlocksList = new ArrayList<>();
 
     public static void renderGoo(RenderWorldLastEvent evt) {
-        gooVisibleTimeRemaining = 1;
-        if (gooVisibleTimeRemaining <= 0) return;
+        if (((System.currentTimeMillis() - gooVisibleStartTime) / 1000) >= 10) return;
         if (gooBlocksList.equals(new HashSet<>()))
             discoverGoo(Minecraft.getInstance().player);
 
@@ -83,5 +82,6 @@ public class GooScannerRender {
                 .sorted(Comparator.comparingDouble(blockPos -> playerPos.distanceSq(blockPos)))
                 .collect(Collectors.toList());
         Collections.reverse(gooBlocksList);
+        gooVisibleStartTime = System.currentTimeMillis();
     }
 }
