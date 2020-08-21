@@ -1,7 +1,9 @@
 package com.direwolf20.diregoo.client.events;
 
 import com.direwolf20.diregoo.client.renderer.AntiGooRender;
+import com.direwolf20.diregoo.client.renderer.GooScannerRender;
 import com.direwolf20.diregoo.common.items.AntigooDust;
+import com.direwolf20.diregoo.common.items.GooScanner;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -19,6 +21,8 @@ public class ClientEvents {
 
         if (myplayer.getHeldItem(Hand.MAIN_HAND).getItem() instanceof AntigooDust || myplayer.getHeldItem(Hand.OFF_HAND).getItem() instanceof AntigooDust)
             AntiGooRender.renderAntiGoo(evt);
+        if (myplayer.getHeldItem(Hand.MAIN_HAND).getItem() instanceof GooScanner || myplayer.getHeldItem(Hand.OFF_HAND).getItem() instanceof GooScanner)
+            GooScannerRender.renderGoo(evt);
     }
 
 
