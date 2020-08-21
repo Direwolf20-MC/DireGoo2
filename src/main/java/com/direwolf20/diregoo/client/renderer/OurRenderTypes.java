@@ -22,33 +22,33 @@ public class OurRenderTypes extends RenderType {
 
     public static void updateRenders() {
         //Used for debugging, so we can change the values without restarting instance. Not needed in normal use.
-        AntiGooOverlay = makeType("GadgetMissingBlockOverlay",
-                DefaultVertexFormats.POSITION_COLOR, GL11.GL_QUADS, 256,
+        RenderScanner = makeType("RenderScanner",
+                DefaultVertexFormats.BLOCK, GL11.GL_QUADS, 256,
                 RenderType.State.getBuilder()
                         .layer(field_239235_M_)
                         .transparency(TRANSLUCENT_TRANSPARENCY)
-                        .texture(NO_TEXTURE)
+                        .texture(BLOCK_SHEET_MIPPED)
                         .depthTest(DEPTH_LEQUAL)
                         .cull(CULL_ENABLED)
                         .lightmap(LIGHTMAP_DISABLED)
                         .writeMask(COLOR_DEPTH_WRITE)
                         .build(false));
 
-        AntiGooLines = makeType("AntiGooLines",
-                DefaultVertexFormats.POSITION_COLOR, GL11.GL_LINE_STRIP, 256,
+        RenderBlock = makeType("GooEntity",
+                DefaultVertexFormats.BLOCK, GL11.GL_QUADS, 256,
                 RenderType.State.getBuilder()
-                        .line(new LineState(OptionalDouble.of(2.0D)))
-                        .layer(field_239235_M_)
+                        .shadeModel(RenderState.SHADE_ENABLED)
+                        .lightmap(RenderState.LIGHTMAP_ENABLED)
+                        .texture(RenderState.BLOCK_SHEET_MIPPED)
+                        .layer(RenderState.field_239235_M_)
                         .transparency(TRANSLUCENT_TRANSPARENCY)
-                        .texture(NO_TEXTURE)
-                        .depthTest(DEPTH_LEQUAL)
-                        .cull(CULL_DISABLED)
-                        .lightmap(LIGHTMAP_DISABLED)
-                        .writeMask(COLOR_WRITE)
+                        .depthTest(RenderState.DEPTH_LEQUAL)
+                        .cull(RenderState.CULL_ENABLED)
+                        .writeMask(RenderState.COLOR_WRITE)
                         .build(false));
     }
 
-    public static final RenderType RenderBlock = makeType("GooEntity",
+    public static RenderType RenderBlock = makeType("GooEntity",
             DefaultVertexFormats.BLOCK, GL11.GL_QUADS, 256,
             RenderType.State.getBuilder()
                     .shadeModel(RenderState.SHADE_ENABLED)
@@ -59,6 +59,18 @@ public class OurRenderTypes extends RenderType {
                     .depthTest(RenderState.DEPTH_LEQUAL)
                     .cull(RenderState.CULL_ENABLED)
                     .writeMask(RenderState.COLOR_WRITE)
+                    .build(false));
+
+    public static RenderType RenderScanner = makeType("RenderScanner",
+            DefaultVertexFormats.BLOCK, GL11.GL_QUADS, 256,
+            RenderType.State.getBuilder()
+                    .layer(field_239235_M_)
+                    .transparency(TRANSLUCENT_TRANSPARENCY)
+                    .texture(BLOCK_SHEET_MIPPED)
+                    .depthTest(DEPTH_LEQUAL)
+                    .cull(CULL_ENABLED)
+                    .lightmap(LIGHTMAP_DISABLED)
+                    .writeMask(COLOR_DEPTH_WRITE)
                     .build(false));
 
     public static final RenderType BlockOverlay = makeType("MiningLaserBlockOverlay",

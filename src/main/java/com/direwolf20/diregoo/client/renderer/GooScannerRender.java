@@ -14,7 +14,6 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.client.model.data.EmptyModelData;
@@ -47,17 +46,15 @@ public class GooScannerRender {
         matrix.translate(-view.getX(), -view.getY(), -view.getZ());
 
         IVertexBuilder builder;
-        builder = buffer.getBuffer(OurRenderTypes.RenderBlock);
+        builder = buffer.getBuffer(OurRenderTypes.RenderScanner);
+        //OurRenderTypes.updateRenders();
 
         gooBlocksList.forEach(e -> {
             matrix.push();
             matrix.translate(e.getX(), e.getY(), e.getZ());
             matrix.translate(-0.005f, -0.005f, -0.005f);
             matrix.scale(1.01f, 1.01f, 1.01f);
-            matrix.rotate(Vector3f.YP.rotationDegrees(-90.0F));
 
-            /*Matrix4f positionMatrix = matrix.getLast().getMatrix();
-            BlockOverlayRender.render(positionMatrix, builder, e, Color.GREEN);*/
             BlockState gooBlockState = world.getBlockState(e);
             BlockColors blockColors = Minecraft.getInstance().getBlockColors();
             int color = blockColors.getColor(gooBlockState, world, e, 0);
@@ -67,12 +64,12 @@ public class GooScannerRender {
 
             IBakedModel ibakedmodel = blockrendererdispatcher.getModelForState(gooBlockState);
             for (Direction direction : Direction.values()) {
-                MyRenderMethods.renderModelBrightnessColorQuads(evt.getMatrixStack().getLast(), builder, f, f1, f2, 1f, ibakedmodel.getQuads(gooBlockState, direction, new Random(MathHelper.getPositionRandom(e)), EmptyModelData.INSTANCE), 15728640, 655360);
+                MyRenderMethods.renderModelBrightnessColorQuads(matrix.getLast(), builder, f, f1, f2, 1f, ibakedmodel.getQuads(gooBlockState, direction, new Random(MathHelper.getPositionRandom(e)), EmptyModelData.INSTANCE), 15728640, 655360);
             }
             matrix.pop();
         });
         matrix.pop();
-        buffer.finish(OurRenderTypes.BlockOverlay);
+        buffer.finish(OurRenderTypes.RenderScanner);
     }
 
     public static void discoverGoo(PlayerEntity player) {

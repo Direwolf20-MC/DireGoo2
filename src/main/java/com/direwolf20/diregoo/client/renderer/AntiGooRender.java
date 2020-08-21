@@ -1,7 +1,6 @@
 package com.direwolf20.diregoo.client.renderer;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
@@ -47,7 +46,6 @@ public class AntiGooRender {
             matrix.pop();
         });
         matrix.pop();
-        RenderSystem.disableDepthTest();
         buffer.finish(OurRenderTypes.BlockOverlay);
     }
 

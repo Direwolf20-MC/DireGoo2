@@ -1,6 +1,7 @@
 package com.direwolf20.diregoo.common.items;
 
 import com.direwolf20.diregoo.DireGoo;
+import com.direwolf20.diregoo.client.renderer.GooScannerRender;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -26,6 +27,7 @@ public class GooScanner extends Item {
         ItemStack itemstack = player.getHeldItem(hand);
 
         if (world.isRemote) { //Client Side
+            GooScannerRender.discoverGoo(player);
             return new ActionResult<>(ActionResultType.SUCCESS, itemstack);
         }
         if (!world.isRemote) { //Server Side
