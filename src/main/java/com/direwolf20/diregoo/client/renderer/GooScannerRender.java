@@ -2,6 +2,7 @@ package com.direwolf20.diregoo.client.renderer;
 
 import com.direwolf20.diregoo.common.blocks.GooBase;
 import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
@@ -18,15 +19,13 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.client.model.data.EmptyModelData;
 
-import java.util.HashSet;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class GooScannerRender {
 
     public static int gooVisibleTimeRemaining;
-    public static Set<BlockPos> gooBlocksList = new HashSet<>();
+    public static List<BlockPos> gooBlocksList = new ArrayList<>();
 
     public static void renderGoo(RenderWorldLastEvent evt) {
         gooVisibleTimeRemaining = 1;
@@ -36,7 +35,8 @@ public class GooScannerRender {
 
         final Minecraft mc = Minecraft.getInstance();
         BlockRendererDispatcher blockrendererdispatcher = Minecraft.getInstance().getBlockRendererDispatcher();
-        World world = mc.player.world;
+        PlayerEntity player = mc.player;
+        World world = player.world;
         IRenderTypeBuffer.Impl buffer = Minecraft.getInstance().getRenderTypeBuffers().getBufferSource();
 
         Vector3d view = mc.gameRenderer.getActiveRenderInfo().getProjectedView();
@@ -47,7 +47,8 @@ public class GooScannerRender {
 
         IVertexBuilder builder;
         builder = buffer.getBuffer(OurRenderTypes.RenderScanner);
-        //OurRenderTypes.updateRenders();
+        gooBlocksList.sort(Comparator.comparingDouble(blockPos -> player.getEyePosition(evt.getPartialTicks()).distanceTo(new Vector3d(blockPos.getX() + .5, blockPos.getY(), blockPos.getZ() + .5))));
+        Collections.reverse(gooBlocksList);
 
         gooBlocksList.forEach(e -> {
             matrix.push();
@@ -69,7 +70,9 @@ public class GooScannerRender {
             matrix.pop();
         });
         matrix.pop();
+        RenderSystem.disableDepthTest();
         buffer.finish(OurRenderTypes.RenderScanner);
+        RenderSystem.enableDepthTest();
     }
 
     public static void discoverGoo(PlayerEntity player) {
@@ -77,6 +80,8 @@ public class GooScannerRender {
         gooBlocksList = BlockPos.getAllInBox(playerPos.add(-50, -50, -50), playerPos.add(50, 50, 50))
                 .filter(blockPos -> player.world.getBlockState(blockPos).getBlock() instanceof GooBase)
                 .map(BlockPos::toImmutable)
-                .collect(Collectors.toSet());
+                .sorted(Comparator.comparingDouble(blockPos -> playerPos.distanceSq(blockPos)))
+                .collect(Collectors.toList());
+        Collections.reverse(gooBlocksList);
     }
 }

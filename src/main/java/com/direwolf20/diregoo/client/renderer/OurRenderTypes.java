@@ -28,7 +28,7 @@ public class OurRenderTypes extends RenderType {
                         .layer(field_239235_M_)
                         .transparency(TRANSLUCENT_TRANSPARENCY)
                         .texture(BLOCK_SHEET_MIPPED)
-                        .depthTest(DEPTH_LEQUAL)
+                        .depthTest(DEPTH_ALWAYS)
                         .cull(CULL_ENABLED)
                         .lightmap(LIGHTMAP_DISABLED)
                         .writeMask(COLOR_DEPTH_WRITE)
@@ -67,13 +67,13 @@ public class OurRenderTypes extends RenderType {
                     .layer(field_239235_M_)
                     .transparency(TRANSLUCENT_TRANSPARENCY)
                     .texture(BLOCK_SHEET_MIPPED)
-                    .depthTest(DEPTH_LEQUAL)
+                    .depthTest(DEPTH_ALWAYS)
                     .cull(CULL_ENABLED)
                     .lightmap(LIGHTMAP_DISABLED)
                     .writeMask(COLOR_DEPTH_WRITE)
                     .build(false));
 
-    public static final RenderType BlockOverlay = makeType("MiningLaserBlockOverlay",
+    public static RenderType BlockOverlay = makeType("MiningLaserBlockOverlay",
             DefaultVertexFormats.POSITION_COLOR, GL11.GL_QUADS, 256,
             RenderType.State.getBuilder()
                     .layer(field_239235_M_)
