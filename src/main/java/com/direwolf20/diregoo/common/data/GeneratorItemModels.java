@@ -44,6 +44,9 @@ public class GeneratorItemModels extends ItemModelProvider {
 
         String antigoopath = ModItems.ANTI_GOO_DUST.get().getRegistryName().getPath();
         singleTexture(antigoopath, mcLoc("item/handheld"), "layer0", modLoc("item/" + antigoopath));
+
+        String gooscanner = ModItems.GOO_SCANNER.get().getRegistryName().getPath();
+        singleTexture(gooscanner, mcLoc("item/handheld"), "layer0", modLoc("item/" + gooscanner));
     }
 
     private void registerBlockModel(Block block) {
