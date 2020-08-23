@@ -20,6 +20,7 @@ import net.minecraft.world.server.ServerWorld;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.stream.Collectors;
@@ -46,9 +47,10 @@ public class TurretBlockTileEntity extends FETileBase implements ITickableTileEn
 
     public void generateTurretQueue() {
         int range = Config.TURRET_RANGE.get();
-        clearBlocksQueue = BlockPos.getAllInBox(this.pos.add(range, -range, range), this.pos.add(-range, range, -range))
+        clearBlocksQueue = BlockPos.getAllInBox(this.pos.add(range, range, range), this.pos.add(-range, -range, -range))
                 .filter(blockPos -> world.getBlockState(blockPos).getBlock() instanceof GooBase)
                 .map(BlockPos::toImmutable)
+                .sorted(Comparator.comparingDouble(blockPos -> this.getPos().distanceSq(blockPos)))
                 .collect(Collectors.toCollection(LinkedList::new));
 
     }
@@ -78,7 +80,7 @@ public class TurretBlockTileEntity extends FETileBase implements ITickableTileEn
         if (energyStorage.getEnergyStored() < Config.TURRET_RFCOST.get())
             return;
         BlockPos shootPos = clearBlocksQueue.remove();
-        int shootDuration = 20;
+        int shootDuration = 5;
         if (world.getBlockState(shootPos).getBlock() instanceof GooBase) {
             GooBase.resetBlock((ServerWorld) world, shootPos, true, shootDuration);
             firingCooldown = shootDuration;
@@ -108,7 +110,7 @@ public class TurretBlockTileEntity extends FETileBase implements ITickableTileEn
                 }
                 if (shootCooldown == 0 && !clearBlocksQueue.isEmpty()) {
                     shoot(); //Shoot at the next block in the queue
-                    shootCooldown = 20; //Ticks before the turret can shoot again after finishing firing
+                    shootCooldown = 5; //Ticks before the turret can shoot again after finishing firing
                 }
             }
         }
