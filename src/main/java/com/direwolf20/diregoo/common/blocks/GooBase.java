@@ -77,6 +77,9 @@ public class GooBase extends Block {
      * Checks to see if goo should spread, before attempting to spread
      */
     public static boolean shouldGooSpread(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
+        if (!Config.CAN_SPREAD.get())
+            return false; //Check the config options to see if goo spreading is disabled
+
         if (!worldIn.isAreaLoaded(pos, 3))
             return false; // Forge: prevent loading unloaded chunks when checking neighbor's light and spreading
 
@@ -103,8 +106,6 @@ public class GooBase extends Block {
             return false; //No Eating bedrock
         if (pos.getY() < 0 || pos.getY() > 254)
             return false; //No spreading below Y=0
-        if (!Config.CAN_SPREAD.get())
-            return false; //Check the config options to see if goo spreading is disabled
 
         BlockSave blockSave = BlockSave.get(world);
         if (blockSave.checkAnti(pos))

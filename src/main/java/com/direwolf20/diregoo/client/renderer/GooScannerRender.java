@@ -1,6 +1,7 @@
 package com.direwolf20.diregoo.client.renderer;
 
 import com.direwolf20.diregoo.common.blocks.GooBase;
+import com.direwolf20.diregoo.common.blocks.GooBlockPoison;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.mojang.blaze3d.matrix.MatrixStack;
@@ -71,11 +72,18 @@ public class GooScannerRender {
     public static void discoverGoo(PlayerEntity player) {
         //Find all the goo in an area around the player
         BlockPos playerPos = new BlockPos(player.getPosX(), player.getPosY(), player.getPosZ());
-        gooBlocksList = BlockPos.getAllInBox(playerPos.add(-50, -50, -50), playerPos.add(50, 50, 50))
-                .filter(blockPos -> player.world.getBlockState(blockPos).getBlock() instanceof GooBase)
-                .map(BlockPos::toImmutable)
-                .sorted(Comparator.comparingDouble(blockPos -> playerPos.distanceSq(blockPos)))
-                .collect(Collectors.toList());
+        if (!player.isSneaking())
+            gooBlocksList = BlockPos.getAllInBox(playerPos.add(-50, -50, -50), playerPos.add(50, 50, 50))
+                    .filter(blockPos -> player.world.getBlockState(blockPos).getBlock() instanceof GooBase)
+                    .map(BlockPos::toImmutable)
+                    .sorted(Comparator.comparingDouble(blockPos -> playerPos.distanceSq(blockPos)))
+                    .collect(Collectors.toList());
+        else
+            gooBlocksList = BlockPos.getAllInBox(playerPos.add(-50, -50, -50), playerPos.add(50, 50, 50))
+                    .filter(blockPos -> player.world.getBlockState(blockPos).getBlock() instanceof GooBlockPoison)
+                    .map(BlockPos::toImmutable)
+                    .sorted(Comparator.comparingDouble(blockPos -> playerPos.distanceSq(blockPos)))
+                    .collect(Collectors.toList());
         Collections.reverse(gooBlocksList);
         gooVisibleStartTime = System.currentTimeMillis();
         System.out.println(gooBlocksList.size());
