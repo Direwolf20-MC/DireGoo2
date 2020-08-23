@@ -100,6 +100,8 @@ public class GooBase extends Block {
      * Determines if goo can spread to the target POS in the world, this runs after calculating where to spread to
      */
     public boolean canSpreadHere(BlockPos pos, BlockState oldState, World world) {
+        if (!world.isAreaLoaded(pos, 3))
+            return false; // Forge: prevent loading unloaded chunks when checking neighbor's light and spreading
         if (oldState.getBlock() instanceof GooBase)
             return false; //No eating other goo blocks
         if (oldState.getBlockHardness(world, pos) < 0)
@@ -131,8 +133,10 @@ public class GooBase extends Block {
      */
     public static boolean isSurrounded(ServerWorld worldIn, BlockPos pos) {
         for (Direction direction : Direction.values()) {
+            if (worldIn.getBlockState(pos.offset(direction)).equals(ModBlocks.GOO_BLOCK_POISON.get().getDefaultState().with(GooBlockPoison.GENERATION, 0)))
+                return false; //If the adjacent block is Generation 0 poison, it's not surrounded.
             if (!(worldIn.getBlockState(pos.offset(direction)).getBlock() instanceof GooBase)) {
-                return false;
+                return false; //If the adjacent block is anything other than goo its not surrounded
             }
         }
         return true;
@@ -144,6 +148,13 @@ public class GooBase extends Block {
 
         BlockPos checkPos = pos.offset(direction);
         BlockState oldState = worldIn.getBlockState(checkPos);
+
+        if (oldState.equals(ModBlocks.GOO_BLOCK_POISON.get().getDefaultState().with(GooBlockPoison.GENERATION, 0))) {
+            worldIn.setBlockState(pos, ModBlocks.GOO_BLOCK_POISON.get().getDefaultState().with(GooBlockPoison.GENERATION, 1));
+            worldIn.getPendingBlockTicks().scheduleTick(pos, ModBlocks.GOO_BLOCK_POISON.get(), 5);
+            resetBlock(worldIn, checkPos, true, 80);
+            return BlockPos.ZERO;
+        }
 
         if (canSpreadHere(checkPos, oldState, worldIn)) {
             BlockSave blockSave = BlockSave.get(worldIn);

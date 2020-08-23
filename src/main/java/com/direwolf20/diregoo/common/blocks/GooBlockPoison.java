@@ -19,10 +19,12 @@ public class GooBlockPoison extends GooBase {
     public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
         if (!worldIn.isAreaLoaded(pos, 3))
             return; // Forge: prevent loading unloaded chunks when checking neighbor's light and spreading
+        if (state.get(GENERATION) == 0)
+            return; //Placed versions of this block do nothing. It activates when another goo tries to eat it
         if (rand.nextDouble() <= decayChance(state)) { //The percent chance it decays rather than spreads. Lower == more spread.
-            this.resetBlock(worldIn, pos, true, 80);
+            this.resetBlock(worldIn, pos, true, 20);
         } else {
-            System.out.println("Generation " + state.get(GENERATION) + " is spreading");
+            //System.out.println("Generation " + state.get(GENERATION) + " is spreading");
             spreadGoo(state, worldIn, pos, rand);
         }
     }
@@ -30,25 +32,23 @@ public class GooBlockPoison extends GooBase {
     private double decayChance(BlockState gooState) {
         int generation = gooState.get(GENERATION);
         switch (generation) {
-            case 0:
-                return 0.05;
             case 1:
-                return 0.10;
+                return 0.01;
             case 2:
-                return 0.10;
+                return 0.05;
             case 3:
                 return 0.10;
             case 4:
                 return 0.15;
             case 5:
-                return 0.50;
+                return 0.40;
         }
         return 1.0;
     }
 
     @Override
     public BlockPos spreadGoo(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
-        if (state.get(GENERATION) % 2 == 0) {
+        if (state.get(GENERATION) <= 4) {
             for (Direction direction : Direction.values()) {
                 BlockPos checkPos = pos.offset(direction);
                 BlockState oldState = worldIn.getBlockState(checkPos);
