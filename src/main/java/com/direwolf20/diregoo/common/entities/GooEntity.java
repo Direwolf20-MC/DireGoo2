@@ -11,6 +11,7 @@ import net.minecraft.network.IPacket;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
@@ -47,12 +48,27 @@ public class GooEntity extends EntityBase {
     @Override
     public void baseTick() {
         if (world.isRemote) {
-            Vector3d pos = this.getPositionVec();
+            Vector3d pos = this.getPositionVec().add(0.5, 0.5, 0.5); //Start at center of block
             Random random = new Random();
-            double d0 = pos.getX() + random.nextDouble();
-            double d1 = pos.getY() - 0.01;
-            double d2 = pos.getZ() + random.nextDouble();
-            this.world.addParticle(ModParticles.GOO_DRIP_PARTICLE, d0, d1, d2, 0.0D, -0.1D, 0.0D);
+            int sideRandom = random.nextInt(Direction.values().length);
+            Direction direction = Direction.values()[sideRandom]; //Pick a side at random, this is the side the particle will spawn on
+            double d0 = pos.getX();
+            double d1 = pos.getY();
+            double d2 = pos.getZ();
+            if (direction.getXOffset() != 0) { //if the chose side is X, then randomly pick the y/z positions. Move the X position to just outside the edge of the block
+                d0 = pos.getX() + ((double) direction.getXOffset() / 2 + (0.01 * direction.getXOffset()));
+                d1 = pos.getY() + random.nextDouble() - 0.5;
+                d2 = pos.getZ() + random.nextDouble() - 0.5;
+            } else if (direction.getYOffset() != 0) {
+                d0 = pos.getX() + random.nextDouble() - 0.5;
+                d1 = pos.getY() + ((double) direction.getYOffset() / 2 + (0.01 * direction.getYOffset()));
+                d2 = pos.getZ() + random.nextDouble() - 0.5;
+            } else if (direction.getZOffset() != 0) {
+                d0 = pos.getX() + random.nextDouble() - 0.5;
+                d1 = pos.getY() + random.nextDouble() - 0.5;
+                d2 = pos.getZ() + ((double) direction.getZOffset() / 2 + (0.01 * direction.getZOffset()));
+            }
+            this.world.addParticle(ModParticles.GOO_DRIP_PARTICLE, d0, d1, d2, 0.0D, -0.10D, 0.0D);
         }
         super.baseTick();
     }
