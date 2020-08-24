@@ -49,11 +49,9 @@ public class GooEntity extends EntityBase {
         if (world.isRemote) {
             Vector3d pos = this.getPositionVec();
             Random random = new Random();
-            double d0 = (double) pos.getX() + random.nextDouble();
-            double d1 = (double) pos.getY() + random.nextDouble();
-            double d2 = (double) pos.getZ() + random.nextDouble();
-            int d3 = random.nextInt(1);
-            if (d3 == 0) d3 = -1;
+            double d0 = pos.getX() + random.nextDouble();
+            double d1 = pos.getY() - 0.01;
+            double d2 = pos.getZ() + random.nextDouble();
             this.world.addParticle(ModParticles.GOO_DRIP_PARTICLE, d0, d1, d2, 0.0D, -0.1D, 0.0D);
         }
         super.baseTick();
