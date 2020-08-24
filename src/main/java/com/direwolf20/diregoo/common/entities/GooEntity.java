@@ -1,6 +1,7 @@
 package com.direwolf20.diregoo.common.entities;
 
 import com.direwolf20.diregoo.DireGoo;
+import com.direwolf20.diregoo.client.particles.ModParticles;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
@@ -11,11 +12,13 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.registries.ObjectHolder;
 
 import java.util.Optional;
+import java.util.Random;
 
 public class GooEntity extends EntityBase {
     @ObjectHolder(DireGoo.MOD_ID + ":gooentity")
@@ -39,6 +42,21 @@ public class GooEntity extends EntityBase {
 
     public BlockState getGooBlockState() {
         return dataManager.get(gooBlockState).get();
+    }
+
+    @Override
+    public void baseTick() {
+        if (world.isRemote) {
+            Vector3d pos = this.getPositionVec();
+            Random random = new Random();
+            double d0 = (double) pos.getX() + random.nextDouble();
+            double d1 = (double) pos.getY() + random.nextDouble();
+            double d2 = (double) pos.getZ() + random.nextDouble();
+            int d3 = random.nextInt(1);
+            if (d3 == 0) d3 = -1;
+            this.world.addParticle(ModParticles.GOO_DRIP_PARTICLE, d0, d1, d2, 0.0D, -0.1D, 0.0D);
+        }
+        super.baseTick();
     }
 
     @Override
