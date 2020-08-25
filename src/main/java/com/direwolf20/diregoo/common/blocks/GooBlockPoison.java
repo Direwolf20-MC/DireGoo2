@@ -2,6 +2,7 @@ package com.direwolf20.diregoo.common.blocks;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.material.Material;
 import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.util.Direction;
@@ -10,10 +11,15 @@ import net.minecraft.world.server.ServerWorld;
 
 import java.util.Random;
 
-public class GooBlockPoison extends GooBase {
+public class GooBlockPoison extends Block {
 
     public static final IntegerProperty GENERATION = IntegerProperty.create("generation", 0, 5);
 
+    public GooBlockPoison() {
+        super(
+                Properties.create(Material.IRON).hardnessAndResistance(2.0f).tickRandomly()
+        );
+    }
 
     @Override
     public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
@@ -22,7 +28,7 @@ public class GooBlockPoison extends GooBase {
         if (state.get(GENERATION) == 0)
             return; //Placed versions of this block do nothing. It activates when another goo tries to eat it
         if (rand.nextDouble() <= decayChance(state)) { //The percent chance it decays rather than spreads. Lower == more spread.
-            this.resetBlock(worldIn, pos, true, 20);
+            GooBase.resetBlock(worldIn, pos, true, 20);
         } else {
             //System.out.println("Generation " + state.get(GENERATION) + " is spreading");
             spreadGoo(state, worldIn, pos, rand);
@@ -46,7 +52,6 @@ public class GooBlockPoison extends GooBase {
         return 1.0;
     }
 
-    @Override
     public BlockPos spreadGoo(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
         if (state.get(GENERATION) <= 4) {
             for (Direction direction : Direction.values()) {
