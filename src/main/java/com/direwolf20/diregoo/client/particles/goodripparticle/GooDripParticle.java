@@ -14,12 +14,12 @@ public class GooDripParticle extends SpriteTexturedParticle {
         super(worldIn, xCoordIn, yCoordIn, zCoordIn, xSpeedIn, ySpeedIn, speedIn);
         this.setSize(0.02F, 0.02F);
         this.particleScale *= this.rand.nextFloat() * 0.6F + 0.5F;
-        this.motionX = (double) xSpeedIn;
-        this.motionY = (double) ySpeedIn;
-        this.motionZ = (double) speedIn;
+        this.motionX = 0;
+        this.motionY = -0.1;
+        this.motionZ = 0;
         this.maxAge = (int) (20.0D / (Math.random() * 0.8D + 0.2D));
         this.particleAlpha = .8f;
-        this.setColor(0.25F, 0.25f, 1F);
+        this.setColor((float) xSpeedIn, (float) ySpeedIn, (float) speedIn);
         this.maxAge = 40;
     }
 

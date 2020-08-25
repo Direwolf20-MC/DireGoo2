@@ -2,6 +2,7 @@ package com.direwolf20.diregoo.common.entities;
 
 import com.direwolf20.diregoo.DireGoo;
 import com.direwolf20.diregoo.client.particles.ModParticles;
+import com.direwolf20.diregoo.common.blocks.ModBlocks;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
@@ -68,7 +69,28 @@ public class GooEntity extends EntityBase {
                 d1 = pos.getY() + random.nextDouble() - 0.5;
                 d2 = pos.getZ() + ((double) direction.getZOffset() / 2 + (0.01 * direction.getZOffset()));
             }
-            this.world.addParticle(ModParticles.GOO_DRIP_PARTICLE, d0, d1, d2, 0.0D, -0.10D, 0.0D);
+            double r = 0, g = 0, b = 0;
+            if (dataManager.get(gooBlockState).get().equals(ModBlocks.GOO_BLOCK.get().getDefaultState())) {
+                r = 0.1;
+                g = 0.1;
+                b = 1;
+            }
+            if (dataManager.get(gooBlockState).get().equals(ModBlocks.GOO_BLOCK_TERRAIN.get().getDefaultState())) {
+                r = 0.1;
+                g = 0.5;
+                b = 0.1;
+            }
+            if (dataManager.get(gooBlockState).get().equals(ModBlocks.GOO_BLOCK_POISON.get().getDefaultState())) {
+                r = 0.75;
+                g = 0.1;
+                b = 0.75;
+            }
+            if (dataManager.get(gooBlockState).get().equals(ModBlocks.GOO_BLOCK_BURST.get().getDefaultState())) {
+                r = 0.85;
+                g = 0.05;
+                b = 0.05;
+            }
+            this.world.addParticle(ModParticles.GOO_DRIP_PARTICLE, d0, d1, d2, r, g, b);
         }
         super.baseTick();
     }
