@@ -15,11 +15,12 @@ public class GooDripParticle extends SpriteTexturedParticle {
         this.setSize(0.02F, 0.02F);
         this.particleScale *= this.rand.nextFloat() * 0.6F + 0.5F;
         this.motionX = 0;
-        this.motionY = -0.1;
+        this.motionY = -0.0;
         this.motionZ = 0;
         this.maxAge = (int) (20.0D / (Math.random() * 0.8D + 0.2D));
         this.particleAlpha = .8f;
         this.setColor((float) xSpeedIn, (float) ySpeedIn, (float) speedIn);
+        this.particleGravity = 0.06F;
         this.maxAge = 40;
     }
 
@@ -46,6 +47,7 @@ public class GooDripParticle extends SpriteTexturedParticle {
         BlockState inBlockState = world.getBlockState(particlePos);
         if (!inBlockState.getBlock().isAir(inBlockState, world, particlePos)) {
             this.motionY = 0;
+            this.particleGravity = 0.00F;
         }
         this.checkAge();
         if (!this.isExpired) {
