@@ -66,9 +66,9 @@ public abstract class ProjectileBase extends ProjectileItemEntity {
         return 40;
     }
 
-    @Override
+    /*@Override
     protected void registerData() {
-    }
+    }*/
 
     protected void onSetDespawning() {
     }

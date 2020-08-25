@@ -59,7 +59,7 @@ public class ModEntities {
     public static void registerModels(ModelRegistryEvent evt) {
         RenderingRegistry.registerEntityRenderingHandler(GooEntity.TYPE, GooEntityRender::new);
         RenderingRegistry.registerEntityRenderingHandler(LaserGunParticleEntity.TYPE, LaserGunParticleEntityRender::new);
-        RenderingRegistry.registerEntityRenderingHandler(GoonadeEntity.TYPE, GoonadeEntityRender::new);
-        RenderingRegistry.registerEntityRenderingHandler(GoonadeFreezeEntity.TYPE, GoonadeFreezeEntityRender::new);
+        RenderingRegistry.registerEntityRenderingHandler(GoonadeEntity.TYPE, SpriteRendererGoo::new);
+        RenderingRegistry.registerEntityRenderingHandler(GoonadeFreezeEntity.TYPE, SpriteRendererGoo::new);
     }
 }
