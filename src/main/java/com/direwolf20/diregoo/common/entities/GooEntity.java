@@ -70,22 +70,22 @@ public class GooEntity extends EntityBase {
                 d2 = pos.getZ() + ((double) direction.getZOffset() / 2 + (0.01 * direction.getZOffset()));
             }
             double r = 0, g = 0, b = 0;
-            if (dataManager.get(gooBlockState).get().equals(ModBlocks.GOO_BLOCK.get().getDefaultState())) {
+            if (dataManager.get(gooBlockState).get().getBlock().equals(ModBlocks.GOO_BLOCK.get())) {
                 r = 0.1;
                 g = 0.1;
                 b = 1;
             }
-            if (dataManager.get(gooBlockState).get().equals(ModBlocks.GOO_BLOCK_TERRAIN.get().getDefaultState())) {
+            if (dataManager.get(gooBlockState).get().getBlock().equals(ModBlocks.GOO_BLOCK_TERRAIN.get())) {
                 r = 0.1;
                 g = 0.5;
                 b = 0.1;
             }
-            if (dataManager.get(gooBlockState).get().equals(ModBlocks.GOO_BLOCK_POISON.get().getDefaultState())) {
+            if (dataManager.get(gooBlockState).get().getBlock().equals(ModBlocks.GOO_BLOCK_POISON.get())) {
                 r = 0.75;
                 g = 0.1;
                 b = 0.75;
             }
-            if (dataManager.get(gooBlockState).get().equals(ModBlocks.GOO_BLOCK_BURST.get().getDefaultState())) {
+            if (dataManager.get(gooBlockState).get().getBlock().equals(ModBlocks.GOO_BLOCK_BURST.get())) {
                 r = 0.85;
                 g = 0.05;
                 b = 0.05;
