@@ -22,18 +22,6 @@ public class OurRenderTypes extends RenderType {
 
     public static void updateRenders() {
         //Used for debugging, so we can change the values without restarting instance. Not needed in normal use.
-        RenderScanner = makeType("RenderScanner",
-                DefaultVertexFormats.BLOCK, GL11.GL_QUADS, 256,
-                RenderType.State.getBuilder()
-                        .layer(field_239235_M_)
-                        .transparency(TRANSLUCENT_TRANSPARENCY)
-                        .texture(BLOCK_SHEET_MIPPED)
-                        .depthTest(DEPTH_ALWAYS)
-                        .cull(CULL_ENABLED)
-                        .lightmap(LIGHTMAP_DISABLED)
-                        .writeMask(COLOR_DEPTH_WRITE)
-                        .build(false));
-
         RenderBlock = makeType("GooEntity",
                 DefaultVertexFormats.BLOCK, GL11.GL_QUADS, 256,
                 RenderType.State.getBuilder()

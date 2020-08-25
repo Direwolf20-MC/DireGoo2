@@ -21,6 +21,7 @@ public class ModEntities {
                 EntityType.Builder.<GooEntity>create(GooEntity::new, EntityClassification.MISC)
                         .setTrackingRange(64)
                         .setUpdateInterval(1)
+                        .size(0.25f, 0.25f)
                         .setShouldReceiveVelocityUpdates(false)
                         .setCustomClientFactory(((spawnEntity, world) -> new GooEntity(GooEntity.TYPE, world)))
                         .build("")

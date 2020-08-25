@@ -62,9 +62,9 @@ public class GooBase extends Block {
 
     @Override
     public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult result) {
-        if (world.isRemote) return ActionResultType.SUCCESS; //Server Side Only
+        if (world.isRemote) return ActionResultType.FAIL; //Server Side Only
         world.getPendingBlockTicks().scheduleTick(pos, this, 0);
-        return ActionResultType.SUCCESS;
+        return ActionResultType.FAIL;
     }
 
     public static boolean isPlayerInRange(ServerWorld world, BlockPos pos) {
