@@ -14,6 +14,7 @@ public class GooBlockBurst extends GooBase {
             return;
         if (!worldIn.isAreaLoaded(pos, 10))
             return; // Forge: prevent loading unloaded chunks when checking neighbor's light and spreading
+        if (handleFrozen(pos, state, worldIn)) return;
         BlockPos gooPos = pos;
         int burstAmt = rand.nextInt(Config.MAXBURST.get() - Config.MINBURST.get()) + Config.MINBURST.get();
         for (int i = 0; i < burstAmt; i++) {

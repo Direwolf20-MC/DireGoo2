@@ -10,6 +10,8 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.state.IntegerProperty;
+import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
@@ -23,6 +25,10 @@ import java.util.List;
 import java.util.Random;
 
 public class GooBase extends Block {
+
+    public static final IntegerProperty FROZEN = IntegerProperty.create("frozen", 0, 3);
+
+
     public GooBase() {
         super(
                 Properties.create(Material.IRON).hardnessAndResistance(2.0f).tickRandomly()
@@ -56,10 +62,9 @@ public class GooBase extends Block {
 
     @Override
     public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult result) {
-        if (world.isRemote) return ActionResultType.PASS; //Server Side Only
-
+        if (world.isRemote) return ActionResultType.SUCCESS; //Server Side Only
         world.getPendingBlockTicks().scheduleTick(pos, this, 0);
-        return ActionResultType.PASS;
+        return ActionResultType.SUCCESS;
     }
 
     public static boolean isPlayerInRange(ServerWorld world, BlockPos pos) {
@@ -70,6 +75,24 @@ public class GooBase extends Block {
                 return true;
         }
 
+        return false;
+    }
+
+    public static void freezeGoo(ServerWorld worldIn, BlockPos pos) {
+        BlockState oldState = worldIn.getBlockState(pos);
+        if (!(oldState.getBlock() instanceof GooBase)) {
+            return;
+        }
+        worldIn.setBlockState(pos, oldState.with(FROZEN, 3));
+    }
+
+    public static boolean handleFrozen(BlockPos pos, BlockState state, World worldIn) {
+        int frozenState = state.get(FROZEN);
+        if (frozenState > 0) {
+            frozenState--;
+            worldIn.setBlockState(pos, state.with(FROZEN, frozenState));
+            return true;
+        }
         return false;
     }
 
@@ -122,6 +145,7 @@ public class GooBase extends Block {
     public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
         if (!shouldGooSpread(state, worldIn, pos, rand))
             return;
+        if (handleFrozen(pos, state, worldIn)) return;
         BlockPos gooPos = spreadGoo(state, worldIn, pos, rand);
         if (gooPos != BlockPos.ZERO)
             if (Config.SPREAD_TICK_DELAY.get() != -1)
@@ -173,5 +197,11 @@ public class GooBase extends Block {
             return BlockPos.ZERO;
         }
         return checkPos;
+    }
+
+    @Override
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+        super.fillStateContainer(builder);
+        builder.add(FROZEN);
     }
 }

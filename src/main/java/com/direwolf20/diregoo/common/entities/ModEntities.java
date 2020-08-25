@@ -44,6 +44,15 @@ public class ModEntities {
                         .build("")
                         .setRegistryName(DireGoo.MOD_ID + ":goonadeentity")
         );
+        event.getRegistry().register(
+                EntityType.Builder.<GoonadeFreezeEntity>create(GoonadeFreezeEntity::new, EntityClassification.MISC)
+                        .setTrackingRange(64)
+                        .setUpdateInterval(1)
+                        .setShouldReceiveVelocityUpdates(false)
+                        .setCustomClientFactory(((spawnEntity, world) -> new GoonadeFreezeEntity(GoonadeFreezeEntity.TYPE, world)))
+                        .build("")
+                        .setRegistryName(DireGoo.MOD_ID + ":goonadefreezeentity")
+        );
     }
 
     @SubscribeEvent
@@ -51,5 +60,6 @@ public class ModEntities {
         RenderingRegistry.registerEntityRenderingHandler(GooEntity.TYPE, GooEntityRender::new);
         RenderingRegistry.registerEntityRenderingHandler(LaserGunParticleEntity.TYPE, LaserGunParticleEntityRender::new);
         RenderingRegistry.registerEntityRenderingHandler(GoonadeEntity.TYPE, GoonadeEntityRender::new);
+        RenderingRegistry.registerEntityRenderingHandler(GoonadeFreezeEntity.TYPE, GoonadeFreezeEntityRender::new);
     }
 }

@@ -1,6 +1,21 @@
 {
   "variants": {
-    "": {
+    "generation=0": {
+      "model": "diregoo:block/gooblockpoison"
+    },
+    "generation=1": {
+      "model": "diregoo:block/gooblockpoison"
+    },
+    "generation=2": {
+      "model": "diregoo:block/gooblockpoison"
+    },
+    "generation=3": {
+      "model": "diregoo:block/gooblockpoison"
+    },
+    "generation=4": {
+      "model": "diregoo:block/gooblockpoison"
+    },
+    "generation=5": {
       "model": "diregoo:block/gooblockpoison"
     }
   }

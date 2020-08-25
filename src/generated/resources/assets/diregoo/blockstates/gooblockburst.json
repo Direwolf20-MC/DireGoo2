@@ -1,7 +1,16 @@
 {
   "variants": {
-    "": {
+    "frozen=0": {
       "model": "diregoo:block/gooblockburst"
+    },
+    "frozen=1": {
+      "model": "diregoo:block/gooblockfrozen"
+    },
+    "frozen=2": {
+      "model": "diregoo:block/gooblockfrozen"
+    },
+    "frozen=3": {
+      "model": "diregoo:block/gooblockfrozen"
     }
   }
 }
