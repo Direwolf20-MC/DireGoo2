@@ -21,6 +21,8 @@ public class GooBlockTerrain extends GooBase {
     public boolean customPreChecks(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
         if (rand.nextInt(100) > Config.SPREADCHANCETERRAIN.get())
             return false;
+        if (!Config.CAN_SPREAD_TERRAIN.get())
+            return false;
         return true;
     }
 

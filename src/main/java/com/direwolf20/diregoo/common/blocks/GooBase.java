@@ -100,8 +100,6 @@ public class GooBase extends Block {
      * Override this for custom goo types
      */
     public boolean customPreChecks(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
-        if (rand.nextInt(100) > Config.SPREADCHANCEGOO.get())
-            return false;
         return true;
     }
 
@@ -109,7 +107,7 @@ public class GooBase extends Block {
      * Checks to see if goo should spread, before attempting to spread
      */
     public boolean shouldGooSpread(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
-        if (!Config.CAN_SPREAD.get())
+        if (!Config.CAN_SPREAD_ALL.get())
             return false; //Check the config options to see if goo spreading is disabled
 
         if (!worldIn.isAreaLoaded(pos, 3))
@@ -155,9 +153,14 @@ public class GooBase extends Block {
             return;
         if (handleFrozen(pos, state, worldIn)) return;
         BlockPos gooPos = spreadGoo(state, worldIn, pos, rand);
-        if (gooPos != BlockPos.ZERO)
-            if (Config.SPREAD_TICK_DELAY.get() != -1)
-                worldIn.getPendingBlockTicks().scheduleTick(gooPos, this, Config.SPREAD_TICK_DELAY.get());
+        forceExtraTick(worldIn, gooPos);
+    }
+
+    public void forceExtraTick(ServerWorld world, BlockPos pos) {
+        if (pos != BlockPos.ZERO)
+            if (Config.SPREAD_TICK_DELAY.get() != -1) {
+                world.getPendingBlockTicks().scheduleTick(pos, this, Config.SPREAD_TICK_DELAY.get());
+            }
     }
 
     /**

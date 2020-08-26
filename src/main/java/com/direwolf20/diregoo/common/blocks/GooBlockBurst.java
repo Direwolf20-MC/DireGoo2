@@ -13,6 +13,8 @@ public class GooBlockBurst extends GooBase {
     public boolean customPreChecks(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
         if (rand.nextInt(100) > Config.SPREADCHANCEBURST.get())
             return false;
+        if (!Config.CAN_SPREAD_BURST.get())
+            return false;
         return true;
     }
 
