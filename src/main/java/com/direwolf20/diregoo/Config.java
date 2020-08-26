@@ -1,13 +1,7 @@
 package com.direwolf20.diregoo;
 
-import com.electronwill.nightconfig.core.file.CommentedFileConfig;
-import com.electronwill.nightconfig.core.io.WritingMode;
 import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.config.ModConfig;
-
-import java.nio.file.Path;
 
 @Mod.EventBusSubscriber
 public class Config {
@@ -68,60 +62,37 @@ public class Config {
     }
 
     private static void setupGooSpreadConfig() {
-        PLAYER_SPREAD_RANGE = COMMON_BUILDER.comment("The range from players in which Goo can spread.")
-                .defineInRange("playerSpreadRange", 100, 0, Integer.MAX_VALUE);
-        SPREAD_TICK_DELAY = COMMON_BUILDER.comment("The max delay (in ticks) for goo to spread - the higher the number the slower the spread")
-                .defineInRange("spreadTickDelay", 150, -1, Integer.MAX_VALUE);
         CAN_SPREAD_ALL = COMMON_BUILDER.comment("Can the goo spread. Set the false to disable all goo spreading.")
                 .define("canSpreadAll", true);
+        PLAYER_SPREAD_RANGE = COMMON_BUILDER.comment("The range from players in which Goo can spread. Goo outside of this range won't spread (Like vanilla mob spawners)")
+                .defineInRange("playerSpreadRange", 100, 0, Integer.MAX_VALUE);
+        SPREAD_TICK_DELAY = COMMON_BUILDER.comment("The max delay (in ticks) for goo to spread - the higher the number the slower the spread. -1 disables this")
+                .defineInRange("spreadTickDelay", -1, -1, Integer.MAX_VALUE);
 
         COMMON_BUILDER.comment("Normal Goo Specific Settings").push(SUBCATEGORY_GOO);
-        SPREADCHANCEGOO = COMMON_BUILDER.comment("The chance that goo will spread when it randomly ticks. The lower this is, the slower goo spreads.")
-                .defineInRange("spreadChanceGoo", 100, 1, 100);
         CAN_SPREAD_GOO = COMMON_BUILDER.comment("Can the normal goo spread. Set the false to disable only normal goo spreading.")
                 .define("canSpreadGoo", true);
+        SPREADCHANCEGOO = COMMON_BUILDER.comment("The chance that goo will spread when it randomly ticks. The lower this is, the slower goo spreads.")
+                .defineInRange("spreadChanceGoo", 100, 1, 100);
         COMMON_BUILDER.pop();
 
         COMMON_BUILDER.comment("Terrain Goo Specific Settings").push(SUBCATEGORY_GOO_TERRAIN);
-        SPREADCHANCETERRAIN = COMMON_BUILDER.comment("The chance that terrain goo will spread when it randomly ticks. The lower this is, the slower goo spreads.")
-                .defineInRange("spreadChanceTerrain", 100, 1, 100);
         CAN_SPREAD_TERRAIN = COMMON_BUILDER.comment("Can the terrain goo spread. Set the false to disable only terrain goo spreading.")
                 .define("canSpreadTerrain", true);
+        SPREADCHANCETERRAIN = COMMON_BUILDER.comment("The chance that terrain goo will spread when it randomly ticks. The lower this is, the slower goo spreads.")
+                .defineInRange("spreadChanceTerrain", 100, 1, 100);
         COMMON_BUILDER.pop();
 
         COMMON_BUILDER.comment("Burst Goo Specific Settings").push(SUBCATEGORY_GOO_BURST);
-        SPREADCHANCEBURST = COMMON_BUILDER.comment("The chance that burst goo will spread when it randomly ticks. The lower this is, the slower goo spreads.")
-                .defineInRange("spreadChanceBurst", 25, 1, 100);
         CAN_SPREAD_BURST = COMMON_BUILDER.comment("Can the burst goo spread. Set the false to disable only burst goo spreading.")
                 .define("canSpreadBurst", true);
+        SPREADCHANCEBURST = COMMON_BUILDER.comment("The chance that burst goo will spread when it randomly ticks. The lower this is, the slower goo spreads.")
+                .defineInRange("spreadChanceBurst", 25, 1, 100);
         MINBURST = COMMON_BUILDER.comment("The minimum number of blocks BurstGoo can do at once - it will randomly pick a number between Min and Max")
                 .defineInRange("minBurst", 5, 1, 25);
         MAXBURST = COMMON_BUILDER.comment("The maximum number of blocks BurstGoo can do at once - it will randomly pick a number between Min and Max")
                 .defineInRange("maxBurst", 15, 1, 25);
         COMMON_BUILDER.pop();
     }
-
-    public static void loadConfig(ForgeConfigSpec spec, Path path) {
-
-        final CommentedFileConfig configData = CommentedFileConfig.builder(path)
-                .sync()
-                .autosave()
-                .writingMode(WritingMode.REPLACE)
-                .build();
-
-        configData.load();
-        spec.setConfig(configData);
-    }
-
-    @SubscribeEvent
-    public static void onLoad(final ModConfig.Loading configEvent) {
-
-    }
-
-    @SubscribeEvent
-    public static void onReload(final ModConfig.Reloading configEvent) {
-    }
-
-
 }
 
