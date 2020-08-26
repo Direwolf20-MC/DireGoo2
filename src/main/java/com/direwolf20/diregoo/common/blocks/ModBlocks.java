@@ -30,6 +30,7 @@ public class ModBlocks {
     public static final RegistryObject<Block> GOO_BLOCK_POISON = BLOCKS.register("gooblockpoison", GooBlockPoison::new);
     public static final RegistryObject<Block> TURRET_BLOCK = BLOCKS.register("turretblock", TurretBlock::new);
     public static final RegistryObject<Block> ANTI_GOO_FIELD_GEN = BLOCKS.register("antigoofieldgen", AntiGooFieldGen::new);
+    public static final RegistryObject<Block> GOO_DETECTOR = BLOCKS.register("goodetector", GooDetector::new);
 
     /**
      * TileEntity Registers to the above deferred registers to be loaded in from the mods main class.

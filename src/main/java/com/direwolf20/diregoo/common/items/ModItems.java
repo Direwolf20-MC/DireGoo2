@@ -21,6 +21,7 @@ public class ModItems {
     public static final RegistryObject<Item> GOO_BLOCK_POISON_ITEM = ITEMS.register("gooblockpoison", () -> new BlockItem(ModBlocks.GOO_BLOCK_POISON.get(), ITEM_GROUP));
     public static final RegistryObject<Item> TURRET_BLOCK_ITEM = ITEMS.register("turretblock", () -> new BlockItem(ModBlocks.TURRET_BLOCK.get(), ITEM_GROUP));
     public static final RegistryObject<Item> ANTI_GOO_FIELD_GEN_ITEM = ITEMS.register("antigoofieldgen", () -> new BlockItem(ModBlocks.ANTI_GOO_FIELD_GEN.get(), ITEM_GROUP));
+    public static final RegistryObject<Item> GOO_DETECTOR_ITEM = ITEMS.register("goodetector", () -> new BlockItem(ModBlocks.GOO_DETECTOR.get(), ITEM_GROUP));
 
 
     // Items
