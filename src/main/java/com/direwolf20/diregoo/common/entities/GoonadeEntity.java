@@ -28,6 +28,10 @@ public class GoonadeEntity extends ProjectileBase {
         super(TYPE, world, thrower);
     }
 
+    public GoonadeEntity(World world, double x, double y, double z) {
+        super(TYPE, world, x, y, z);
+    }
+
     @Override
     protected void onImpact(RayTraceResult result) {
         if (!world.isRemote) {

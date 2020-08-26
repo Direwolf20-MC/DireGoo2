@@ -21,6 +21,10 @@ public abstract class ProjectileBase extends ProjectileItemEntity {
         super(type, thrower, world);
     }
 
+    public ProjectileBase(EntityType<? extends ProjectileBase> type, World world, double x, double y, double z) {
+        super(type, x, y, z, world);
+    }
+
     @Override
     public void tick() {
         super.tick();

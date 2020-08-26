@@ -4,12 +4,21 @@ import com.direwolf20.diregoo.client.ClientSetup;
 import com.direwolf20.diregoo.client.events.ClientEvents;
 import com.direwolf20.diregoo.common.blocks.ModBlocks;
 import com.direwolf20.diregoo.common.commands.ModCommands;
+import com.direwolf20.diregoo.common.entities.GoonadeEntity;
+import com.direwolf20.diregoo.common.entities.GoonadeFreezeEntity;
 import com.direwolf20.diregoo.common.events.ServerEvents;
 import com.direwolf20.diregoo.common.items.ModItems;
 import com.direwolf20.diregoo.common.network.PacketHandler;
 import net.minecraft.block.Block;
+import net.minecraft.block.DispenserBlock;
+import net.minecraft.dispenser.DefaultDispenseItemBehavior;
+import net.minecraft.dispenser.IPosition;
+import net.minecraft.dispenser.ProjectileDispenseBehavior;
+import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Util;
+import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -77,11 +86,28 @@ public class DireGoo
 
     }
 
-    private void setup(final FMLCommonSetupEvent event)
-    {
+    private void setup(final FMLCommonSetupEvent event) {
         // some preinit code
         PacketHandler.register();
         MinecraftForge.EVENT_BUS.register(ServerEvents.class);
+        //Dispenser thingy
+        DefaultDispenseItemBehavior goonadeFreezeBehavior = new ProjectileDispenseBehavior() {
+            protected ProjectileEntity getProjectileEntity(World worldIn, IPosition position, ItemStack stackIn) {
+                return Util.make(new GoonadeFreezeEntity(worldIn, position.getX(), position.getY(), position.getZ()), (p_218409_1_) -> {
+                    p_218409_1_.setItem(stackIn);
+                });
+            }
+        };
+        DispenserBlock.registerDispenseBehavior(ModItems.GOONADE_FREEZE.get(), goonadeFreezeBehavior);
+
+        DefaultDispenseItemBehavior goonadeBehavior = new ProjectileDispenseBehavior() {
+            protected ProjectileEntity getProjectileEntity(World worldIn, IPosition position, ItemStack stackIn) {
+                return Util.make(new GoonadeEntity(worldIn, position.getX(), position.getY(), position.getZ()), (p_218409_1_) -> {
+                    p_218409_1_.setItem(stackIn);
+                });
+            }
+        };
+        DispenserBlock.registerDispenseBehavior(ModItems.GOONADE.get(), goonadeBehavior);
     }
 
     private void doClientStuff(final FMLClientSetupEvent event) {
