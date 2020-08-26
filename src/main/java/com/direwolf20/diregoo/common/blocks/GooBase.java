@@ -97,25 +97,33 @@ public class GooBase extends Block {
     }
 
     /**
+     * Override this for custom goo types
+     */
+    public boolean customPreChecks(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
+        if (rand.nextInt(100) > Config.SPREADCHANCEGOO.get())
+            return false;
+        return true;
+    }
+
+    /**
      * Checks to see if goo should spread, before attempting to spread
      */
-    public static boolean shouldGooSpread(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
+    public boolean shouldGooSpread(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
         if (!Config.CAN_SPREAD.get())
             return false; //Check the config options to see if goo spreading is disabled
 
         if (!worldIn.isAreaLoaded(pos, 3))
             return false; // Forge: prevent loading unloaded chunks when checking neighbor's light and spreading
 
-        /*if (rand.nextInt(100) <= 50) //Todo add a % chance for goo to spread, which slows it down even further
-            return;*/
-
-        if (!isPlayerInRange(worldIn, pos)) {
+        if (!isPlayerInRange(worldIn, pos))
             return false;
-        }
 
-        if (isSurrounded(worldIn, pos)) {
+        if (isSurrounded(worldIn, pos))
             return false;
-        }
+
+        if (!customPreChecks(state, worldIn, pos, rand))
+            return false;
+
         return true;
     }
 

@@ -26,6 +26,9 @@ public class Config {
     public static ForgeConfigSpec.IntValue SPREAD_TICK_DELAY;
     public static ForgeConfigSpec.IntValue MINBURST;
     public static ForgeConfigSpec.IntValue MAXBURST;
+    public static ForgeConfigSpec.IntValue SPREADCHANCEGOO;
+    public static ForgeConfigSpec.IntValue SPREADCHANCETERRAIN;
+    public static ForgeConfigSpec.IntValue SPREADCHANCEBURST;
     public static ForgeConfigSpec.BooleanValue CAN_SPREAD;
     public static ForgeConfigSpec.DoubleValue ANTIGOOFIELDGENRF;
 
@@ -60,6 +63,12 @@ public class Config {
                 .defineInRange("minBurst", 5, 1, 25);
         MAXBURST = COMMON_BUILDER.comment("The maximum number of blocks BurstGoo can do at once - it will randomly pick a number between Min and Max")
                 .defineInRange("maxBurst", 15, 1, 25);
+        SPREADCHANCEGOO = COMMON_BUILDER.comment("The chance that goo will spread when it randomly ticks. The lower this is, the slower goo spreads.")
+                .defineInRange("spreadChanceGoo", 100, 1, 100);
+        SPREADCHANCETERRAIN = COMMON_BUILDER.comment("The chance that terrain goo will spread when it randomly ticks. The lower this is, the slower goo spreads.")
+                .defineInRange("spreadChanceTerrain", 100, 1, 100);
+        SPREADCHANCEBURST = COMMON_BUILDER.comment("The chance that burst goo will spread when it randomly ticks. The lower this is, the slower goo spreads.")
+                .defineInRange("spreadChanceBurst", 25, 1, 100);
 
         CAN_SPREAD = COMMON_BUILDER.comment("Can the goo spread. Set the false to disable all good spreading.")
                 .define("canSpread", true);

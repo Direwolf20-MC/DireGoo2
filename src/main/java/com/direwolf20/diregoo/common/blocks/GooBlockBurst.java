@@ -8,6 +8,14 @@ import net.minecraft.world.server.ServerWorld;
 import java.util.Random;
 
 public class GooBlockBurst extends GooBase {
+
+    @Override
+    public boolean customPreChecks(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
+        if (rand.nextInt(100) > Config.SPREADCHANCEBURST.get())
+            return false;
+        return true;
+    }
+
     @Override
     public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
         if (!shouldGooSpread(state, worldIn, pos, rand))
