@@ -11,9 +11,9 @@ import net.minecraft.util.ActionResultType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class AntigooDust extends Item {
+public class AntigooPaste extends Item {
 
-    public AntigooDust() {
+    public AntigooPaste() {
         super(new Item.Properties().maxStackSize(64).group(DireGoo.itemGroup));
     }
 

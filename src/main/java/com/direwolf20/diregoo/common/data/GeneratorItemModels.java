@@ -26,8 +26,8 @@ public class GeneratorItemModels extends ItemModelProvider {
         registerBlockModel(ModBlocks.ANTI_GOO_FIELD_GEN.get());
 
         //Our Item Models
-        String path = ModItems.GOO_REMOVER.get().getRegistryName().getPath();
-        singleTexture(path, mcLoc("item/handheld"), "layer0", modLoc("item/" + path)).transforms()
+        String gooRemover = ModItems.GOO_REMOVER.get().getRegistryName().getPath();
+        singleTexture(gooRemover, mcLoc("item/handheld"), "layer0", modLoc("item/" + gooRemover)).transforms()
                 .transform(ModelBuilder.Perspective.THIRDPERSON_RIGHT)
                 .rotation(0, 80, 0)
                 .translation(0, 0, 0)
@@ -40,17 +40,23 @@ public class GeneratorItemModels extends ItemModelProvider {
                 .end()
                 .end();
 
-        String goopath = ModItems.GOONADE.get().getRegistryName().getPath();
-        singleTexture(goopath, mcLoc("item/handheld"), "layer0", modLoc("item/" + goopath));
+        String goonade = ModItems.GOONADE.get().getRegistryName().getPath();
+        singleTexture(goonade, mcLoc("item/handheld"), "layer0", modLoc("item/" + goonade));
 
-        String goofreezepath = ModItems.GOONADE_FREEZE.get().getRegistryName().getPath();
-        singleTexture(goofreezepath, mcLoc("item/handheld"), "layer0", modLoc("item/" + goofreezepath));
+        String goonadefreeze = ModItems.GOONADE_FREEZE.get().getRegistryName().getPath();
+        singleTexture(goonadefreeze, mcLoc("item/handheld"), "layer0", modLoc("item/" + goonadefreeze));
 
-        String antigoopath = ModItems.ANTI_GOO_DUST.get().getRegistryName().getPath();
-        singleTexture(antigoopath, mcLoc("item/handheld"), "layer0", modLoc("item/" + antigoopath));
+        String antigoopaste = ModItems.ANTI_GOO_PASTE.get().getRegistryName().getPath();
+        singleTexture(antigoopaste, mcLoc("item/handheld"), "layer0", modLoc("item/" + antigoopaste));
 
         String gooscanner = ModItems.GOO_SCANNER.get().getRegistryName().getPath();
         singleTexture(gooscanner, mcLoc("item/handheld"), "layer0", modLoc("item/" + gooscanner));
+
+        String antigooDust = ModItems.ANTI_GOO_DUST.get().getRegistryName().getPath();
+        singleTexture(antigooDust, mcLoc("item/handheld"), "layer0", modLoc("item/" + antigooDust));
+
+        String gooresidue = ModItems.GOO_RESIDUE.get().getRegistryName().getPath();
+        singleTexture(gooresidue, mcLoc("item/handheld"), "layer0", modLoc("item/" + gooresidue));
     }
 
     private void registerBlockModel(Block block) {
