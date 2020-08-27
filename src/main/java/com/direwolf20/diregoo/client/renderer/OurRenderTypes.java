@@ -22,7 +22,7 @@ public class OurRenderTypes extends RenderType {
 
     public static void updateRenders() {
         //Used for debugging, so we can change the values without restarting instance. Not needed in normal use.
-        RenderBlock = makeType("GooEntity",
+        RenderBlockSpread = makeType("GooSpreadEntity",
                 DefaultVertexFormats.BLOCK, GL11.GL_QUADS, 256,
                 RenderType.State.getBuilder()
                         .shadeModel(RenderState.SHADE_ENABLED)
@@ -31,8 +31,8 @@ public class OurRenderTypes extends RenderType {
                         .layer(RenderState.field_239235_M_)
                         .transparency(TRANSLUCENT_TRANSPARENCY)
                         .depthTest(RenderState.DEPTH_LEQUAL)
-                        .cull(RenderState.CULL_ENABLED)
-                        .writeMask(RenderState.COLOR_WRITE)
+                        .cull(RenderState.CULL_DISABLED)
+                        .writeMask(RenderState.COLOR_DEPTH_WRITE)
                         .build(false));
     }
 
@@ -47,6 +47,19 @@ public class OurRenderTypes extends RenderType {
                     .depthTest(RenderState.DEPTH_LEQUAL)
                     .cull(RenderState.CULL_ENABLED)
                     .writeMask(RenderState.COLOR_WRITE)
+                    .build(false));
+
+    public static RenderType RenderBlockSpread = makeType("GooSpreadEntity",
+            DefaultVertexFormats.BLOCK, GL11.GL_QUADS, 256,
+            RenderType.State.getBuilder()
+                    .shadeModel(RenderState.SHADE_ENABLED)
+                    .lightmap(RenderState.LIGHTMAP_ENABLED)
+                    .texture(RenderState.BLOCK_SHEET_MIPPED)
+                    .layer(RenderState.field_239235_M_)
+                    .transparency(TRANSLUCENT_TRANSPARENCY)
+                    .depthTest(RenderState.DEPTH_LEQUAL)
+                    .cull(RenderState.CULL_DISABLED)
+                    .writeMask(RenderState.COLOR_DEPTH_WRITE)
                     .build(false));
 
     public static RenderType RenderScanner = makeType("RenderScanner",

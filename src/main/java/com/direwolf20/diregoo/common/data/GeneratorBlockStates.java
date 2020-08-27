@@ -2,6 +2,7 @@ package com.direwolf20.diregoo.common.data;
 
 import com.direwolf20.diregoo.DireGoo;
 import com.direwolf20.diregoo.common.blocks.GooBase;
+import com.direwolf20.diregoo.common.blocks.GooRender;
 import com.direwolf20.diregoo.common.blocks.ModBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.data.DataGenerator;
@@ -27,12 +28,19 @@ public class GeneratorBlockStates extends BlockStateProvider {
         buildCubeAll(ModBlocks.TURRET_BLOCK.get());
         buildCubeAll(ModBlocks.ANTI_GOO_FIELD_GEN.get());
 
-        /*Block gooDetectorBlock = ModBlocks.GOO_DETECTOR.get();
-        String gooDetector = Objects.requireNonNull(gooDetectorBlock.getRegistryName()).getPath();
-        getVariantBuilder(ModBlocks.GOO_DETECTOR.get())
-                .partialState().with(POWERED, false).setModels(new ConfiguredModel(models().carpet(gooDetector, blockTexture(gooDetectorBlock))))
-                .partialState().with(POWERED, true).setModels(new ConfiguredModel(models().carpet("goodetector_on", modLoc("block/goodetector_on")))
-        );*/
+        Block gooRender = ModBlocks.GOO_RENDER.get();
+        String gooRenderPath = Objects.requireNonNull(gooRender.getRegistryName()).getPath();
+        getVariantBuilder(ModBlocks.GOO_RENDER.get())
+                .partialState().with(GooRender.GROWTH, 1).setModels(new ConfiguredModel(models().cubeAll(gooRenderPath + "1", modLoc("block/goorender1"))))
+                .partialState().with(GooRender.GROWTH, 2).setModels(new ConfiguredModel(models().cubeAll(gooRenderPath + "2", modLoc("block/goorender2"))))
+                .partialState().with(GooRender.GROWTH, 3).setModels(new ConfiguredModel(models().cubeAll(gooRenderPath + "3", modLoc("block/goorender3"))))
+                .partialState().with(GooRender.GROWTH, 4).setModels(new ConfiguredModel(models().cubeAll(gooRenderPath + "4", modLoc("block/goorender4"))))
+                .partialState().with(GooRender.GROWTH, 5).setModels(new ConfiguredModel(models().cubeAll(gooRenderPath + "5", modLoc("block/goorender5"))))
+                .partialState().with(GooRender.GROWTH, 6).setModels(new ConfiguredModel(models().cubeAll(gooRenderPath + "6", modLoc("block/goorender6"))))
+                .partialState().with(GooRender.GROWTH, 7).setModels(new ConfiguredModel(models().cubeAll(gooRenderPath + "7", modLoc("block/goorender7"))))
+                .partialState().with(GooRender.GROWTH, 8).setModels(new ConfiguredModel(models().cubeAll(gooRenderPath + "8", modLoc("block/goorender8"))))
+                .partialState().with(GooRender.GROWTH, 9).setModels(new ConfiguredModel(models().cubeAll(gooRenderPath + "9", modLoc("block/goorender9")))
+        );
     }
 
     private void buildCubeAll(Block block) {

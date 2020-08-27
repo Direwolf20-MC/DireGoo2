@@ -28,6 +28,16 @@ public class ModEntities {
                         .setRegistryName(DireGoo.MOD_ID + ":gooentity")
         );
         event.getRegistry().register(
+                EntityType.Builder.<GooSpreadEntity>create(GooSpreadEntity::new, EntityClassification.MISC)
+                        .setTrackingRange(64)
+                        .setUpdateInterval(1)
+                        .size(0.25f, 0.25f)
+                        .setShouldReceiveVelocityUpdates(false)
+                        .setCustomClientFactory(((spawnEntity, world) -> new GooSpreadEntity(GooSpreadEntity.TYPE, world)))
+                        .build("")
+                        .setRegistryName(DireGoo.MOD_ID + ":goospreadentity")
+        );
+        event.getRegistry().register(
                 EntityType.Builder.<LaserGunParticleEntity>create(LaserGunParticleEntity::new, EntityClassification.MISC)
                         .setTrackingRange(64)
                         .setUpdateInterval(1)
@@ -59,6 +69,7 @@ public class ModEntities {
     @SubscribeEvent
     public static void registerModels(ModelRegistryEvent evt) {
         RenderingRegistry.registerEntityRenderingHandler(GooEntity.TYPE, GooEntityRender::new);
+        RenderingRegistry.registerEntityRenderingHandler(GooSpreadEntity.TYPE, GooSpreadEntityRender::new);
         RenderingRegistry.registerEntityRenderingHandler(LaserGunParticleEntity.TYPE, LaserGunParticleEntityRender::new);
         RenderingRegistry.registerEntityRenderingHandler(GoonadeEntity.TYPE, SpriteRendererGoo::new);
         RenderingRegistry.registerEntityRenderingHandler(GoonadeFreezeEntity.TYPE, SpriteRendererGoo::new);

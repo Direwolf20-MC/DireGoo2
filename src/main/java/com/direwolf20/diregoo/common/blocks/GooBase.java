@@ -2,6 +2,7 @@ package com.direwolf20.diregoo.common.blocks;
 
 import com.direwolf20.diregoo.Config;
 import com.direwolf20.diregoo.common.entities.GooEntity;
+import com.direwolf20.diregoo.common.entities.GooSpreadEntity;
 import com.direwolf20.diregoo.common.worldsave.BlockSave;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -16,6 +17,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.World;
@@ -152,7 +154,7 @@ public class GooBase extends Block {
         if (!shouldGooSpread(state, worldIn, pos, rand))
             return;
         if (handleFrozen(pos, state, worldIn)) return;
-        BlockPos gooPos = spreadGoo(state, worldIn, pos, rand);
+        BlockPos gooPos = spreadGoo(state, worldIn, pos, rand, true);
         forceExtraTick(worldIn, gooPos);
     }
 
@@ -177,7 +179,7 @@ public class GooBase extends Block {
         return true;
     }
 
-    public BlockPos spreadGoo(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
+    public BlockPos spreadGoo(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand, boolean animate) {
         int x = rand.nextInt(Direction.values().length);
         Direction direction = Direction.values()[x];
 
@@ -192,6 +194,11 @@ public class GooBase extends Block {
         }
 
         if (canSpreadHere(checkPos, oldState, worldIn)) {
+            if (animate) {
+                List<GooSpreadEntity> list = worldIn.getEntitiesWithinAABB(GooSpreadEntity.class, new AxisAlignedBB(checkPos.getX(), checkPos.getY(), checkPos.getZ(), checkPos.getX() + 0.25d, checkPos.getY() + 0.25d, checkPos.getZ() + 0.25d));
+                if (!list.isEmpty())
+                    return BlockPos.ZERO;
+            }
             BlockSave blockSave = BlockSave.get(worldIn);
             TileEntity te = worldIn.getTileEntity(checkPos);
             CompoundNBT nbtData = new CompoundNBT();
@@ -200,7 +207,11 @@ public class GooBase extends Block {
                 worldIn.removeTileEntity(checkPos);
                 blockSave.pushTE(checkPos, nbtData);
             }
-            worldIn.setBlockState(checkPos, this.getDefaultState());
+            if (animate) {
+                worldIn.addEntity(new GooSpreadEntity(worldIn, checkPos, this.getDefaultState(), 50, direction.getOpposite().getIndex()));
+            } else {
+                worldIn.setBlockState(checkPos, this.getDefaultState());
+            }
             if (!oldState.equals(Blocks.AIR.getDefaultState()))
                 blockSave.push(checkPos, oldState);
 
