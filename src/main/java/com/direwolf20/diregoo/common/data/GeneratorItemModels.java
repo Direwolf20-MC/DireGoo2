@@ -24,7 +24,26 @@ public class GeneratorItemModels extends ItemModelProvider {
         registerBlockModel(ModBlocks.GOO_BLOCK_POISON.get());
         registerBlockModel(ModBlocks.TURRET_BLOCK.get());
         registerBlockModel(ModBlocks.ANTI_GOO_FIELD_GEN.get());
-        registerBlockModel(ModBlocks.GOO_DETECTOR.get());
+        //registerBlockModel(ModBlocks.GOO_DETECTOR.get());
+        String path = ModBlocks.GOO_DETECTOR.get().getRegistryName().getPath();
+        getBuilder(path).parent(new ModelFile.UncheckedModelFile(modLoc("block/" + path))).transforms()
+                .transform(ModelBuilder.Perspective.THIRDPERSON_RIGHT)
+                .rotation(45, 0, 90)
+                .translation(0, 0, 0)
+                .scale(.5f)
+                .end()
+                .transform(ModelBuilder.Perspective.FIRSTPERSON_RIGHT)
+                .rotation(45, 0, 90)
+                .translation(0, 0, 0)
+                .scale(.5f)
+                .end()
+                .transform(ModelBuilder.Perspective.GUI)
+                .rotation(90, 0, 0)
+                .translation(0, 0, 0)
+                .scale(1f)
+                .end()
+                .end();
+        ;
 
         //Our Item Models
         String gooRemover = ModItems.GOO_REMOVER.get().getRegistryName().getPath();

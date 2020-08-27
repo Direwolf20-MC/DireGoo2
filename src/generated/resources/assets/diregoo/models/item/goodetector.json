@@ -1,3 +1,36 @@
 {
-  "parent": "diregoo:block/goodetector"
+  "parent": "diregoo:block/goodetector",
+  "display": {
+    "thirdperson_righthand": {
+      "rotation": [
+        45,
+        0,
+        90
+      ],
+      "scale": [
+        0.5,
+        0.5,
+        0.5
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        45,
+        0,
+        90
+      ],
+      "scale": [
+        0.5,
+        0.5,
+        0.5
+      ]
+    },
+    "gui": {
+      "rotation": [
+        90,
+        0,
+        0
+      ]
+    }
+  }
 }
