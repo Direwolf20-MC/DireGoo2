@@ -11,8 +11,6 @@ import net.minecraftforge.client.model.generators.ExistingFileHelper;
 
 import java.util.Objects;
 
-import static net.minecraft.block.RedstoneDiodeBlock.POWERED;
-
 public class GeneratorBlockStates extends BlockStateProvider {
     public GeneratorBlockStates(DataGenerator gen, ExistingFileHelper exFileHelper) {
         super(gen, DireGoo.MOD_ID, exFileHelper);
@@ -29,12 +27,12 @@ public class GeneratorBlockStates extends BlockStateProvider {
         buildCubeAll(ModBlocks.TURRET_BLOCK.get());
         buildCubeAll(ModBlocks.ANTI_GOO_FIELD_GEN.get());
 
-        Block gooDetectorBlock = ModBlocks.GOO_DETECTOR.get();
+        /*Block gooDetectorBlock = ModBlocks.GOO_DETECTOR.get();
         String gooDetector = Objects.requireNonNull(gooDetectorBlock.getRegistryName()).getPath();
         getVariantBuilder(ModBlocks.GOO_DETECTOR.get())
                 .partialState().with(POWERED, false).setModels(new ConfiguredModel(models().carpet(gooDetector, blockTexture(gooDetectorBlock))))
                 .partialState().with(POWERED, true).setModels(new ConfiguredModel(models().carpet("goodetector_on", modLoc("block/goodetector_on")))
-        );
+        );*/
     }
 
     private void buildCubeAll(Block block) {

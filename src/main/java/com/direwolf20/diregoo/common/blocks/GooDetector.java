@@ -6,6 +6,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.state.StateContainer;
 import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
@@ -35,6 +36,30 @@ public class GooDetector extends Block {
     public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult result) {
         world.setBlockState(pos, state.with(POWERED, !state.get(POWERED)));
         return ActionResultType.SUCCESS;
+    }
+
+    public boolean checkForGoo(World worldIn, BlockPos pos) {
+        for (Direction direction : Direction.values()) {
+            if (worldIn.getBlockState(pos.offset(direction)).getBlock() instanceof GooBase)
+                return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
+        worldIn.setBlockState(pos, state.with(POWERED, checkForGoo(worldIn, pos)));
+        super.neighborChanged(state, worldIn, pos, blockIn, fromPos, isMoving);
+    }
+
+    @Override
+    public int getStrongPower(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side) {
+        return blockState.get(POWERED) ? 15 : 0;
+    }
+
+    @Override
+    public int getWeakPower(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side) {
+        return blockState.get(POWERED) ? 15 : 0;
     }
 
     @Override
