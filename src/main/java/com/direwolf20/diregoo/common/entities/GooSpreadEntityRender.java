@@ -35,17 +35,38 @@ public class GooSpreadEntityRender extends EntityRenderer<GooSpreadEntity> {
         BlockRendererDispatcher blockrendererdispatcher = Minecraft.getInstance().getBlockRendererDispatcher();
         IRenderTypeBuffer.Impl buffer = Minecraft.getInstance().getRenderTypeBuffers().getBufferSource();
         IVertexBuilder builder;
-        OurRenderTypes.updateRenders();
+        //OurRenderTypes.updateRenders();
         builder = buffer.getBuffer(OurRenderTypes.RenderBlockSpread);
         BlockState gooBlockState = entityIn.getGooBlockState();
         int teCounter = entityIn.ticksExisted;
         int maxLife = entityIn.getMaxLife();
         teCounter = Math.min(teCounter, maxLife);
+        float ticksPerPhase = maxLife / 10;
+        float phaseIncrement = 100 / ticksPerPhase;
         float scale = ((float) (teCounter) / maxLife) * 10;
         int stateRender = (int) Math.ceil(scale);
         if (stateRender < 1) stateRender = 1;
+        float currentAlphaIncrement = ((teCounter - ((stateRender - 1) * ticksPerPhase)) * phaseIncrement) / 100;
+        float prevAlphaIncrement = currentAlphaIncrement == 0 ? 0 : (((teCounter - 1) - ((stateRender - 1) * ticksPerPhase)) * phaseIncrement) / 100;
+
+        //float alphaScale = (scale - stateRender + 1);
+        /*int prevteCounter = teCounter == 0 ? 0 : teCounter-1;
+        float prevscale = ((float) (prevteCounter) / maxLife) * 10;
+        int prevstateRender = (int) Math.ceil(prevscale);
+        float prevAlphaScale;
+        if (prevstateRender != stateRender) {
+            prevAlphaScale = 0;
+        } else {
+            if (prevstateRender < 1) prevstateRender = 1;
+            prevAlphaScale = (prevscale - prevstateRender + 1);
+        }*/
+
+
+        float renderAlphaScale = MathHelper.lerp(partialTicks, prevAlphaIncrement, currentAlphaIncrement);
+
+
         //System.out.println(scale+":" + stateRender + ":" + (scale - stateRender+1));
-        float alphaScale = (scale - stateRender + 1);
+        //System.out.println(prevAlphaIncrement + ":" + currentAlphaIncrement + ":" + renderAlphaScale + ":" + stateRender);
         BlockState renderBlockState = Blocks.AIR.getDefaultState();
         BlockState renderBlockState2 = Blocks.AIR.getDefaultState();
         if (stateRender == 10) {
@@ -56,7 +77,6 @@ public class GooSpreadEntityRender extends EntityRenderer<GooSpreadEntity> {
         } else {
             renderBlockState = ModBlocks.GOO_RENDER.get().getDefaultState().with(GooRender.GROWTH, stateRender);
             renderBlockState2 = ModBlocks.GOO_RENDER.get().getDefaultState().with(GooRender.GROWTH, stateRender + 1);
-            ;
         }
 
         Direction sourceDirection = entityIn.getDirection().getOpposite();
@@ -104,20 +124,23 @@ public class GooSpreadEntityRender extends EntityRenderer<GooSpreadEntity> {
         float f = (float) (color >> 16 & 255) / 255.0F;
         float f1 = (float) (color >> 8 & 255) / 255.0F;
         float f2 = (float) (color & 255) / 255.0F;
-        IBakedModel ibakedmodel = blockrendererdispatcher.getModelForState(renderBlockState);
         int lightValue = 15728640;
+        //alphaScale = MathHelper.lerp(alphaScale, 0, 1f);
+
+        IBakedModel ibakedmodel = blockrendererdispatcher.getModelForState(renderBlockState);
         for (Direction direction : Direction.values()) {
             if (!direction.equals(Direction.UP) && !direction.equals(Direction.DOWN))
-                MyRenderMethods.renderModelBrightnessColorQuads(matrixStackIn.getLast(), builder, f, f1, f2, 1f, ibakedmodel.getQuads(renderBlockState, direction, new Random(MathHelper.getPositionRandom(entityIn.func_233580_cy_())), EmptyModelData.INSTANCE), lightValue, 655360);
+                MyRenderMethods.renderModelBrightnessColorQuads(matrixStackIn.getLast(), builder, f, f1, f2, 1f, ibakedmodel.getQuads(renderBlockState, direction, new Random(MathHelper.getPositionRandom(entityIn.func_233580_cy_())), EmptyModelData.INSTANCE), lightValue, 0);
             if (direction.equals(Direction.UP) && stateRender == 10)
-                MyRenderMethods.renderModelBrightnessColorQuads(matrixStackIn.getLast(), builder, f, f1, f2, 1f, ibakedmodel.getQuads(renderBlockState, direction, new Random(MathHelper.getPositionRandom(entityIn.func_233580_cy_())), EmptyModelData.INSTANCE), lightValue, 655360);
+                MyRenderMethods.renderModelBrightnessColorQuads(matrixStackIn.getLast(), builder, f, f1, f2, 1f, ibakedmodel.getQuads(renderBlockState, direction, new Random(MathHelper.getPositionRandom(entityIn.func_233580_cy_())), EmptyModelData.INSTANCE), lightValue, 0);
         }
+
         ibakedmodel = blockrendererdispatcher.getModelForState(renderBlockState2);
         for (Direction direction : Direction.values()) {
             if (!direction.equals(Direction.UP) && !direction.equals(Direction.DOWN))
-                MyRenderMethods.renderModelBrightnessColorQuads(matrixStackIn.getLast(), builder, f, f1, f2, (1f), ibakedmodel.getQuads(renderBlockState, direction, new Random(MathHelper.getPositionRandom(entityIn.func_233580_cy_())), EmptyModelData.INSTANCE), lightValue, 655360);
+                MyRenderMethods.renderModelBrightnessColorQuads(matrixStackIn.getLast(), builder, f, f1, f2, (renderAlphaScale), ibakedmodel.getQuads(renderBlockState2, direction, new Random(MathHelper.getPositionRandom(entityIn.func_233580_cy_())), EmptyModelData.INSTANCE), lightValue, 655360);
             if (direction.equals(Direction.UP) && stateRender >= 9)
-                MyRenderMethods.renderModelBrightnessColorQuads(matrixStackIn.getLast(), builder, f, f1, f2, (1f), ibakedmodel.getQuads(renderBlockState, direction, new Random(MathHelper.getPositionRandom(entityIn.func_233580_cy_())), EmptyModelData.INSTANCE), lightValue, 655360);
+                MyRenderMethods.renderModelBrightnessColorQuads(matrixStackIn.getLast(), builder, f, f1, f2, (renderAlphaScale), ibakedmodel.getQuads(renderBlockState2, direction, new Random(MathHelper.getPositionRandom(entityIn.func_233580_cy_())), EmptyModelData.INSTANCE), lightValue, 655360);
         }
         matrixStackIn.pop();
     }

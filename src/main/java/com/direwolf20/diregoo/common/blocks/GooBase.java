@@ -208,7 +208,7 @@ public class GooBase extends Block {
                 blockSave.pushTE(checkPos, nbtData);
             }
             if (animate) {
-                worldIn.addEntity(new GooSpreadEntity(worldIn, checkPos, this.getDefaultState(), 50, direction.getOpposite().getIndex()));
+                worldIn.addEntity(new GooSpreadEntity(worldIn, checkPos, this.getDefaultState(), 20, direction.getOpposite().getIndex()));
             } else {
                 worldIn.setBlockState(checkPos, this.getDefaultState());
             }
