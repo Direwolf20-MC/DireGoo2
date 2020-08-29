@@ -2,8 +2,9 @@ package com.direwolf20.diregoo.common.entities;
 
 import com.direwolf20.diregoo.client.renderer.MyRenderMethods;
 import com.direwolf20.diregoo.client.renderer.OurRenderTypes;
-import com.direwolf20.diregoo.common.blocks.GooRender;
 import com.direwolf20.diregoo.common.blocks.ModBlocks;
+import com.direwolf20.diregoo.common.blocks.goospreadblocks.GooRender;
+import com.direwolf20.diregoo.common.blocks.goospreadblocks.GooRenderBase;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.block.BlockState;
@@ -49,34 +50,26 @@ public class GooSpreadEntityRender extends EntityRenderer<GooSpreadEntity> {
         float currentAlphaIncrement = ((teCounter - ((stateRender - 1) * ticksPerPhase)) * phaseIncrement) / 100;
         float prevAlphaIncrement = currentAlphaIncrement == 0 ? 0 : (((teCounter - 1) - ((stateRender - 1) * ticksPerPhase)) * phaseIncrement) / 100;
 
-        //float alphaScale = (scale - stateRender + 1);
-        /*int prevteCounter = teCounter == 0 ? 0 : teCounter-1;
-        float prevscale = ((float) (prevteCounter) / maxLife) * 10;
-        int prevstateRender = (int) Math.ceil(prevscale);
-        float prevAlphaScale;
-        if (prevstateRender != stateRender) {
-            prevAlphaScale = 0;
-        } else {
-            if (prevstateRender < 1) prevstateRender = 1;
-            prevAlphaScale = (prevscale - prevstateRender + 1);
-        }*/
-
-
         float renderAlphaScale = MathHelper.lerp(partialTicks, prevAlphaIncrement, currentAlphaIncrement);
 
-
-        //System.out.println(scale+":" + stateRender + ":" + (scale - stateRender+1));
-        //System.out.println(prevAlphaIncrement + ":" + currentAlphaIncrement + ":" + renderAlphaScale + ":" + stateRender);
         BlockState renderBlockState = Blocks.AIR.getDefaultState();
         BlockState renderBlockState2 = Blocks.AIR.getDefaultState();
         if (stateRender == 10) {
-            renderBlockState = ModBlocks.GOO_BLOCK.get().getDefaultState();
+            renderBlockState = gooBlockState;
         } else if (stateRender == 9) {
-            renderBlockState = ModBlocks.GOO_RENDER.get().getDefaultState().with(GooRender.GROWTH, stateRender);
-            renderBlockState2 = ModBlocks.GOO_BLOCK.get().getDefaultState();
+            if (gooBlockState.getBlock().equals(ModBlocks.GOO_BLOCK.get()))
+                renderBlockState = ModBlocks.GOO_RENDER.get().getDefaultState().with(GooRenderBase.GROWTH, stateRender);
+            else if (gooBlockState.getBlock().equals(ModBlocks.GOO_BLOCK_TERRAIN.get()))
+                renderBlockState = ModBlocks.GOO_RENDER_TERRAIN.get().getDefaultState().with(GooRenderBase.GROWTH, stateRender);
+            renderBlockState2 = gooBlockState;
         } else {
-            renderBlockState = ModBlocks.GOO_RENDER.get().getDefaultState().with(GooRender.GROWTH, stateRender);
-            renderBlockState2 = ModBlocks.GOO_RENDER.get().getDefaultState().with(GooRender.GROWTH, stateRender + 1);
+            if (gooBlockState.getBlock().equals(ModBlocks.GOO_BLOCK.get())) {
+                renderBlockState = ModBlocks.GOO_RENDER.get().getDefaultState().with(GooRenderBase.GROWTH, stateRender);
+                renderBlockState2 = ModBlocks.GOO_RENDER.get().getDefaultState().with(GooRender.GROWTH, stateRender + 1);
+            } else if (gooBlockState.getBlock().equals(ModBlocks.GOO_BLOCK_TERRAIN.get())) {
+                renderBlockState = ModBlocks.GOO_RENDER_TERRAIN.get().getDefaultState().with(GooRenderBase.GROWTH, stateRender);
+                renderBlockState2 = ModBlocks.GOO_RENDER_TERRAIN.get().getDefaultState().with(GooRender.GROWTH, stateRender + 1);
+            }
         }
 
         Direction growDirection = entityIn.getDirection().getOpposite();

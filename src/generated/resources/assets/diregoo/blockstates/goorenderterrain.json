@@ -1,0 +1,31 @@
+{
+  "variants": {
+    "growth=1": {
+      "model": "diregoo:block/goorenderterrain1"
+    },
+    "growth=2": {
+      "model": "diregoo:block/goorenderterrain2"
+    },
+    "growth=3": {
+      "model": "diregoo:block/goorenderterrain3"
+    },
+    "growth=4": {
+      "model": "diregoo:block/goorenderterrain4"
+    },
+    "growth=5": {
+      "model": "diregoo:block/goorenderterrain5"
+    },
+    "growth=6": {
+      "model": "diregoo:block/goorenderterrain6"
+    },
+    "growth=7": {
+      "model": "diregoo:block/goorenderterrain7"
+    },
+    "growth=8": {
+      "model": "diregoo:block/goorenderterrain8"
+    },
+    "growth=9": {
+      "model": "diregoo:block/goorenderterrain9"
+    }
+  }
+}
