@@ -6,6 +6,7 @@ import com.direwolf20.diregoo.common.items.ModItems;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
@@ -42,6 +43,9 @@ public class GoonadeEntity extends ProjectileBase {
                     .collect(Collectors.toList());
             for (BlockPos pos : area)
                 GooBase.resetBlock((ServerWorld) world, pos, true, 80);
+            List<GooSpreadEntity> gooSpreadEntities = world.getEntitiesWithinAABB(GooSpreadEntity.class, new AxisAlignedBB(hitPos.add(-2, -2, -2), hitPos.add(2, 2, 2)));
+            for (GooSpreadEntity gooSpreadEntity : gooSpreadEntities)
+                gooSpreadEntity.remove();
             remove();
         }
     }
