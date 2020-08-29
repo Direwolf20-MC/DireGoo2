@@ -36,7 +36,6 @@ public class GooSpreadEntityRender extends EntityRenderer<GooSpreadEntity> {
         BlockRendererDispatcher blockrendererdispatcher = Minecraft.getInstance().getBlockRendererDispatcher();
         IRenderTypeBuffer.Impl buffer = Minecraft.getInstance().getRenderTypeBuffers().getBufferSource();
         IVertexBuilder builder;
-        //OurRenderTypes.updateRenders();
         builder = buffer.getBuffer(OurRenderTypes.RenderBlockSpread);
         BlockState gooBlockState = entityIn.getGooBlockState();
         int teCounter = entityIn.ticksExisted;
@@ -109,8 +108,6 @@ public class GooSpreadEntityRender extends EntityRenderer<GooSpreadEntity> {
                 break;
 
         }
-        //matrixStackIn.translate(0, 0, 1);
-        //matrixStackIn.rotate(Vector3f.XP.rotationDegrees(-90.0F));
 
         BlockColors blockColors = Minecraft.getInstance().getBlockColors();
         int color = blockColors.getColor(renderBlockState, entityIn.getEntityWorld(), entityIn.func_233580_cy_(), 0);
@@ -118,11 +115,9 @@ public class GooSpreadEntityRender extends EntityRenderer<GooSpreadEntity> {
         float f1 = (float) (color >> 8 & 255) / 255.0F;
         float f2 = (float) (color & 255) / 255.0F;
         int lightValue = 15728640;
-        //alphaScale = MathHelper.lerp(alphaScale, 0, 1f);
 
         IBakedModel ibakedmodel = blockrendererdispatcher.getModelForState(renderBlockState);
         for (Direction direction : Direction.values()) {
-            Direction newDirection;
             if (!direction.equals(Direction.UP) && !direction.equals(Direction.DOWN))
                 MyRenderMethods.renderModelBrightnessColorQuads(matrixStackIn.getLast(), builder, f, f1, f2, 1f, ibakedmodel.getQuads(renderBlockState, direction, new Random(MathHelper.getPositionRandom(entityIn.func_233580_cy_())), EmptyModelData.INSTANCE), lightValue, 0, growDirection);
             if (direction.equals(Direction.UP) && stateRender == 10)
