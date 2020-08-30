@@ -1,6 +1,7 @@
 package com.direwolf20.diregoo.common.entities;
 
 import com.direwolf20.diregoo.DireGoo;
+import com.direwolf20.diregoo.common.blocks.GooBase;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
@@ -62,8 +63,11 @@ public class GooSpreadEntity extends EntityBase {
 
     @Override
     protected void onSetDespawning() {
-        if (!world.isRemote)
+        if (!world.isRemote) {
+            BlockState oldState = world.getBlockState(this.targetPos);
+            GooBase.saveBlockData(world, this.targetPos, oldState);
             world.setBlockState(this.targetPos, dataManager.get(gooBlockState).get());
+        }
     }
 
     @Override

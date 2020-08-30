@@ -199,26 +199,29 @@ public class GooBase extends Block {
                 if (!list.isEmpty())
                     return BlockPos.ZERO;
             }
-            BlockSave blockSave = BlockSave.get(worldIn);
-            TileEntity te = worldIn.getTileEntity(checkPos);
-            CompoundNBT nbtData = new CompoundNBT();
-            if (te != null) {
-                te.write(nbtData);
-                worldIn.removeTileEntity(checkPos);
-                blockSave.pushTE(checkPos, nbtData);
-            }
             if (animate) {
                 worldIn.addEntity(new GooSpreadEntity(worldIn, checkPos, this.getDefaultState(), 20, direction.getOpposite().getIndex()));
             } else {
+                saveBlockData(worldIn, checkPos, oldState);
                 worldIn.setBlockState(checkPos, this.getDefaultState());
             }
-            if (!oldState.equals(Blocks.AIR.getDefaultState()))
-                blockSave.push(checkPos, oldState);
-
         } else {
             return BlockPos.ZERO;
         }
         return checkPos;
+    }
+
+    public static void saveBlockData(World worldIn, BlockPos checkPos, BlockState oldState) {
+        BlockSave blockSave = BlockSave.get(worldIn);
+        TileEntity te = worldIn.getTileEntity(checkPos);
+        CompoundNBT nbtData = new CompoundNBT();
+        if (te != null) {
+            te.write(nbtData);
+            worldIn.removeTileEntity(checkPos);
+            blockSave.pushTE(checkPos, nbtData);
+        }
+        if (!oldState.equals(Blocks.AIR.getDefaultState()))
+            blockSave.push(checkPos, oldState);
     }
 
     @Override
