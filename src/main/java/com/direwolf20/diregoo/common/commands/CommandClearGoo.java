@@ -2,8 +2,6 @@ package com.direwolf20.diregoo.common.commands;
 
 import com.direwolf20.diregoo.common.blocks.GooBase;
 import com.direwolf20.diregoo.common.entities.GooSpreadEntity;
-import com.mojang.brigadier.Command;
-import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
@@ -19,19 +17,16 @@ import net.minecraft.world.server.ServerWorld;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class CommandClearGoo implements Command<CommandSource> {
+public class CommandClearGoo {
 
-    private static final CommandClearGoo CMD = new CommandClearGoo();
-
-    public static ArgumentBuilder<CommandSource, ?> register(CommandDispatcher<CommandSource> dispatcher) {
+    public static ArgumentBuilder<CommandSource, ?> register() {
         return Commands.literal("ClearGoo")
                 .requires(cs -> cs.hasPermissionLevel(0))
                 .then(Commands.argument("range", IntegerArgumentType.integer(1, Integer.MAX_VALUE))
-                        .executes(CMD));
+                        .executes(ctx -> clearGoo(ctx)));
     }
 
-    @Override
-    public int run(CommandContext<CommandSource> context) throws CommandSyntaxException {
+    public static int clearGoo(CommandContext<CommandSource> context) throws CommandSyntaxException {
         int range = IntegerArgumentType.getInteger(context, "range");
         PlayerEntity player = context.getSource().asPlayer();
         BlockPos hitPos = new BlockPos(player.getPosX(), player.getPosY(), player.getPosZ());

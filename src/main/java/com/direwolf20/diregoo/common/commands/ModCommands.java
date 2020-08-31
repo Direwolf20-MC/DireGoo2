@@ -10,10 +10,10 @@ public class ModCommands {
     public static void register(CommandDispatcher<CommandSource> dispatcher) {
         LiteralCommandNode<CommandSource> cmdTut = dispatcher.register(
                 Commands.literal(DireGoo.MOD_ID)
-                        .then(CommandCanSpread.register(dispatcher))
-                        .then(CommandSpreadDelay.register(dispatcher))
-                        .then(CommandClearGoo.register(dispatcher))
-                        .then(CommandPlayerSpreadRange.register(dispatcher))
+                        .then(CommandCanSpread.register())
+                        .then(CommandSpreadDelay.register())
+                        .then(CommandClearGoo.register())
+                        .then(CommandPlayerSpreadRange.register())
         );
 
         dispatcher.register(Commands.literal("diregoo").redirect(cmdTut));
