@@ -14,6 +14,7 @@ public class ModCommands {
                         .then(CommandSpreadDelay.register())
                         .then(CommandClearGoo.register())
                         .then(CommandPlayerSpreadRange.register())
+                        .then(CommandCountSpreadEntities.register())
         );
 
         dispatcher.register(Commands.literal("diregoo").redirect(cmdTut));

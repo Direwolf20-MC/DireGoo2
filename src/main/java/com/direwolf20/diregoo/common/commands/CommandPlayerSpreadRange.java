@@ -4,6 +4,7 @@ import com.direwolf20.diregoo.Config;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -18,12 +19,12 @@ public class CommandPlayerSpreadRange {
                         .executes(ctx -> setRange(ctx, IntegerArgumentType.getInteger(ctx, "spreadrange"))));
     }
 
-    public static int getRange(CommandContext<CommandSource> context) {
+    public static int getRange(CommandContext<CommandSource> context) throws CommandSyntaxException {
         context.getSource().sendFeedback(new TranslationTextComponent("message.diregoo.command.spreadrange " + Config.PLAYER_SPREAD_RANGE.get()), false);
         return 0;
     }
 
-    public static int setRange(CommandContext<CommandSource> context, int range) {
+    public static int setRange(CommandContext<CommandSource> context, int range) throws CommandSyntaxException {
         Config.PLAYER_SPREAD_RANGE.set(range);
         getRange(context);
         return 0;
