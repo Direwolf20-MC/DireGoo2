@@ -31,6 +31,7 @@ public class Config {
     public static ForgeConfigSpec.BooleanValue CAN_SPREAD_GOO;
     public static ForgeConfigSpec.BooleanValue CAN_SPREAD_BURST;
     public static ForgeConfigSpec.BooleanValue CAN_SPREAD_TERRAIN;
+    public static ForgeConfigSpec.BooleanValue ANIMATE_SPREAD;
     public static ForgeConfigSpec.DoubleValue ANTIGOOFIELDGENRF;
 
     public static ForgeConfigSpec.IntValue TILEMAXENERGY;
@@ -68,6 +69,8 @@ public class Config {
                 .defineInRange("playerSpreadRange", 100, 0, Integer.MAX_VALUE);
         SPREAD_TICK_DELAY = COMMON_BUILDER.comment("The max delay (in ticks) for goo to spread - the higher the number the slower the spread. -1 disables this")
                 .defineInRange("spreadTickDelay", -1, -1, Integer.MAX_VALUE);
+        ANIMATE_SPREAD = COMMON_BUILDER.comment("Does the goo use entities to animate spread, or do simple setblocks?")
+                .define("animateSpread", true);
 
         COMMON_BUILDER.comment("Normal Goo Specific Settings").push(SUBCATEGORY_GOO);
         CAN_SPREAD_GOO = COMMON_BUILDER.comment("Can the normal goo spread. Set the false to disable only normal goo spreading.")

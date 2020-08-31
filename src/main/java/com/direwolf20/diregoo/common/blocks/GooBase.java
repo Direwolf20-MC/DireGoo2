@@ -8,7 +8,6 @@ import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.PushReaction;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.IntegerProperty;
@@ -73,15 +72,8 @@ public class GooBase extends Block {
         return ActionResultType.SUCCESS;
     }
 
-    public static boolean isPlayerInRange(ServerWorld world, BlockPos pos) {
-        List<ServerPlayerEntity> playerList = world.getPlayers();
-        for (ServerPlayerEntity player : playerList) {
-            BlockPos playerPos = new BlockPos(player.getPositionVec()); //new BlockPos(264, 63, -173);
-            if (pos.withinDistance(playerPos, (double) Config.PLAYER_SPREAD_RANGE.get()))
-                return true;
-        }
-
-        return false;
+    public boolean isPlayerInRange(ServerWorld world, BlockPos pos) {
+        return world.isPlayerWithin(pos.getX(), pos.getY(), pos.getZ(), Config.PLAYER_SPREAD_RANGE.get());
     }
 
     public static void freezeGoo(ServerWorld worldIn, BlockPos pos) {
@@ -158,7 +150,10 @@ public class GooBase extends Block {
         if (!shouldGooSpread(state, worldIn, pos, rand))
             return;
         if (handleFrozen(pos, state, worldIn)) return;
-        BlockPos gooPos = spreadGoo(state, worldIn, pos, rand, true);
+        boolean animate = false;
+        if (Config.ANIMATE_SPREAD.get())
+            animate = worldIn.isPlayerWithin(pos.getX(), pos.getY(), pos.getZ(), 30);
+        BlockPos gooPos = spreadGoo(state, worldIn, pos, rand, animate);
         forceExtraTick(worldIn, gooPos);
     }
 
