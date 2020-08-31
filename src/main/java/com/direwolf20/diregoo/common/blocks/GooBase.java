@@ -4,10 +4,7 @@ import com.direwolf20.diregoo.Config;
 import com.direwolf20.diregoo.common.entities.GooEntity;
 import com.direwolf20.diregoo.common.entities.GooSpreadEntity;
 import com.direwolf20.diregoo.common.worldsave.BlockSave;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.PistonBlock;
+import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.PushReaction;
 import net.minecraft.entity.player.PlayerEntity;
@@ -15,6 +12,7 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.StateContainer;
+import net.minecraft.state.properties.DoubleBlockHalf;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
@@ -39,6 +37,20 @@ public class GooBase extends Block {
         );
     }
 
+    public static boolean resetSpecialCase(BlockState oldState, ServerWorld world, BlockPos pos, boolean render, int gooRenderLife, BlockSave blockSave) {
+        if (oldState.getBlock() instanceof DoorBlock) {
+            if (oldState.get(DoorBlock.HALF).equals(DoubleBlockHalf.LOWER)) {
+                world.setBlockState(pos, oldState);
+                if (world.getBlockState(pos.up()).getBlock() instanceof GooBase && render)
+                    world.addEntity(new GooEntity(world, pos.up(), world.getBlockState(pos.up()), gooRenderLife));
+                world.setBlockState(pos.up(), oldState.with(DoorBlock.HALF, DoubleBlockHalf.UPPER));
+                blockSave.pop(pos);
+                return true;
+            }
+        }
+        return false;
+    }
+
     //Reset the block
     public static void resetBlock(ServerWorld world, BlockPos pos, boolean render, int gooRenderLife) {
         BlockSave blockSave = BlockSave.get(world);
@@ -49,6 +61,8 @@ public class GooBase extends Block {
             world.setBlockState(pos, Blocks.AIR.getDefaultState());
             return;
         }
+        if (resetSpecialCase(oldState, world, pos, render, gooRenderLife, blockSave))
+            return;
         world.setBlockState(pos, oldState);
         blockSave.pop(pos);
 
@@ -256,6 +270,16 @@ public class GooBase extends Block {
             if (oldState.getBlock() == Blocks.PISTON || oldState.getBlock() == Blocks.STICKY_PISTON) {
                 BlockState newstate = oldState.with(PistonBlock.EXTENDED, false);
                 setBlockToGoo(newstate, world, additionalPos, animate, direction);
+                setBlockToGoo(Blocks.AIR.getDefaultState(), world, blockPos, animate, direction);
+            }
+            return true;
+        }
+        if (blockState.getBlock() instanceof DoorBlock) {
+            if (blockState.get(DoorBlock.HALF).equals(DoubleBlockHalf.LOWER)) {
+                setBlockToGoo(blockState, world, blockPos, animate, direction);
+                setBlockToGoo(Blocks.AIR.getDefaultState(), world, blockPos.up(), animate, direction);
+            } else {
+                setBlockToGoo(blockState, world, blockPos.down(), animate, direction);
                 setBlockToGoo(Blocks.AIR.getDefaultState(), world, blockPos, animate, direction);
             }
             return true;
