@@ -5,6 +5,7 @@ import com.direwolf20.diregoo.client.particles.ModParticles;
 import com.direwolf20.diregoo.common.blocks.ModBlocks;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.material.PushReaction;
 import net.minecraft.entity.EntityType;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.NBTUtil;
@@ -44,6 +45,11 @@ public class GooEntity extends EntityBase {
 
     public BlockState getGooBlockState() {
         return dataManager.get(gooBlockState).get();
+    }
+
+    @Override
+    public PushReaction getPushReaction() {
+        return PushReaction.IGNORE;
     }
 
     @Override

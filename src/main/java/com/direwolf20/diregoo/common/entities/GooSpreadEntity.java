@@ -4,6 +4,7 @@ import com.direwolf20.diregoo.DireGoo;
 import com.direwolf20.diregoo.common.blocks.GooBase;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.material.PushReaction;
 import net.minecraft.entity.EntityType;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.NBTUtil;
@@ -98,5 +99,10 @@ public class GooSpreadEntity extends EntityBase {
     @Override
     public IPacket<?> createSpawnPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
+    }
+
+    @Override
+    public PushReaction getPushReaction() {
+        return PushReaction.IGNORE;
     }
 }
