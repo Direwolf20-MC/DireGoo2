@@ -30,7 +30,7 @@ import java.util.Random;
 public class GooBase extends Block {
 
     public static final IntegerProperty FROZEN = IntegerProperty.create("frozen", 0, 3);
-
+    public static final int gooSpreadAnimationTime = 20;
 
     public GooBase() {
         super(
@@ -163,7 +163,7 @@ public class GooBase extends Block {
     public void forceExtraTick(ServerWorld world, BlockPos pos) {
         if (pos != BlockPos.ZERO)
             if (Config.SPREAD_TICK_DELAY.get() != -1) {
-                world.getPendingBlockTicks().scheduleTick(pos, this, Config.SPREAD_TICK_DELAY.get());
+                world.getPendingBlockTicks().scheduleTick(pos, this, gooSpreadAnimationTime + Config.SPREAD_TICK_DELAY.get());
             }
     }
 
@@ -212,7 +212,7 @@ public class GooBase extends Block {
 
     public void setBlockToGoo(BlockState oldState, World worldIn, BlockPos checkPos, boolean animate, Direction direction) {
         if (animate) {
-            worldIn.addEntity(new GooSpreadEntity(worldIn, checkPos, this.getDefaultState(), oldState, 20, direction.getOpposite().getIndex()));
+            worldIn.addEntity(new GooSpreadEntity(worldIn, checkPos, this.getDefaultState(), oldState, gooSpreadAnimationTime, direction.getOpposite().getIndex()));
         } else {
             saveBlockData(worldIn, checkPos, oldState);
             worldIn.setBlockState(checkPos, this.getDefaultState());
