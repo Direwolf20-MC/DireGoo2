@@ -12,6 +12,7 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.StateContainer;
+import net.minecraft.state.properties.BedPart;
 import net.minecraft.state.properties.DoubleBlockHalf;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
@@ -37,20 +38,6 @@ public class GooBase extends Block {
         );
     }
 
-    public static boolean resetSpecialCase(BlockState oldState, ServerWorld world, BlockPos pos, boolean render, int gooRenderLife, BlockSave blockSave) {
-        if (oldState.getBlock() instanceof DoorBlock) {
-            if (oldState.get(DoorBlock.HALF).equals(DoubleBlockHalf.LOWER)) {
-                world.setBlockState(pos, oldState);
-                if (world.getBlockState(pos.up()).getBlock() instanceof GooBase && render)
-                    world.addEntity(new GooEntity(world, pos.up(), world.getBlockState(pos.up()), gooRenderLife));
-                world.setBlockState(pos.up(), oldState.with(DoorBlock.HALF, DoubleBlockHalf.UPPER));
-                blockSave.pop(pos);
-                return true;
-            }
-        }
-        return false;
-    }
-
     //Reset the block
     public static void resetBlock(ServerWorld world, BlockPos pos, boolean render, int gooRenderLife) {
         BlockSave blockSave = BlockSave.get(world);
@@ -61,11 +48,10 @@ public class GooBase extends Block {
             world.setBlockState(pos, Blocks.AIR.getDefaultState());
             return;
         }
-        if (resetSpecialCase(oldState, world, pos, render, gooRenderLife, blockSave))
-            return;
-        world.setBlockState(pos, oldState);
-        blockSave.pop(pos);
-
+        if (!resetSpecialCase(oldState, world, pos, render, gooRenderLife, blockSave)) {
+            world.setBlockState(pos, oldState);
+            blockSave.pop(pos);
+        }
         CompoundNBT oldNBT = blockSave.getTEFromPos(pos);
         if (oldNBT == null) return;
         TileEntity te = world.getTileEntity(pos);
@@ -283,6 +269,44 @@ public class GooBase extends Block {
                 setBlockToGoo(Blocks.AIR.getDefaultState(), world, blockPos, animate, direction);
             }
             return true;
+        }
+        if (blockState.getBlock() instanceof BedBlock) {
+            if (blockState.get(BedBlock.PART).equals(BedPart.HEAD)) {
+                BlockPos additionalPos = blockPos.offset(blockState.get(BedBlock.HORIZONTAL_FACING).getOpposite());
+                setBlockToGoo(blockState, world, blockPos, animate, direction);
+                setBlockToGoo(Blocks.AIR.getDefaultState(), world, additionalPos, animate, direction);
+            } else {
+                BlockPos additionalPos = blockPos.offset(blockState.get(BedBlock.HORIZONTAL_FACING));
+                BlockState newState = world.getBlockState(additionalPos);
+                setBlockToGoo(newState, world, additionalPos, animate, direction);
+                setBlockToGoo(Blocks.AIR.getDefaultState(), world, blockPos, animate, direction);
+            }
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean resetSpecialCase(BlockState oldState, ServerWorld world, BlockPos pos, boolean render, int gooRenderLife, BlockSave blockSave) {
+        if (oldState.getBlock() instanceof DoorBlock) {
+            if (oldState.get(DoorBlock.HALF).equals(DoubleBlockHalf.LOWER)) {
+                world.setBlockState(pos, oldState);
+                if (world.getBlockState(pos.up()).getBlock() instanceof GooBase && render)
+                    world.addEntity(new GooEntity(world, pos.up(), world.getBlockState(pos.up()), gooRenderLife));
+                world.setBlockState(pos.up(), oldState.with(DoorBlock.HALF, DoubleBlockHalf.UPPER));
+                blockSave.pop(pos);
+                return true;
+            }
+        }
+        if (oldState.getBlock() instanceof BedBlock) {
+            if (oldState.get(BedBlock.PART).equals(BedPart.HEAD)) {
+                BlockPos additionalPos = pos.offset(oldState.get(BedBlock.HORIZONTAL_FACING).getOpposite());
+                world.setBlockState(pos, oldState);
+                if (world.getBlockState(additionalPos).getBlock() instanceof GooBase && render)
+                    world.addEntity(new GooEntity(world, additionalPos, world.getBlockState(additionalPos), gooRenderLife));
+                world.setBlockState(additionalPos, oldState.with(BedBlock.PART, BedPart.FOOT));
+                blockSave.pop(pos);
+                return true;
+            }
         }
         return false;
     }
