@@ -7,6 +7,7 @@ import com.direwolf20.diregoo.common.worldsave.BlockSave;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.PistonBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -199,16 +200,22 @@ public class GooBase extends Block {
                 if (!list.isEmpty())
                     return BlockPos.ZERO;
             }
-            if (animate) {
-                worldIn.addEntity(new GooSpreadEntity(worldIn, checkPos, this.getDefaultState(), 20, direction.getOpposite().getIndex()));
-            } else {
-                saveBlockData(worldIn, checkPos, oldState);
-                worldIn.setBlockState(checkPos, this.getDefaultState());
-            }
+            if (handleSpecialCases(worldIn, oldState, checkPos, animate, direction))
+                return BlockPos.ZERO;
+            setBlockToGoo(oldState, worldIn, checkPos, animate, direction);
         } else {
             return BlockPos.ZERO;
         }
         return checkPos;
+    }
+
+    public void setBlockToGoo(BlockState oldState, World worldIn, BlockPos checkPos, boolean animate, Direction direction) {
+        if (animate) {
+            worldIn.addEntity(new GooSpreadEntity(worldIn, checkPos, this.getDefaultState(), oldState, 20, direction.getOpposite().getIndex()));
+        } else {
+            saveBlockData(worldIn, checkPos, oldState);
+            worldIn.setBlockState(checkPos, this.getDefaultState());
+        }
     }
 
     public static void saveBlockData(World worldIn, BlockPos checkPos, BlockState oldState) {
@@ -228,5 +235,30 @@ public class GooBase extends Block {
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
         super.fillStateContainer(builder);
         builder.add(FROZEN);
+    }
+
+    public boolean handleSpecialCases(World world, BlockState blockState, BlockPos blockPos, boolean animate, Direction direction) {
+        if (blockState.getBlock() == Blocks.PISTON || blockState.getBlock() == Blocks.STICKY_PISTON) {
+            if (blockState.get(PistonBlock.EXTENDED)) {
+                BlockState newstate = blockState.with(PistonBlock.EXTENDED, false);
+                BlockPos additionalPos = blockPos.offset(blockState.get(PistonBlock.FACING));
+                setBlockToGoo(newstate, world, blockPos, animate, direction);
+                setBlockToGoo(Blocks.AIR.getDefaultState(), world, additionalPos, animate, direction);
+                return true;
+            } else {
+                return false;
+            }
+        }
+        if (blockState.getBlock() == Blocks.PISTON_HEAD) {
+            BlockPos additionalPos = blockPos.offset(blockState.get(PistonBlock.FACING).getOpposite());
+            BlockState oldState = world.getBlockState(additionalPos);
+            if (oldState.getBlock() == Blocks.PISTON || oldState.getBlock() == Blocks.STICKY_PISTON) {
+                BlockState newstate = oldState.with(PistonBlock.EXTENDED, false);
+                setBlockToGoo(newstate, world, additionalPos, animate, direction);
+                setBlockToGoo(Blocks.AIR.getDefaultState(), world, blockPos, animate, direction);
+            }
+            return true;
+        }
+        return false;
     }
 }
