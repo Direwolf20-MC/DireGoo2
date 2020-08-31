@@ -9,7 +9,7 @@ import java.awt.*;
 public class BlockOverlayRender {
 
     public static void render(Matrix4f matrix, IVertexBuilder builder, BlockPos pos, Color color) {
-        float red = color.getRed() / 255f, green = color.getGreen() / 255f, blue = color.getBlue() / 255f, alpha = .125f;
+        float red = color.getRed() / 255f, green = color.getGreen() / 255f, blue = color.getBlue() / 255f, alpha = .5f;
 
         float startX = 0, startY = 0, startZ = -1, endX = 1, endY = 1, endZ = 0;
 

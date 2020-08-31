@@ -15,8 +15,8 @@ import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.storage.WorldSavedData;
 import net.minecraftforge.common.util.Constants;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -25,7 +25,7 @@ public class BlockSave extends WorldSavedData {
     private final HashMap<Long, Short> blockMap = new HashMap<>();
     private final HashMap<Short, BlockState> blockMapPalette = new HashMap<>();
     private final HashMap<BlockPos, CompoundNBT> teMap = new HashMap<>();
-    private final Set<BlockPos> antigooList = new HashSet<>();
+    private final ArrayList<BlockPos> antigooList = new ArrayList<>();
     private final SetMultimap<BlockPos, BlockPos> antigooFieldList = HashMultimap.create();
 
 
@@ -193,6 +193,7 @@ public class BlockSave extends WorldSavedData {
     }
 
     public boolean addAnti(BlockPos pos, World world) {
+        if (this.antigooList.contains(pos)) return false;
         boolean success = this.antigooList.add(pos);
         if (success)
             PacketHandler.sendToAll(new AntigooSync(this.antigooList), world);
@@ -234,7 +235,7 @@ public class BlockSave extends WorldSavedData {
         return (this.antigooList.contains(pos) || this.antigooFieldList.containsValue(pos));
     }
 
-    public Set<BlockPos> getAntiGooList() {
+    public ArrayList<BlockPos> getAntiGooList() {
         return antigooList;
     }
 

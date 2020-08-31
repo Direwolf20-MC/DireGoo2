@@ -11,20 +11,19 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.network.NetworkEvent;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
 import java.util.function.Supplier;
 
 public class AntigooSync {
-    private final Set<BlockPos> antigooList;
+    private final ArrayList<BlockPos> antigooList;
     //private final int priorDurability;
 
-    public AntigooSync(Set<BlockPos> updateList) {
+    public AntigooSync(ArrayList<BlockPos> updateList) {
         this.antigooList = updateList;
     }
 
     public static void encode(AntigooSync msg, PacketBuffer buffer) {
-        Set<BlockPos> thisList = msg.antigooList;
+        ArrayList<BlockPos> thisList = msg.antigooList;
         CompoundNBT tag = new CompoundNBT();
         ListNBT nbtList = new ListNBT();
         for (BlockPos pos : thisList) {
@@ -39,7 +38,7 @@ public class AntigooSync {
     public static AntigooSync decode(PacketBuffer buffer) {
         CompoundNBT tag = buffer.readCompoundTag();
         ListNBT nbtList = tag.getList("list", Constants.NBT.TAG_COMPOUND);
-        Set<BlockPos> antigooList = new HashSet<>();
+        ArrayList<BlockPos> antigooList = new ArrayList<>();
         for (int i = 0; i < nbtList.size(); i++) {
             BlockPos blockPos = NBTUtil.readBlockPos(nbtList.getCompound(i).getCompound("pos"));
             antigooList.add(blockPos);
@@ -56,6 +55,5 @@ public class AntigooSync {
 
     public static void clientPacketHandler(AntigooSync msg) {
         AntiGooRender.updateGooList(msg.antigooList);
-
     }
 }

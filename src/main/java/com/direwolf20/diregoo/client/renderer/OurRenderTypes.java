@@ -22,18 +22,16 @@ public class OurRenderTypes extends RenderType {
 
     public static void updateRenders() {
         //Used for debugging, so we can change the values without restarting instance. Not needed in normal use.
-        RenderBlockSpread = makeType("GooSpreadEntity",
-                DefaultVertexFormats.BLOCK, GL11.GL_QUADS, 256,
+        BlockOverlay = makeType("MiningLaserBlockOverlay",
+                DefaultVertexFormats.POSITION_COLOR, GL11.GL_QUADS, 256,
                 RenderType.State.getBuilder()
-                        .shadeModel(RenderState.SHADE_ENABLED)
-                        .lightmap(RenderState.LIGHTMAP_ENABLED)
-                        .texture(RenderState.BLOCK_SHEET_MIPPED)
-                        .alpha(AlphaState.DEFAULT_ALPHA)
-                        .layer(RenderState.field_239235_M_)
+                        .layer(field_239235_M_)
                         .transparency(TRANSLUCENT_TRANSPARENCY)
-                        .depthTest(RenderState.DEPTH_LEQUAL)
-                        .cull(RenderState.CULL_DISABLED)
-                        .writeMask(RenderState.COLOR_DEPTH_WRITE)
+                        .texture(NO_TEXTURE)
+                        .depthTest(DEPTH_LEQUAL)
+                        .cull(CULL_ENABLED)
+                        .lightmap(LIGHTMAP_DISABLED)
+                        .writeMask(COLOR_DEPTH_WRITE)
                         .build(false));
     }
 
