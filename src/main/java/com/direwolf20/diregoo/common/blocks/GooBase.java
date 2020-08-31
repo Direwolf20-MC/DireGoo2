@@ -10,6 +10,7 @@ import net.minecraft.block.material.PushReaction;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BedPart;
@@ -30,6 +31,7 @@ import java.util.Random;
 public class GooBase extends Block {
 
     public static final IntegerProperty FROZEN = IntegerProperty.create("frozen", 0, 3);
+    public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
     public static final int gooSpreadAnimationTime = 20;
 
     public GooBase() {
@@ -61,14 +63,14 @@ public class GooBase extends Block {
 
     @Override
     public boolean ticksRandomly(BlockState state) {
-        return true;
+        return state.get(ACTIVE);
     }
 
     @Override
     public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult result) {
-        if (world.isRemote) return ActionResultType.FAIL; //Server Side Only
+        if (world.isRemote) return ActionResultType.SUCCESS; //Server Side Only
         world.getPendingBlockTicks().scheduleTick(pos, this, 0);
-        return ActionResultType.FAIL;
+        return ActionResultType.SUCCESS;
     }
 
     public static boolean isPlayerInRange(ServerWorld world, BlockPos pos) {
@@ -120,7 +122,7 @@ public class GooBase extends Block {
         if (!isPlayerInRange(worldIn, pos))
             return false;
 
-        if (isSurrounded(worldIn, pos))
+        if (isSurrounded(worldIn, pos, state))
             return false;
 
         if (!customPreChecks(state, worldIn, pos, rand))
@@ -170,14 +172,16 @@ public class GooBase extends Block {
     /**
      * Checks to see if a gooBlock is surrounded by any other kind of gooblock - if so don't bother doing any other calculations
      */
-    public static boolean isSurrounded(ServerWorld worldIn, BlockPos pos) {
+    public boolean isSurrounded(ServerWorld worldIn, BlockPos pos, BlockState state) {
         for (Direction direction : Direction.values()) {
-            if (worldIn.getBlockState(pos.offset(direction)).equals(ModBlocks.GOO_BLOCK_POISON.get().getDefaultState().with(GooBlockPoison.GENERATION, 0)))
-                return false; //If the adjacent block is Generation 0 poison, it's not surrounded.
             if (!(worldIn.getBlockState(pos.offset(direction)).getBlock() instanceof GooBase)) {
+                if (!state.get(ACTIVE))
+                    worldIn.setBlockState(pos, state.with(ACTIVE, true));
                 return false; //If the adjacent block is anything other than goo its not surrounded
             }
         }
+        if (state.get(ACTIVE))
+            worldIn.setBlockState(pos, state.with(ACTIVE, false));
         return true;
     }
 
@@ -236,6 +240,7 @@ public class GooBase extends Block {
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
         super.fillStateContainer(builder);
         builder.add(FROZEN);
+        builder.add(ACTIVE);
     }
 
     public boolean handleSpecialCases(World world, BlockState blockState, BlockPos blockPos, boolean animate, Direction direction) {
@@ -309,6 +314,13 @@ public class GooBase extends Block {
             }
         }
         return false;
+    }
+
+    @Override
+    public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
+        if (!worldIn.isRemote)
+            isSurrounded((ServerWorld) worldIn, pos, state);
+        super.neighborChanged(state, worldIn, pos, blockIn, fromPos, isMoving);
     }
 
     @Override

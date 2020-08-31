@@ -1,7 +1,6 @@
 package com.direwolf20.diregoo.client.renderer;
 
 import com.direwolf20.diregoo.common.blocks.GooBase;
-import com.direwolf20.diregoo.common.blocks.GooBlockPoison;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.mojang.blaze3d.matrix.MatrixStack;
@@ -80,7 +79,7 @@ public class GooScannerRender {
                     .collect(Collectors.toList());
         else
             gooBlocksList = BlockPos.getAllInBox(playerPos.add(-50, -50, -50), playerPos.add(50, 50, 50))
-                    .filter(blockPos -> player.world.getBlockState(blockPos).getBlock() instanceof GooBlockPoison)
+                    .filter(blockPos -> player.world.getBlockState(blockPos).getBlock() instanceof GooBase && player.world.getBlockState(blockPos).get(GooBase.ACTIVE))
                     .map(BlockPos::toImmutable)
                     .sorted(Comparator.comparingDouble(blockPos -> playerPos.distanceSq(blockPos)))
                     .collect(Collectors.toList());
