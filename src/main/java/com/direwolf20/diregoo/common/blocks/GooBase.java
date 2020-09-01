@@ -148,7 +148,7 @@ public class GooBase extends Block {
         if (handleFrozen(pos, state, worldIn)) return;
         boolean animate = false;
         if (Config.ANIMATE_SPREAD.get())
-            animate = worldIn.isPlayerWithin(pos.getX(), pos.getY(), pos.getZ(), 30);
+            animate = worldIn.isPlayerWithin(pos.getX(), pos.getY(), pos.getZ(), 20);
         BlockPos gooPos = spreadGoo(state, worldIn, pos, rand, animate);
         forceExtraTick(worldIn, gooPos);
     }

@@ -30,7 +30,7 @@ public class GooBlockBurst extends GooBase {
         for (int i = 0; i < burstAmt; i++) {
             boolean animate = false;
             if (Config.ANIMATE_SPREAD.get())
-                animate = worldIn.isPlayerWithin(pos.getX(), pos.getY(), pos.getZ(), 30);
+                animate = worldIn.isPlayerWithin(pos.getX(), pos.getY(), pos.getZ(), 20);
             BlockPos newGooPos = spreadGoo(state, worldIn, gooPos, rand, animate);
             if (!newGooPos.equals(BlockPos.ZERO))
                 gooPos = newGooPos;
