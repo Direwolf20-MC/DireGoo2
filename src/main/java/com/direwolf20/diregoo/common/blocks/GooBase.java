@@ -126,19 +126,11 @@ public class GooBase extends Block {
     /**
      * Determines if goo can spread to the target POS in the world, this runs after calculating where to spread to
      */
-    public boolean canSpreadHere(BlockPos pos, BlockState oldState, World world) {
+    public boolean canSpreadHere(BlockPos pos, BlockState oldState, ServerWorld world) {
         if (!world.isAreaLoaded(pos, 3))
             return false; // Forge: prevent loading unloaded chunks when checking neighbor's light and spreading
-        if (oldState.getBlock() instanceof GooBase)
-            return false; //No eating other goo blocks
-        if (oldState.getBlockHardness(world, pos) < 0)
-            return false; //No Eating bedrock
-        if (pos.getY() < 0 || pos.getY() > 254)
-            return false; //No spreading below Y=0
-
-        BlockSave blockSave = BlockSave.get(world);
-        if (blockSave.checkAnti(pos))
-            return false; //Check the antiGoo list
+        if (!isAdjacentValid(world, pos, oldState))
+            return false;
         return true;
     }
 
@@ -164,12 +156,28 @@ public class GooBase extends Block {
             }
     }
 
+    public boolean isAdjacentValid(ServerWorld worldIn, BlockPos pos, BlockState state) {
+        if (state.getBlock() instanceof GooBase)
+            return false; //No eating other goo blocks
+        if (state.getBlockHardness(worldIn, pos) < 0)
+            return false; //No Eating bedrock
+        if (pos.getY() < 0 || pos.getY() > 254)
+            return false; //No spreading below Y=0
+        BlockSave blockSave = BlockSave.get(worldIn);
+        if (blockSave.checkAnti(pos))
+            return false; //Check the antiGoo list
+
+        return true;
+    }
+
     /**
      * Checks to see if a gooBlock is surrounded by any other kind of gooblock - if so don't bother doing any other calculations
      */
     public boolean isSurrounded(ServerWorld worldIn, BlockPos pos, BlockState state) {
         for (Direction direction : Direction.values()) {
-            if (!(worldIn.getBlockState(pos.offset(direction)).getBlock() instanceof GooBase)) {
+            BlockPos testPos = pos.offset(direction);
+            BlockState testState = worldIn.getBlockState(testPos);
+            if (isAdjacentValid(worldIn, testPos, testState)) {
                 if (!state.get(ACTIVE))
                     worldIn.setBlockState(pos, state.with(ACTIVE, true));
                 return false; //If the adjacent block is anything other than goo its not surrounded
@@ -313,8 +321,10 @@ public class GooBase extends Block {
 
     @Override
     public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
-        if (!worldIn.isRemote)
-            isSurrounded((ServerWorld) worldIn, pos, state);
+        if (!worldIn.isRemote) {
+            if (!(worldIn.getBlockState(fromPos).getBlock() instanceof GooBase))
+                isSurrounded((ServerWorld) worldIn, pos, state);
+        }
         super.neighborChanged(state, worldIn, pos, blockIn, fromPos, isMoving);
     }
 
