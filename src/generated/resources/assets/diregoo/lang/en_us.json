@@ -1,5 +1,6 @@
 {
   "block.diregoo.antigoofieldgen": "Antigoo Field Generator",
+  "diregoo.tooltip.itemenergy": "Energy: %d/%d",
   "diregoo.tooltip.screen.xrange": "Range X",
   "screen.diregoo.energy": "Energy: %s/%s FE"
 }

@@ -15,8 +15,9 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
+import net.minecraftforge.energy.CapabilityEnergy;
 
-public class GooRemover extends Item {
+public class GooRemover extends FEItemBase {
     public GooRemover() {
         super(new Item.Properties().maxStackSize(1).group(DireGoo.itemGroup));
     }
@@ -31,11 +32,16 @@ public class GooRemover extends Item {
         ItemStack itemstack = player.getHeldItem(hand);
 
 
-        if (world.isRemote) return new ActionResult<>(ActionResultType.PASS, itemstack);
+        if (world.isRemote) return new ActionResult<>(ActionResultType.SUCCESS, itemstack);
         //Server Side Only
-        spawnLaserGunParticle(player, world, itemstack);
+        if (player.isSneaking()) {
+            // Debug code for free energy
+            itemstack.getCapability(CapabilityEnergy.ENERGY).ifPresent(e -> e.receiveEnergy(100000, false));
+        } else {
+            spawnLaserGunParticle(player, world, itemstack);
+        }
 
-        return new ActionResult<>(ActionResultType.PASS, itemstack);
+        return new ActionResult<>(ActionResultType.SUCCESS, itemstack);
     }
 
     private void spawnLaserGunParticle(PlayerEntity player, World world, ItemStack itemstack) {
