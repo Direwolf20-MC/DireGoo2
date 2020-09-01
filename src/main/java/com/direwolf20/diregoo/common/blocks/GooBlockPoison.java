@@ -58,7 +58,7 @@ public class GooBlockPoison extends Block {
                 BlockPos checkPos = pos.offset(direction);
                 BlockState oldState = worldIn.getBlockState(checkPos);
 
-                if (oldState.getBlock() instanceof GooBlock && !(oldState.getBlock() instanceof GooBlockPoison)) {
+                if (oldState.getBlock() instanceof GooBase && !(oldState.getBlock() instanceof GooBlockPoison)) {
                     int generation = state.get(GENERATION);
                     if (generation < 5)
                         generation++;

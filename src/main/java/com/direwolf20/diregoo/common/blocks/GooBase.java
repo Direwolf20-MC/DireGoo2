@@ -195,7 +195,7 @@ public class GooBase extends Block {
         BlockPos checkPos = pos.offset(direction);
         BlockState oldState = worldIn.getBlockState(checkPos);
 
-        if (oldState.equals(ModBlocks.GOO_BLOCK_POISON.get().getDefaultState().with(GooBlockPoison.GENERATION, 0))) {
+        if (oldState.getBlock().equals(ModBlocks.GOO_BLOCK_POISON.get())) {
             worldIn.setBlockState(pos, ModBlocks.GOO_BLOCK_POISON.get().getDefaultState().with(GooBlockPoison.GENERATION, 1));
             worldIn.getPendingBlockTicks().scheduleTick(pos, ModBlocks.GOO_BLOCK_POISON.get(), 5);
             resetBlock(worldIn, checkPos, true, 80);
