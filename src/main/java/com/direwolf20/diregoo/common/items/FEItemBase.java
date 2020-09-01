@@ -70,4 +70,9 @@ public class FEItemBase extends Item {
 
         return MathHelper.hsvToRGB(Math.max(0.0F, (float) energy.getEnergyStored() / (float) energy.getMaxEnergyStored()) / 3.0F, 1.0F, 1.0F);
     }
+
+    public boolean canUseItem(ItemStack itemStack, int RFCost) {
+        int energy = itemStack.getOrCreateTag().getInt("energy");
+        return RFCost <= energy;
+    }
 }

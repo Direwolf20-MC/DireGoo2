@@ -7,7 +7,7 @@ public class EnergisedItem extends EnergyStorage {
     private ItemStack stack;
 
     public EnergisedItem(ItemStack stack, int capacity) {
-        super(capacity, 10000, 0, 0);
+        super(capacity, 100000, Integer.MAX_VALUE, 0);
         this.stack = stack;
         this.energy = stack.hasTag() && stack.getTag().contains("energy") ? stack.getTag().getInt("energy") : 0;
     }
@@ -37,5 +37,9 @@ public class EnergisedItem extends EnergyStorage {
             stack.getOrCreateTag().putInt("energy", this.energy);
 
         return amount;
+    }
+
+    public boolean hasEnoughEnergy(int amount) {
+        return this.energy >= amount;
     }
 }

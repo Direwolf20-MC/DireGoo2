@@ -36,9 +36,11 @@ public class GooRemover extends FEItemBase {
         //Server Side Only
         if (player.isSneaking()) {
             // Debug code for free energy
-            itemstack.getCapability(CapabilityEnergy.ENERGY).ifPresent(e -> e.receiveEnergy(100000, false));
+            itemstack.getCapability(CapabilityEnergy.ENERGY).ifPresent(e -> e.receiveEnergy(10000, false));
         } else {
-            spawnLaserGunParticle(player, world, itemstack);
+            if (canUseItem(itemstack, 50000)) {
+                spawnLaserGunParticle(player, world, itemstack);
+            }
         }
 
         return new ActionResult<>(ActionResultType.SUCCESS, itemstack);
@@ -71,6 +73,6 @@ public class GooRemover extends FEItemBase {
         LaserGunParticleEntity laserGunParticleEntity = new LaserGunParticleEntity(world, player, laserPos.getX(), laserPos.getY(), laserPos.getZ());
         laserGunParticleEntity.shoot(pathVec.getX(), pathVec.getY(), pathVec.getZ(), 1f, 0f);
         world.addEntity(laserGunParticleEntity);
-
+        itemstack.getCapability(CapabilityEnergy.ENERGY).ifPresent(e -> e.extractEnergy(50000, false));
     }
 }
