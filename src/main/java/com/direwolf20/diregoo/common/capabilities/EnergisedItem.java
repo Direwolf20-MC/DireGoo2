@@ -5,9 +5,16 @@ import net.minecraftforge.energy.EnergyStorage;
 
 public class EnergisedItem extends EnergyStorage {
     private ItemStack stack;
+    private static final int defaultMaxReceieve = 10000;
 
     public EnergisedItem(ItemStack stack, int capacity) {
-        super(capacity, 100000, Integer.MAX_VALUE, 0);
+        super(capacity, defaultMaxReceieve, Integer.MAX_VALUE, 0);
+        this.stack = stack;
+        this.energy = stack.hasTag() && stack.getTag().contains("energy") ? stack.getTag().getInt("energy") : 0;
+    }
+
+    public EnergisedItem(ItemStack stack, int capacity, int maxReceive) {
+        super(capacity, maxReceive, Integer.MAX_VALUE, 0);
         this.stack = stack;
         this.energy = stack.hasTag() && stack.getTag().contains("energy") ? stack.getTag().getInt("energy") : 0;
     }
