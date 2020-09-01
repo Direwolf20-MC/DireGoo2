@@ -1,0 +1,31 @@
+{
+  "variants": {
+    "growth=1": {
+      "model": "diregoo:block/goorenderburst1"
+    },
+    "growth=2": {
+      "model": "diregoo:block/goorenderburst2"
+    },
+    "growth=3": {
+      "model": "diregoo:block/goorenderburst3"
+    },
+    "growth=4": {
+      "model": "diregoo:block/goorenderburst4"
+    },
+    "growth=5": {
+      "model": "diregoo:block/goorenderburst5"
+    },
+    "growth=6": {
+      "model": "diregoo:block/goorenderburst6"
+    },
+    "growth=7": {
+      "model": "diregoo:block/goorenderburst7"
+    },
+    "growth=8": {
+      "model": "diregoo:block/goorenderburst8"
+    },
+    "growth=9": {
+      "model": "diregoo:block/goorenderburst9"
+    }
+  }
+}

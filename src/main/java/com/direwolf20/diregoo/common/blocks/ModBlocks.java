@@ -2,6 +2,7 @@ package com.direwolf20.diregoo.common.blocks;
 
 import com.direwolf20.diregoo.DireGoo;
 import com.direwolf20.diregoo.common.blocks.goospreadblocks.GooRender;
+import com.direwolf20.diregoo.common.blocks.goospreadblocks.GooRenderBurst;
 import com.direwolf20.diregoo.common.blocks.goospreadblocks.GooRenderTerrain;
 import com.direwolf20.diregoo.common.container.AntiGooFieldGenContainer;
 import com.direwolf20.diregoo.common.container.TurretContainer;
@@ -35,6 +36,7 @@ public class ModBlocks {
     public static final RegistryObject<Block> GOO_DETECTOR = BLOCKS.register("goodetector", GooDetector::new);
     public static final RegistryObject<Block> GOO_RENDER = BLOCKS.register("goorender", GooRender::new);
     public static final RegistryObject<Block> GOO_RENDER_TERRAIN = BLOCKS.register("goorenderterrain", GooRenderTerrain::new);
+    public static final RegistryObject<Block> GOO_RENDER_BURST = BLOCKS.register("goorenderburst", GooRenderBurst::new);
 
     /**
      * TileEntity Registers to the above deferred registers to be loaded in from the mods main class.

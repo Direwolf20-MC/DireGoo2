@@ -60,6 +60,8 @@ public class GooSpreadEntityRender extends EntityRenderer<GooSpreadEntity> {
                 renderBlockState = ModBlocks.GOO_RENDER.get().getDefaultState().with(GooRenderBase.GROWTH, stateRender);
             else if (gooBlockState.getBlock().equals(ModBlocks.GOO_BLOCK_TERRAIN.get()))
                 renderBlockState = ModBlocks.GOO_RENDER_TERRAIN.get().getDefaultState().with(GooRenderBase.GROWTH, stateRender);
+            else if (gooBlockState.getBlock().equals(ModBlocks.GOO_BLOCK_BURST.get()))
+                renderBlockState = ModBlocks.GOO_RENDER_BURST.get().getDefaultState().with(GooRenderBase.GROWTH, stateRender);
             renderBlockState2 = gooBlockState;
         } else {
             if (gooBlockState.getBlock().equals(ModBlocks.GOO_BLOCK.get())) {
@@ -68,6 +70,9 @@ public class GooSpreadEntityRender extends EntityRenderer<GooSpreadEntity> {
             } else if (gooBlockState.getBlock().equals(ModBlocks.GOO_BLOCK_TERRAIN.get())) {
                 renderBlockState = ModBlocks.GOO_RENDER_TERRAIN.get().getDefaultState().with(GooRenderBase.GROWTH, stateRender);
                 renderBlockState2 = ModBlocks.GOO_RENDER_TERRAIN.get().getDefaultState().with(GooRender.GROWTH, stateRender + 1);
+            } else if (gooBlockState.getBlock().equals(ModBlocks.GOO_BLOCK_BURST.get())) {
+                renderBlockState = ModBlocks.GOO_RENDER_BURST.get().getDefaultState().with(GooRenderBase.GROWTH, stateRender);
+                renderBlockState2 = ModBlocks.GOO_RENDER_BURST.get().getDefaultState().with(GooRender.GROWTH, stateRender + 1);
             }
         }
 
