@@ -22,6 +22,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.client.model.data.EmptyModelData;
@@ -83,10 +84,14 @@ public class GooScannerRender {
                     .map(BlockPos::toImmutable)
                     .sorted(Comparator.comparingDouble(blockPos -> playerPos.distanceSq(blockPos)))
                     .collect(Collectors.toList());
-        Collections.reverse(gooBlocksList);
-        gooVisibleStartTime = System.currentTimeMillis();
-        System.out.println(gooBlocksList.size());
-        renderVBO();
+        if (gooBlocksList.size() > 100000) {
+            player.sendStatusMessage(new TranslationTextComponent("message.diregoo.message.toomuchgoo " + gooBlocksList.size()), true);
+        } else {
+            Collections.reverse(gooBlocksList);
+            gooVisibleStartTime = System.currentTimeMillis();
+            System.out.println(gooBlocksList.size());
+            renderVBO();
+        }
     }
 
     public static void renderVBO() {
