@@ -131,6 +131,10 @@ public class GooBase extends Block {
             return false; // Forge: prevent loading unloaded chunks when checking neighbor's light and spreading
         if (!isAdjacentValid(world, pos, oldState))
             return false;
+
+        BlockSave blockSave = BlockSave.get(world);
+        if (blockSave.checkAnti(pos))
+            return false; //Check the antiGoo list
         return true;
     }
 
@@ -163,10 +167,6 @@ public class GooBase extends Block {
             return false; //No Eating bedrock
         if (pos.getY() < 0 || pos.getY() > 254)
             return false; //No spreading below Y=0
-        BlockSave blockSave = BlockSave.get(worldIn);
-        if (blockSave.checkAnti(pos))
-            return false; //Check the antiGoo list
-
         return true;
     }
 
