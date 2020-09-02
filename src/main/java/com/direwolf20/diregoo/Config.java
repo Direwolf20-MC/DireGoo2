@@ -105,7 +105,7 @@ public class Config {
         COMMON_BUILDER.pop();
 
         COMMON_BUILDER.comment("Goo Zapper (Item) Settings").push(SUBCATEGORY_ITEM_ZAPPER);
-        ITEM_ZAPPER_RFCOST = COMMON_BUILDER.comment("The RF cost per second")
+        ITEM_ZAPPER_RFCOST = COMMON_BUILDER.comment("The RF cost per tick")
                 .defineInRange("zapperRFCost", 1000, 0, Integer.MAX_VALUE);
         ITEM_ZAPPER_RFMAX = COMMON_BUILDER.comment("The max RF the Goo Zapper can hold")
                 .defineInRange("zapperRFMax", 1000000, 0, Integer.MAX_VALUE);
