@@ -93,6 +93,9 @@ repositories {
         name = "Progwml6 maven"
         url = "https://dvs1.progwml6.com/files/maven/"
     }
+    flatDir {
+        dirs 'includedMods/'
+    }
     maven {
         //JEI fallback
         name = "ModMaven"
@@ -112,6 +115,10 @@ dependencies {
     //JEI
     compileOnly fg.deobf("mezz.jei:jei-${jei_version}:api")
     runtimeOnly fg.deobf("mezz.jei:jei-${jei_version}")
+
+    //runtimeOnly fg.deobf("ignored:buildinggadgets-3.5.1")
+    //runtimeOnly fg.deobf("ignored:charginggadgets-1.1.1")
+
     // You may put jars on which you depend on in ./libs or you may define them like so..
     // compile "some.group:artifact:version:classifier"
     // compile "some.group:artifact:version"
