@@ -50,6 +50,9 @@ public class GooZapper extends FEItemBase {
 
         // Server Side
         if (!world.isRemote) {
+            if (!canUseItem(stack, Config.ITEM_ZAPPER_RFCOST.get())) {
+                player.resetActiveHand();
+            }
             stack.getCapability(CapabilityEnergy.ENERGY).ifPresent(e -> e.extractEnergy(Config.ITEM_ZAPPER_RFCOST.get(), false));
             int range = Config.ITEM_ZAPPER_RANGE.get();
             BlockRayTraceResult lookingAt = VectorHelper.getLookingAt((PlayerEntity) player, RayTraceContext.FluidMode.NONE, range);
