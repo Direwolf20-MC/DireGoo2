@@ -49,6 +49,10 @@ public class Config {
     public static ForgeConfigSpec.IntValue ITEM_REMOVER_RFCOST;
     public static ForgeConfigSpec.IntValue ITEM_REMOVER_RFMAX;
 
+    public static final String SUBCATEGORY_ITEM_ZAPPER = "item_zapper";
+    public static ForgeConfigSpec.IntValue ITEM_ZAPPER_RFCOST;
+    public static ForgeConfigSpec.IntValue ITEM_ZAPPER_RFMAX;
+
     /*public static final String SUBCATEGORY_ITEM_SCANNER = "item_scanner";
     public static ForgeConfigSpec.IntValue ITEM_SCANNER_RFCOST;
     public static ForgeConfigSpec.IntValue ITEM_SCANNER_RFMAX;*/
@@ -97,6 +101,13 @@ public class Config {
                 .defineInRange("removerRFCost", 10000, 0, Integer.MAX_VALUE);
         ITEM_REMOVER_RFMAX = COMMON_BUILDER.comment("The max RF the Goo Remover can hold")
                 .defineInRange("removerRFMax", 1000000, 0, Integer.MAX_VALUE);
+        COMMON_BUILDER.pop();
+
+        COMMON_BUILDER.comment("Goo Zapper (Item) Settings").push(SUBCATEGORY_ITEM_ZAPPER);
+        ITEM_ZAPPER_RFCOST = COMMON_BUILDER.comment("The RF cost per second")
+                .defineInRange("zapperRFCost", 1000, 0, Integer.MAX_VALUE);
+        ITEM_ZAPPER_RFMAX = COMMON_BUILDER.comment("The max RF the Goo Zapper can hold")
+                .defineInRange("zapperRFMax", 1000000, 0, Integer.MAX_VALUE);
         COMMON_BUILDER.pop();
 
         /*COMMON_BUILDER.comment("Goo Scanner Settings").push(SUBCATEGORY_ITEM_SCANNER);

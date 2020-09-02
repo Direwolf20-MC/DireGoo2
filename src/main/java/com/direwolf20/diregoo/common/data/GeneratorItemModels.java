@@ -60,6 +60,20 @@ public class GeneratorItemModels extends ItemModelProvider {
                 .end()
                 .end();
 
+        String gooZapper = ModItems.GOO_ZAPPER.get().getRegistryName().getPath();
+        singleTexture(gooZapper, mcLoc("item/handheld"), "layer0", modLoc("item/" + gooZapper)).transforms()
+                .transform(ModelBuilder.Perspective.THIRDPERSON_RIGHT)
+                .rotation(0, 80, 0)
+                .translation(0, 0, 0)
+                .scale(.5f)
+                .end()
+                .transform(ModelBuilder.Perspective.FIRSTPERSON_RIGHT)
+                .rotation(0, 80, 0)
+                .translation(6, 0, -7)
+                .scale(1f)
+                .end()
+                .end();
+
         String goonade = ModItems.GOONADE.get().getRegistryName().getPath();
         singleTexture(goonade, mcLoc("item/handheld"), "layer0", modLoc("item/" + goonade));
 
