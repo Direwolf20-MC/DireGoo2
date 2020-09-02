@@ -52,6 +52,7 @@ public class Config {
     public static final String SUBCATEGORY_ITEM_ZAPPER = "item_zapper";
     public static ForgeConfigSpec.IntValue ITEM_ZAPPER_RFCOST;
     public static ForgeConfigSpec.IntValue ITEM_ZAPPER_RFMAX;
+    public static ForgeConfigSpec.IntValue ITEM_ZAPPER_RANGE;
 
     /*public static final String SUBCATEGORY_ITEM_SCANNER = "item_scanner";
     public static ForgeConfigSpec.IntValue ITEM_SCANNER_RFCOST;
@@ -108,6 +109,8 @@ public class Config {
                 .defineInRange("zapperRFCost", 1000, 0, Integer.MAX_VALUE);
         ITEM_ZAPPER_RFMAX = COMMON_BUILDER.comment("The max RF the Goo Zapper can hold")
                 .defineInRange("zapperRFMax", 1000000, 0, Integer.MAX_VALUE);
+        ITEM_ZAPPER_RANGE = COMMON_BUILDER.comment("The range of the Goo Zapper")
+                .defineInRange("zapperRange", 15, 0, 30);
         COMMON_BUILDER.pop();
 
         /*COMMON_BUILDER.comment("Goo Scanner Settings").push(SUBCATEGORY_ITEM_SCANNER);

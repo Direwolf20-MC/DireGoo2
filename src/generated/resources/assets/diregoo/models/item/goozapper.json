@@ -24,6 +24,18 @@
         0,
         -7
       ]
+    },
+    "firstperson_lefthand": {
+      "rotation": [
+        0,
+        -80,
+        0
+      ],
+      "translation": [
+        6,
+        0,
+        -7
+      ]
     }
   },
   "textures": {

@@ -72,6 +72,11 @@ public class GeneratorItemModels extends ItemModelProvider {
                 .translation(6, 0, -7)
                 .scale(1f)
                 .end()
+                .transform(ModelBuilder.Perspective.FIRSTPERSON_LEFT)
+                .rotation(0, -80, 0)
+                .translation(6, 0, -7)
+                .scale(1f)
+                .end()
                 .end();
 
         String goonade = ModItems.GOONADE.get().getRegistryName().getPath();

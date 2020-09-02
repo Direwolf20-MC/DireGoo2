@@ -55,7 +55,7 @@ abd436e17a1c88b390fcd477998d04615413e5ec assets/diregoo/models/item/goodetector.
 713d10b3144c021b16ad41b9c1841712c21923d9 assets/diregoo/models/item/gooremover.json
 3780612fa808440d07983eb4ec692af40c38df38 assets/diregoo/models/item/gooresidue.json
 6f04fdcea6ebf9058db2329667713cd51f1e58a2 assets/diregoo/models/item/gooscanner.json
-647bdc00ae1963230859ada13aa99d8386a810a2 assets/diregoo/models/item/goozapper.json
+9c380e447a096f487b69215cdb21aaa5e9120e37 assets/diregoo/models/item/goozapper.json
 b3d4e4113f5dd58c167bb7098b2293b42f7cefbc assets/diregoo/models/item/turretblock.json
 2fb58d66c0e568598b9400850dd89e58b7ed41df data/diregoo/loot_tables/blocks/gooblock.json
 2fb58d66c0e568598b9400850dd89e58b7ed41df data/diregoo/loot_tables/blocks/gooblockburst.json
