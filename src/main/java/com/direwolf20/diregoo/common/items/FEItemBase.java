@@ -26,6 +26,11 @@ public class FEItemBase extends Item {
         this.energyCapacity = 1000000;
     }
 
+    public FEItemBase(Item.Properties properties, int MaxRF) {
+        super(properties);
+        this.energyCapacity = MaxRF;
+    }
+
     @Override
     public int getMaxDamage(ItemStack stack) {
         return this.energyCapacity;

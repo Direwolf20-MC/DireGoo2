@@ -1,5 +1,6 @@
 package com.direwolf20.diregoo.common.items;
 
+import com.direwolf20.diregoo.Config;
 import com.direwolf20.diregoo.DireGoo;
 import com.direwolf20.diregoo.common.entities.LaserGunParticleEntity;
 import com.direwolf20.diregoo.common.util.VectorHelper;
@@ -19,7 +20,7 @@ import net.minecraftforge.energy.CapabilityEnergy;
 
 public class GooRemover extends FEItemBase {
     public GooRemover() {
-        super(new Item.Properties().maxStackSize(1).group(DireGoo.itemGroup));
+        super(new Item.Properties().maxStackSize(1).group(DireGoo.itemGroup), Config.ITEM_REMOVER_RFMAX.get());
     }
 
     @Override
@@ -38,7 +39,7 @@ public class GooRemover extends FEItemBase {
             // Debug code for free energy
             itemstack.getCapability(CapabilityEnergy.ENERGY).ifPresent(e -> e.receiveEnergy(10000, false));
         } else {
-            if (canUseItem(itemstack, 50000)) {
+            if (canUseItem(itemstack, Config.ITEM_REMOVER_RFCOST.get())) {
                 spawnLaserGunParticle(player, world, itemstack);
             }
         }
@@ -73,6 +74,6 @@ public class GooRemover extends FEItemBase {
         LaserGunParticleEntity laserGunParticleEntity = new LaserGunParticleEntity(world, player, laserPos.getX(), laserPos.getY(), laserPos.getZ());
         laserGunParticleEntity.shoot(pathVec.getX(), pathVec.getY(), pathVec.getZ(), 1f, 0f);
         world.addEntity(laserGunParticleEntity);
-        itemstack.getCapability(CapabilityEnergy.ENERGY).ifPresent(e -> e.extractEnergy(50000, false));
+        itemstack.getCapability(CapabilityEnergy.ENERGY).ifPresent(e -> e.extractEnergy(Config.ITEM_REMOVER_RFCOST.get(), false));
     }
 }
