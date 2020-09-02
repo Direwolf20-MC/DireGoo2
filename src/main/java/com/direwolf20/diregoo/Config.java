@@ -49,9 +49,9 @@ public class Config {
     public static ForgeConfigSpec.IntValue ITEM_REMOVER_RFCOST;
     public static ForgeConfigSpec.IntValue ITEM_REMOVER_RFMAX;
 
-    public static final String SUBCATEGORY_ITEM_SCANNER = "item_scanner";
+    /*public static final String SUBCATEGORY_ITEM_SCANNER = "item_scanner";
     public static ForgeConfigSpec.IntValue ITEM_SCANNER_RFCOST;
-    public static ForgeConfigSpec.IntValue ITEM_SCANNER_RFMAX;
+    public static ForgeConfigSpec.IntValue ITEM_SCANNER_RFMAX;*/
 
     static {
 
@@ -99,12 +99,12 @@ public class Config {
                 .defineInRange("removerRFMax", 1000000, 0, Integer.MAX_VALUE);
         COMMON_BUILDER.pop();
 
-        COMMON_BUILDER.comment("Goo Scanner Settings").push(SUBCATEGORY_ITEM_SCANNER);
+        /*COMMON_BUILDER.comment("Goo Scanner Settings").push(SUBCATEGORY_ITEM_SCANNER);
         ITEM_SCANNER_RFCOST = COMMON_BUILDER.comment("The RF cost activation")
                 .defineInRange("scannerRFCost", 50000, 0, Integer.MAX_VALUE);
         ITEM_SCANNER_RFMAX = COMMON_BUILDER.comment("The max RF the Goo Scanner can hold")
                 .defineInRange("scannerRFMax", 1000000, 0, Integer.MAX_VALUE);
-        COMMON_BUILDER.pop();
+        COMMON_BUILDER.pop();*/
     }
 
     private static void setupGooSpreadConfig() {
