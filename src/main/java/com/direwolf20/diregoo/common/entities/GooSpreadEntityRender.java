@@ -115,7 +115,7 @@ public class GooSpreadEntityRender extends EntityRenderer<GooSpreadEntity> {
         }
 
         BlockColors blockColors = Minecraft.getInstance().getBlockColors();
-        int color = blockColors.getColor(renderBlockState, entityIn.getEntityWorld(), entityIn.func_233580_cy_(), 0);
+        int color = blockColors.getColor(renderBlockState, entityIn.getEntityWorld(), entityIn.getPosition(), 0);
         float f = (float) (color >> 16 & 255) / 255.0F;
         float f1 = (float) (color >> 8 & 255) / 255.0F;
         float f2 = (float) (color & 255) / 255.0F;
@@ -124,17 +124,17 @@ public class GooSpreadEntityRender extends EntityRenderer<GooSpreadEntity> {
         IBakedModel ibakedmodel = blockrendererdispatcher.getModelForState(renderBlockState);
         for (Direction direction : Direction.values()) {
             if (!direction.equals(Direction.UP) && !direction.equals(Direction.DOWN))
-                MyRenderMethods.renderModelBrightnessColorQuads(matrixStackIn.getLast(), builder, f, f1, f2, 1f, ibakedmodel.getQuads(renderBlockState, direction, new Random(MathHelper.getPositionRandom(entityIn.func_233580_cy_())), EmptyModelData.INSTANCE), lightValue, 0, growDirection);
+                MyRenderMethods.renderModelBrightnessColorQuads(matrixStackIn.getLast(), builder, f, f1, f2, 1f, ibakedmodel.getQuads(renderBlockState, direction, new Random(MathHelper.getPositionRandom(entityIn.getPosition())), EmptyModelData.INSTANCE), lightValue, 0, growDirection);
             if (direction.equals(Direction.UP) && stateRender == 10)
-                MyRenderMethods.renderModelBrightnessColorQuads(matrixStackIn.getLast(), builder, f, f1, f2, 1f, ibakedmodel.getQuads(renderBlockState, direction, new Random(MathHelper.getPositionRandom(entityIn.func_233580_cy_())), EmptyModelData.INSTANCE), lightValue, 0, growDirection);
+                MyRenderMethods.renderModelBrightnessColorQuads(matrixStackIn.getLast(), builder, f, f1, f2, 1f, ibakedmodel.getQuads(renderBlockState, direction, new Random(MathHelper.getPositionRandom(entityIn.getPosition())), EmptyModelData.INSTANCE), lightValue, 0, growDirection);
         }
 
         ibakedmodel = blockrendererdispatcher.getModelForState(renderBlockState2);
         for (Direction direction : Direction.values()) {
             if (!direction.equals(Direction.UP) && !direction.equals(Direction.DOWN))
-                MyRenderMethods.renderModelBrightnessColorQuads(matrixStackIn.getLast(), builder, f, f1, f2, (renderAlphaScale), ibakedmodel.getQuads(renderBlockState2, direction, new Random(MathHelper.getPositionRandom(entityIn.func_233580_cy_())), EmptyModelData.INSTANCE), lightValue, 655360, growDirection);
+                MyRenderMethods.renderModelBrightnessColorQuads(matrixStackIn.getLast(), builder, f, f1, f2, (renderAlphaScale), ibakedmodel.getQuads(renderBlockState2, direction, new Random(MathHelper.getPositionRandom(entityIn.getPosition())), EmptyModelData.INSTANCE), lightValue, 655360, growDirection);
             if (direction.equals(Direction.UP) && stateRender >= 9)
-                MyRenderMethods.renderModelBrightnessColorQuads(matrixStackIn.getLast(), builder, f, f1, f2, (renderAlphaScale), ibakedmodel.getQuads(renderBlockState2, direction, new Random(MathHelper.getPositionRandom(entityIn.func_233580_cy_())), EmptyModelData.INSTANCE), lightValue, 655360, growDirection);
+                MyRenderMethods.renderModelBrightnessColorQuads(matrixStackIn.getLast(), builder, f, f1, f2, (renderAlphaScale), ibakedmodel.getQuads(renderBlockState2, direction, new Random(MathHelper.getPositionRandom(entityIn.getPosition())), EmptyModelData.INSTANCE), lightValue, 655360, growDirection);
         }
         matrixStackIn.pop();
     }

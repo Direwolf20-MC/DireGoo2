@@ -19,7 +19,7 @@ public class TurretScreen extends FEScreenBase<TurretContainer> {
     }
 
     @Override
-    protected void func_230451_b_(MatrixStack stack, int mouseX, int mouseY) {
+    protected void drawGuiContainerForegroundLayer(MatrixStack stack, int mouseX, int mouseY) {
         Minecraft.getInstance().fontRenderer.drawString(stack, I18n.format("block.diregoo.turret"), 55, 8, Color.DARK_GRAY.getRGB());
     }
 }

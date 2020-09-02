@@ -70,7 +70,7 @@ public class AntiGooFieldGenScreen extends FEScreenBase<AntiGooFieldGenContainer
     }
 
     @Override
-    protected void func_230451_b_(MatrixStack stack, int mouseX, int mouseY) {
+    protected void drawGuiContainerForegroundLayer(MatrixStack stack, int mouseX, int mouseY) {
         Minecraft.getInstance().fontRenderer.drawString(stack, I18n.format("block.diregoo.antigoofieldgen"), 55, 8, Color.DARK_GRAY.getRGB());
     }
 
@@ -92,13 +92,13 @@ public class AntiGooFieldGenScreen extends FEScreenBase<AntiGooFieldGenContainer
 
     @Override
     public void onClose() {
-        //PacketHandler.sendToServer(new PacketChangeAntiGooFieldRange(this.ranges, this.container.tile.getPos()));
+        PacketHandler.sendToServer(new PacketChangeAntiGooFieldRange(this.ranges, this.container.tile.getPos()));
         super.onClose();
     }
 
-    @Override
+    /*@Override
     public void removed() {
         PacketHandler.sendToServer(new PacketChangeAntiGooFieldRange(this.ranges, this.container.tile.getPos()));
         super.removed();
-    }
+    }*/
 }
