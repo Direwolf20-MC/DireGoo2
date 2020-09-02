@@ -1,4 +1,4 @@
-package com.direwolf20.diregoo.client.renderer;
+package com.direwolf20.diregoo.client.renderer.util;
 
 import com.direwolf20.diregoo.DireGoo;
 import net.minecraft.client.renderer.RenderState;

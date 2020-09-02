@@ -1,6 +1,9 @@
 package com.direwolf20.diregoo.common.entities;
 
 import com.direwolf20.diregoo.DireGoo;
+import com.direwolf20.diregoo.client.entityrenders.GooEntityRender;
+import com.direwolf20.diregoo.client.entityrenders.GooSpreadEntityRender;
+import com.direwolf20.diregoo.client.entityrenders.LaserGunParticleEntityRender;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraftforge.client.event.ModelRegistryEvent;

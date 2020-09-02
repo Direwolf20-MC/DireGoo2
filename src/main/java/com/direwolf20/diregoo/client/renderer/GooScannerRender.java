@@ -1,5 +1,7 @@
 package com.direwolf20.diregoo.client.renderer;
 
+import com.direwolf20.diregoo.client.renderer.util.MyRenderMethods;
+import com.direwolf20.diregoo.client.renderer.util.OurRenderTypes;
 import com.direwolf20.diregoo.common.blocks.GooBase;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;

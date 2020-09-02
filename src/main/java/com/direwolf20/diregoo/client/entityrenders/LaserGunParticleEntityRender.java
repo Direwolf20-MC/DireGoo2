@@ -1,8 +1,9 @@
-package com.direwolf20.diregoo.common.entities;
+package com.direwolf20.diregoo.client.entityrenders;
 
-import com.direwolf20.diregoo.client.renderer.MyRenderMethods;
-import com.direwolf20.diregoo.client.renderer.OurRenderTypes;
+import com.direwolf20.diregoo.client.renderer.util.MyRenderMethods;
+import com.direwolf20.diregoo.client.renderer.util.OurRenderTypes;
 import com.direwolf20.diregoo.common.blocks.ModBlocks;
+import com.direwolf20.diregoo.common.entities.LaserGunParticleEntity;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.block.BlockState;

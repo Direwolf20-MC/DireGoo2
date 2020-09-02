@@ -1,4 +1,4 @@
-package com.direwolf20.diregoo.client.renderer;
+package com.direwolf20.diregoo.client.renderer.util;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;

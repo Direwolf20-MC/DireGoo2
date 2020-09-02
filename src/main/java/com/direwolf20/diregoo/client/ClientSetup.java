@@ -2,9 +2,9 @@ package com.direwolf20.diregoo.client;
 
 import com.direwolf20.diregoo.client.screens.AntiGooFieldGenScreen;
 import com.direwolf20.diregoo.client.screens.TurretScreen;
+import com.direwolf20.diregoo.client.tilerenders.AntiGooFieldGenTileEntityRender;
+import com.direwolf20.diregoo.client.tilerenders.TurretBlockTileEntityRender;
 import com.direwolf20.diregoo.common.blocks.ModBlocks;
-import com.direwolf20.diregoo.common.tiles.AntiGooFieldGenTileEntityRender;
-import com.direwolf20.diregoo.common.tiles.TurretBlockTileEntityRender;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 

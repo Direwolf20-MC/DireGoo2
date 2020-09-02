@@ -1,7 +1,8 @@
-package com.direwolf20.diregoo.common.tiles;
+package com.direwolf20.diregoo.client.tilerenders;
 
-import com.direwolf20.diregoo.client.renderer.AntiGooRender;
-import com.direwolf20.diregoo.client.renderer.OurRenderTypes;
+import com.direwolf20.diregoo.client.renderer.util.BlockOverlayRender;
+import com.direwolf20.diregoo.client.renderer.util.OurRenderTypes;
+import com.direwolf20.diregoo.common.tiles.AntiGooFieldGenTileEntity;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
@@ -26,7 +27,7 @@ public class AntiGooFieldGenTileEntityRender extends TileEntityRenderer<AntiGooF
         int[] ranges = tile.getRanges();
         BlockPos startPos = new BlockPos(-ranges[2], -ranges[5], -ranges[0]);
         BlockPos endPos = new BlockPos(ranges[3], ranges[4], ranges[1]);
-        AntiGooRender.renderBox(positionMatrix2, builder, startPos, endPos);
+        BlockOverlayRender.renderBox(positionMatrix2, builder, startPos, endPos);
 
         matrixStackIn.pop();
     }

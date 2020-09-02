@@ -3,6 +3,7 @@ package com.direwolf20.diregoo.client.renderer;
 import com.direwolf20.diregoo.Config;
 import com.direwolf20.diregoo.DireGoo;
 import com.direwolf20.diregoo.client.events.ClientEvents;
+import com.direwolf20.diregoo.client.renderer.util.OurRenderTypes;
 import com.direwolf20.diregoo.common.items.GooZapper;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;

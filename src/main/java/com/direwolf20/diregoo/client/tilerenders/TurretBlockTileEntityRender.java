@@ -1,6 +1,7 @@
-package com.direwolf20.diregoo.common.tiles;
+package com.direwolf20.diregoo.client.tilerenders;
 
-import com.direwolf20.diregoo.client.renderer.OurRenderTypes;
+import com.direwolf20.diregoo.client.renderer.util.OurRenderTypes;
+import com.direwolf20.diregoo.common.tiles.TurretBlockTileEntity;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.Minecraft;

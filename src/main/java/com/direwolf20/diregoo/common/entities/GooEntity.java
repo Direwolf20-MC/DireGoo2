@@ -108,7 +108,7 @@ public class GooEntity extends EntityBase {
     }
 
     @Override
-    protected int getMaxLife() {
+    public int getMaxLife() {
         return dataManager.get(MAXLIFE);
     }
 
