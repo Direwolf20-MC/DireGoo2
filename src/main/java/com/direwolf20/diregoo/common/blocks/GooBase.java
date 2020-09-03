@@ -84,9 +84,10 @@ public class GooBase extends Block {
         worldIn.setBlockState(pos, oldState.with(FROZEN, 3).with(ACTIVE, true));
     }
 
-    public static boolean handleFrozen(BlockPos pos, BlockState state, World worldIn) {
+    public static boolean handleFrozen(BlockPos pos, BlockState state, World worldIn, Random rand) {
         if (!worldIn.isAreaLoaded(pos, 3))
             return false; // Forge: prevent loading unloaded chunks when checking neighbor's light and spreading
+        if (rand.nextInt(100) > Config.FREEZE_MELT_CHANCE.get()) return false;
         int frozenState = state.get(FROZEN);
         if (frozenState > 0) {
             frozenState--;
@@ -145,7 +146,7 @@ public class GooBase extends Block {
      */
     @Override
     public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
-        if (handleFrozen(pos, state, worldIn)) return;
+        if (handleFrozen(pos, state, worldIn, rand)) return;
         if (!shouldGooSpread(state, worldIn, pos, rand))
             return;
         boolean animate = false;

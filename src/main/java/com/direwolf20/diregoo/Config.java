@@ -19,6 +19,7 @@ public class Config {
     public static ForgeConfigSpec.BooleanValue CAN_SPREAD_ALL;
     public static ForgeConfigSpec.IntValue SPREAD_TICK_DELAY;
     public static ForgeConfigSpec.BooleanValue ANIMATE_SPREAD;
+    public static ForgeConfigSpec.IntValue FREEZE_MELT_CHANCE;
 
     public static final String SUBCATEGORY_GOO = "normal_goo";
     public static ForgeConfigSpec.BooleanValue CAN_SPREAD_GOO;
@@ -144,6 +145,8 @@ public class Config {
                 .defineInRange("spreadTickDelay", -1, -1, Integer.MAX_VALUE);
         ANIMATE_SPREAD = COMMON_BUILDER.comment("Does the goo use entities to animate spread, or do simple setblocks?")
                 .define("animateSpread", true);
+        FREEZE_MELT_CHANCE = COMMON_BUILDER.comment("The chance for Frozen Goo to melt on block tick. The lower this number, the longer it stays frozen.")
+                .defineInRange("freezeMeltChance", 100, 0, 100);
 
         COMMON_BUILDER.comment("Normal Goo Specific Settings").push(SUBCATEGORY_GOO);
         CAN_SPREAD_GOO = COMMON_BUILDER.comment("Can the normal goo spread. Set the false to disable only normal goo spreading.")
