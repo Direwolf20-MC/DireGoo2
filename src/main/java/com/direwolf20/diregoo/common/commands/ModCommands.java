@@ -16,6 +16,7 @@ public class ModCommands {
                         .then(CommandPlayerSpreadRange.register())
                         .then(CommandCountSpreadEntities.register())
                         .then(CommandAnimateSpread.register())
+                        .then(CommandGooDeathEvent.register())
         );
 
         dispatcher.register(Commands.literal("diregoo").redirect(cmdTut));

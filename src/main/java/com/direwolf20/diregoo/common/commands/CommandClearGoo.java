@@ -37,7 +37,7 @@ public class CommandClearGoo {
                 .map(BlockPos::toImmutable)
                 .collect(Collectors.toList());
         for (BlockPos pos : area)
-            GooBase.resetBlock((ServerWorld) player.getEntityWorld(), pos, false, 80);
+            GooBase.resetBlock((ServerWorld) player.getEntityWorld(), pos, false, 80, false);
         List<GooSpreadEntity> gooSpreadEntities = player.getEntityWorld().getEntitiesWithinAABB(GooSpreadEntity.class, new AxisAlignedBB(minPos, maxPos));
         for (GooSpreadEntity gooSpreadEntity : gooSpreadEntities)
             gooSpreadEntity.remove();

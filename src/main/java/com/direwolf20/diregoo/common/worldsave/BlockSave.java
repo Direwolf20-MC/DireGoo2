@@ -27,6 +27,7 @@ public class BlockSave extends WorldSavedData {
     private final HashMap<BlockPos, CompoundNBT> teMap = new HashMap<>();
     private final ArrayList<BlockPos> antigooList = new ArrayList<>();
     private final SetMultimap<BlockPos, BlockPos> antigooFieldList = HashMultimap.create();
+    private boolean gooDeathEvent = false;
 
 
     public BlockSave() {
@@ -79,6 +80,7 @@ public class BlockSave extends WorldSavedData {
             antigooFieldList.put(sourcePos, protectedPos);
         }
 
+        gooDeathEvent = nbt.getBoolean("gooDeathEvent");
         long elapsedTime = System.nanoTime() - startTime;
         System.out.println("Elapsed time for Read = " + elapsedTime / 1000000);
     }
@@ -133,6 +135,7 @@ public class BlockSave extends WorldSavedData {
         }
         compound.put("antigoofield", antiField);
 
+        compound.putBoolean("gooDeathEvent", gooDeathEvent);
         long elapsedTime = System.nanoTime() - startTime;
         System.out.println("Elapsed time for Write = " + elapsedTime / 1000000);
         return compound;
@@ -245,5 +248,14 @@ public class BlockSave extends WorldSavedData {
 
     public CompoundNBT getTEFromPos(BlockPos pos) {
         return this.teMap.get(pos);
+    }
+
+    public boolean getGooDeathEvent() {
+        return gooDeathEvent;
+    }
+
+    public void setGooDeathEvent(boolean gooDeathEvent) {
+        this.gooDeathEvent = gooDeathEvent;
+        this.markDirty();
     }
 }

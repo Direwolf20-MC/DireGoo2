@@ -29,22 +29,28 @@ public class GooEntity extends EntityBase {
 
     private static final DataParameter<Optional<BlockState>> gooBlockState = EntityDataManager.createKey(GooEntity.class, DataSerializers.OPTIONAL_BLOCK_STATE);
     private static final DataParameter<Integer> MAXLIFE = EntityDataManager.createKey(GooEntity.class, DataSerializers.VARINT);
+    private static final DataParameter<Boolean> CALCSIDERENDER = EntityDataManager.createKey(GooEntity.class, DataSerializers.BOOLEAN);
 
     public GooEntity(EntityType<?> type, World world) {
         super(type, world);
     }
 
-    public GooEntity(World world, BlockPos spawnPos, BlockState gooBlock, int maxLife) {
+    public GooEntity(World world, BlockPos spawnPos, BlockState gooBlock, int maxLife, boolean calcSideRender) {
         this(TYPE, world);
 
         setPosition(spawnPos.getX(), spawnPos.getY(), spawnPos.getZ());
         targetPos = spawnPos;
         dataManager.set(gooBlockState, Optional.of(gooBlock));
         dataManager.set(MAXLIFE, maxLife);
+        dataManager.set(CALCSIDERENDER, calcSideRender);
     }
 
     public BlockState getGooBlockState() {
         return dataManager.get(gooBlockState).get();
+    }
+
+    public boolean getCalcSideRender() {
+        return dataManager.get(CALCSIDERENDER);
     }
 
     @Override
@@ -105,6 +111,7 @@ public class GooEntity extends EntityBase {
     protected void registerData() {
         dataManager.register(gooBlockState, Optional.of(Blocks.AIR.getDefaultState()));
         dataManager.register(MAXLIFE, 80);
+        dataManager.register(CALCSIDERENDER, false);
     }
 
     @Override
@@ -122,12 +129,14 @@ public class GooEntity extends EntityBase {
         super.readAdditional(compound);
         dataManager.set(gooBlockState, Optional.ofNullable(NBTUtil.readBlockState(compound.getCompound("gooblockstate"))));
         dataManager.set(MAXLIFE, compound.getInt("maxlife"));
+        dataManager.set(CALCSIDERENDER, compound.getBoolean("calcsiderender"));
     }
 
     @Override
     protected void writeAdditional(CompoundNBT compound) {
         compound.put("gooblockstate", NBTUtil.writeBlockState(dataManager.get(gooBlockState).get()));
         compound.putInt("maxlife", dataManager.get(MAXLIFE));
+        compound.putBoolean("calcsiderender", dataManager.get(CALCSIDERENDER));
         super.writeAdditional(compound);
     }
 

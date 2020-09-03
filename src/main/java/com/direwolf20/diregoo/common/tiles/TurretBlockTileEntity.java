@@ -82,7 +82,7 @@ public class TurretBlockTileEntity extends FETileBase implements ITickableTileEn
         BlockPos shootPos = clearBlocksQueue.remove();
         int shootDuration = 5;
         if (world.getBlockState(shootPos).getBlock() instanceof GooBase) {
-            GooBase.resetBlock((ServerWorld) world, shootPos, true, shootDuration);
+            GooBase.resetBlock((ServerWorld) world, shootPos, true, shootDuration, true);
             firingCooldown = shootDuration;
             currentTarget = shootPos;
             energyStorage.consumeEnergy(Config.TURRET_RFCOST.get(), false);

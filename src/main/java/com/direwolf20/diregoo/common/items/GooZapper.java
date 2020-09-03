@@ -23,6 +23,6 @@ public class GooZapper extends FELaserBase {
 
     @Override
     public void laserAction(ServerWorld world, BlockPos pos) {
-        GooBase.resetBlock(world, pos, true, 20);
+        GooBase.resetBlock(world, pos, true, 20, true);
     }
 }

@@ -42,7 +42,7 @@ public class GoonadeEntity extends ProjectileBase {
                     .map(BlockPos::toImmutable)
                     .collect(Collectors.toList());
             for (BlockPos pos : area)
-                GooBase.resetBlock((ServerWorld) world, pos, true, 80);
+                GooBase.resetBlock((ServerWorld) world, pos, true, 80, true);
             List<GooSpreadEntity> gooSpreadEntities = world.getEntitiesWithinAABB(GooSpreadEntity.class, new AxisAlignedBB(hitPos.add(-2, -2, -2), hitPos.add(2, 2, 2)));
             for (GooSpreadEntity gooSpreadEntity : gooSpreadEntities)
                 gooSpreadEntity.remove();

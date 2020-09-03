@@ -40,11 +40,11 @@ public class GooBase extends Block {
     }
 
     //Reset the block
-    public static void resetBlock(ServerWorld world, BlockPos pos, boolean render, int gooRenderLife) {
+    public static void resetBlock(ServerWorld world, BlockPos pos, boolean render, int gooRenderLife, boolean calcSideRender) {
         BlockSave blockSave = BlockSave.get(world);
         BlockState oldState = blockSave.getStateFromPos(pos);
         if (render)
-            world.addEntity(new GooEntity(world, pos, world.getBlockState(pos), gooRenderLife));
+            world.addEntity(new GooEntity(world, pos, world.getBlockState(pos), gooRenderLife, calcSideRender));
         if (oldState == null) {
             world.setBlockState(pos, Blocks.AIR.getDefaultState());
             return;
@@ -146,6 +146,13 @@ public class GooBase extends Block {
      */
     @Override
     public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
+        BlockSave blockSave = BlockSave.get(worldIn);
+        if (blockSave.getGooDeathEvent()) {
+            boolean animate = worldIn.isPlayerWithin(pos.getX(), pos.getY(), pos.getZ(), 10);
+            if (rand.nextInt(100) < 25)
+                resetBlock(worldIn, pos, animate, 20, false);
+            return;
+        }
         if (handleFrozen(pos, state, worldIn, rand)) return;
         if (!shouldGooSpread(state, worldIn, pos, rand))
             return;
@@ -202,7 +209,7 @@ public class GooBase extends Block {
             int newGeneration = (oldState.get(GooBlockPoison.GENERATION) == 5) ? 5 : oldState.get(GooBlockPoison.GENERATION) + 1;
             worldIn.setBlockState(pos, ModBlocks.GOO_BLOCK_POISON.get().getDefaultState().with(GooBlockPoison.GENERATION, newGeneration));
             worldIn.getPendingBlockTicks().scheduleTick(pos, ModBlocks.GOO_BLOCK_POISON.get(), 5);
-            resetBlock(worldIn, checkPos, true, 80);
+            resetBlock(worldIn, checkPos, true, 80, false);
             return BlockPos.ZERO;
         }
 
@@ -303,7 +310,7 @@ public class GooBase extends Block {
             if (oldState.get(DoorBlock.HALF).equals(DoubleBlockHalf.LOWER)) {
                 world.setBlockState(pos, oldState);
                 if (world.getBlockState(pos.up()).getBlock() instanceof GooBase && render)
-                    world.addEntity(new GooEntity(world, pos.up(), world.getBlockState(pos.up()), gooRenderLife));
+                    world.addEntity(new GooEntity(world, pos.up(), world.getBlockState(pos.up()), gooRenderLife, true));
                 world.setBlockState(pos.up(), oldState.with(DoorBlock.HALF, DoubleBlockHalf.UPPER));
                 blockSave.pop(pos);
                 return true;
@@ -314,7 +321,7 @@ public class GooBase extends Block {
                 BlockPos additionalPos = pos.offset(oldState.get(BedBlock.HORIZONTAL_FACING).getOpposite());
                 world.setBlockState(pos, oldState);
                 if (world.getBlockState(additionalPos).getBlock() instanceof GooBase && render)
-                    world.addEntity(new GooEntity(world, additionalPos, world.getBlockState(additionalPos), gooRenderLife));
+                    world.addEntity(new GooEntity(world, additionalPos, world.getBlockState(additionalPos), gooRenderLife, true));
                 world.setBlockState(additionalPos, oldState.with(BedBlock.PART, BedPart.FOOT));
                 blockSave.pop(pos);
                 return true;
