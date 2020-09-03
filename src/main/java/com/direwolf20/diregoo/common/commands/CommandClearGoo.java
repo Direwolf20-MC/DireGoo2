@@ -2,6 +2,7 @@ package com.direwolf20.diregoo.common.commands;
 
 import com.direwolf20.diregoo.common.blocks.GooBase;
 import com.direwolf20.diregoo.common.entities.GooSpreadEntity;
+import com.direwolf20.diregoo.common.worldsave.BlockSave;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
@@ -29,6 +30,7 @@ public class CommandClearGoo {
     public static int clearGoo(CommandContext<CommandSource> context) throws CommandSyntaxException {
         int range = IntegerArgumentType.getInteger(context, "range");
         PlayerEntity player = context.getSource().asPlayer();
+        BlockSave blockSave = BlockSave.get(player.world);
         BlockPos hitPos = new BlockPos(player.getPosX(), player.getPosY(), player.getPosZ());
         BlockPos minPos = hitPos.add(-range, -range, -range);
         BlockPos maxPos = hitPos.add(range, range, range);
@@ -37,7 +39,7 @@ public class CommandClearGoo {
                 .map(BlockPos::toImmutable)
                 .collect(Collectors.toList());
         for (BlockPos pos : area)
-            GooBase.resetBlock((ServerWorld) player.getEntityWorld(), pos, false, 80, false);
+            GooBase.resetBlock((ServerWorld) player.getEntityWorld(), pos, false, 80, false, blockSave);
         List<GooSpreadEntity> gooSpreadEntities = player.getEntityWorld().getEntitiesWithinAABB(GooSpreadEntity.class, new AxisAlignedBB(minPos, maxPos));
         for (GooSpreadEntity gooSpreadEntity : gooSpreadEntities)
             gooSpreadEntity.remove();

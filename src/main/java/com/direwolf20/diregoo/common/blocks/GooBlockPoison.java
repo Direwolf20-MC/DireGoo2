@@ -1,5 +1,6 @@
 package com.direwolf20.diregoo.common.blocks;
 
+import com.direwolf20.diregoo.common.worldsave.BlockSave;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
@@ -28,7 +29,8 @@ public class GooBlockPoison extends Block {
         if (state.get(GENERATION) == 0)
             return; //Placed versions of this block do nothing. It activates when another goo tries to eat it
         if (rand.nextDouble() <= decayChance(state)) { //The percent chance it decays rather than spreads. Lower == more spread.
-            GooBase.resetBlock(worldIn, pos, true, 20, true);
+            BlockSave blockSave = BlockSave.get(worldIn);
+            GooBase.resetBlock(worldIn, pos, true, 20, true, blockSave);
         } else {
             //System.out.println("Generation " + state.get(GENERATION) + " is spreading");
             spreadGoo(state, worldIn, pos, rand);

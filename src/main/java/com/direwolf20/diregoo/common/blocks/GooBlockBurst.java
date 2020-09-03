@@ -1,6 +1,7 @@
 package com.direwolf20.diregoo.common.blocks;
 
 import com.direwolf20.diregoo.Config;
+import com.direwolf20.diregoo.common.worldsave.BlockSave;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.server.ServerWorld;
@@ -20,6 +21,7 @@ public class GooBlockBurst extends GooBase {
 
     @Override
     public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
+        BlockSave blockSave = BlockSave.get(worldIn);
         if (handleFrozen(pos, state, worldIn, rand)) return;
         if (!shouldGooSpread(state, worldIn, pos, rand))
             return;
@@ -31,7 +33,7 @@ public class GooBlockBurst extends GooBase {
             boolean animate = false;
             if (Config.ANIMATE_SPREAD.get())
                 animate = worldIn.isPlayerWithin(pos.getX(), pos.getY(), pos.getZ(), 20);
-            BlockPos newGooPos = spreadGoo(state, worldIn, gooPos, rand, animate);
+            BlockPos newGooPos = spreadGoo(state, worldIn, gooPos, rand, animate, blockSave);
             if (!newGooPos.equals(BlockPos.ZERO))
                 gooPos = newGooPos;
         }

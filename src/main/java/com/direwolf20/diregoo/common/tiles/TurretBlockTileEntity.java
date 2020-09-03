@@ -4,6 +4,7 @@ import com.direwolf20.diregoo.Config;
 import com.direwolf20.diregoo.common.blocks.GooBase;
 import com.direwolf20.diregoo.common.blocks.ModBlocks;
 import com.direwolf20.diregoo.common.container.TurretContainer;
+import com.direwolf20.diregoo.common.worldsave.BlockSave;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -82,7 +83,8 @@ public class TurretBlockTileEntity extends FETileBase implements ITickableTileEn
         BlockPos shootPos = clearBlocksQueue.remove();
         int shootDuration = 5;
         if (world.getBlockState(shootPos).getBlock() instanceof GooBase) {
-            GooBase.resetBlock((ServerWorld) world, shootPos, true, shootDuration, true);
+            BlockSave blockSave = BlockSave.get(world);
+            GooBase.resetBlock((ServerWorld) world, shootPos, true, shootDuration, true, blockSave);
             firingCooldown = shootDuration;
             currentTarget = shootPos;
             energyStorage.consumeEnergy(Config.TURRET_RFCOST.get(), false);

@@ -3,6 +3,7 @@ package com.direwolf20.diregoo.common.entities;
 import com.direwolf20.diregoo.DireGoo;
 import com.direwolf20.diregoo.common.blocks.GooBase;
 import com.direwolf20.diregoo.common.items.ModItems;
+import com.direwolf20.diregoo.common.worldsave.BlockSave;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
@@ -36,13 +37,14 @@ public class GoonadeEntity extends ProjectileBase {
     @Override
     protected void onImpact(RayTraceResult result) {
         if (!world.isRemote) {
+            BlockSave blockSave = BlockSave.get(world);
             BlockPos hitPos = new BlockPos(result.getHitVec().getX(), result.getHitVec().getY(), result.getHitVec().getZ());
             List<BlockPos> area = BlockPos.getAllInBox(hitPos.add(-2, -2, -2), hitPos.add(2, 2, 2))
                     .filter(blockPos -> world.getBlockState(blockPos).getBlock() instanceof GooBase)
                     .map(BlockPos::toImmutable)
                     .collect(Collectors.toList());
             for (BlockPos pos : area)
-                GooBase.resetBlock((ServerWorld) world, pos, true, 80, true);
+                GooBase.resetBlock((ServerWorld) world, pos, true, 80, true, blockSave);
             List<GooSpreadEntity> gooSpreadEntities = world.getEntitiesWithinAABB(GooSpreadEntity.class, new AxisAlignedBB(hitPos.add(-2, -2, -2), hitPos.add(2, 2, 2)));
             for (GooSpreadEntity gooSpreadEntity : gooSpreadEntities)
                 gooSpreadEntity.remove();

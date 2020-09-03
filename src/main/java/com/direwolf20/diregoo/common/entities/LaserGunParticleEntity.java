@@ -3,6 +3,7 @@ package com.direwolf20.diregoo.common.entities;
 import com.direwolf20.diregoo.DireGoo;
 import com.direwolf20.diregoo.common.blocks.GooBase;
 import com.direwolf20.diregoo.common.items.ModItems;
+import com.direwolf20.diregoo.common.worldsave.BlockSave;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -41,8 +42,10 @@ public class LaserGunParticleEntity extends ProjectileBase {
                 BlockRayTraceResult blockRayTraceResult = (BlockRayTraceResult) result;
                 BlockPos pos = blockRayTraceResult.getPos();
                 BlockState inBlockState = this.world.getBlockState(pos);
-                if (inBlockState.getBlock() instanceof GooBase)
-                    GooBase.resetBlock((ServerWorld) world, pos, true, 80, true);
+                if (inBlockState.getBlock() instanceof GooBase) {
+                    BlockSave blockSave = BlockSave.get(world);
+                    GooBase.resetBlock((ServerWorld) world, pos, true, 80, true, blockSave);
+                }
                 remove();
             }
         }

@@ -40,8 +40,7 @@ public class GooBase extends Block {
     }
 
     //Reset the block
-    public static void resetBlock(ServerWorld world, BlockPos pos, boolean render, int gooRenderLife, boolean calcSideRender) {
-        BlockSave blockSave = BlockSave.get(world);
+    public static void resetBlock(ServerWorld world, BlockPos pos, boolean render, int gooRenderLife, boolean calcSideRender, BlockSave blockSave) {
         BlockState oldState = blockSave.getStateFromPos(pos);
         if (render)
             world.addEntity(new GooEntity(world, pos, world.getBlockState(pos), gooRenderLife, calcSideRender));
@@ -129,13 +128,12 @@ public class GooBase extends Block {
     /**
      * Determines if goo can spread to the target POS in the world, this runs after calculating where to spread to
      */
-    public boolean canSpreadHere(BlockPos pos, BlockState oldState, ServerWorld world) {
+    public boolean canSpreadHere(BlockPos pos, BlockState oldState, ServerWorld world, BlockSave blockSave) {
         if (!world.isAreaLoaded(pos, 3))
             return false; // Forge: prevent loading unloaded chunks when checking neighbor's light and spreading
         if (!isAdjacentValid(world, pos, oldState))
             return false;
 
-        BlockSave blockSave = BlockSave.get(world);
         if (blockSave.checkAnti(pos))
             return false; //Check the antiGoo list
         return true;
@@ -149,8 +147,8 @@ public class GooBase extends Block {
         BlockSave blockSave = BlockSave.get(worldIn);
         if (blockSave.getGooDeathEvent()) {
             boolean animate = worldIn.isPlayerWithin(pos.getX(), pos.getY(), pos.getZ(), 10);
-            if (rand.nextInt(100) < 25)
-                resetBlock(worldIn, pos, animate, 20, false);
+            if (rand.nextInt(100) < 25) //If this happens 100% of the time its super laggy, even at low randomTickSpeeds
+                resetBlock(worldIn, pos, animate, 20, false, blockSave);
             return;
         }
         if (handleFrozen(pos, state, worldIn, rand)) return;
@@ -159,7 +157,7 @@ public class GooBase extends Block {
         boolean animate = false;
         if (Config.ANIMATE_SPREAD.get())
             animate = worldIn.isPlayerWithin(pos.getX(), pos.getY(), pos.getZ(), 20);
-        BlockPos gooPos = spreadGoo(state, worldIn, pos, rand, animate);
+        BlockPos gooPos = spreadGoo(state, worldIn, pos, rand, animate, blockSave);
         forceExtraTick(worldIn, gooPos);
     }
 
@@ -198,7 +196,7 @@ public class GooBase extends Block {
         return true;
     }
 
-    public BlockPos spreadGoo(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand, boolean animate) {
+    public BlockPos spreadGoo(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand, boolean animate, BlockSave blockSave) {
         int x = rand.nextInt(Direction.values().length);
         Direction direction = Direction.values()[x];
 
@@ -209,36 +207,35 @@ public class GooBase extends Block {
             int newGeneration = (oldState.get(GooBlockPoison.GENERATION) == 5) ? 5 : oldState.get(GooBlockPoison.GENERATION) + 1;
             worldIn.setBlockState(pos, ModBlocks.GOO_BLOCK_POISON.get().getDefaultState().with(GooBlockPoison.GENERATION, newGeneration));
             worldIn.getPendingBlockTicks().scheduleTick(pos, ModBlocks.GOO_BLOCK_POISON.get(), 5);
-            resetBlock(worldIn, checkPos, true, 80, false);
+            resetBlock(worldIn, checkPos, true, 80, false, blockSave);
             return BlockPos.ZERO;
         }
 
-        if (canSpreadHere(checkPos, oldState, worldIn)) {
+        if (canSpreadHere(checkPos, oldState, worldIn, blockSave)) {
             if (animate) {
                 List<GooSpreadEntity> list = worldIn.getEntitiesWithinAABB(GooSpreadEntity.class, new AxisAlignedBB(checkPos.getX(), checkPos.getY(), checkPos.getZ(), checkPos.getX() + 0.25d, checkPos.getY() + 0.25d, checkPos.getZ() + 0.25d));
                 if (!list.isEmpty())
                     return BlockPos.ZERO;
             }
-            if (handleSpecialCases(worldIn, oldState, checkPos, animate, direction))
+            if (handleSpecialCases(worldIn, oldState, checkPos, animate, direction, blockSave))
                 return BlockPos.ZERO;
-            setBlockToGoo(oldState, worldIn, checkPos, animate, direction);
+            setBlockToGoo(oldState, worldIn, checkPos, animate, direction, blockSave);
         } else {
             return BlockPos.ZERO;
         }
         return checkPos;
     }
 
-    public void setBlockToGoo(BlockState oldState, World worldIn, BlockPos checkPos, boolean animate, Direction direction) {
+    public void setBlockToGoo(BlockState oldState, World worldIn, BlockPos checkPos, boolean animate, Direction direction, BlockSave blockSave) {
         if (animate) {
             worldIn.addEntity(new GooSpreadEntity(worldIn, checkPos, this.getDefaultState(), oldState, gooSpreadAnimationTime, direction.getOpposite().getIndex()));
         } else {
-            saveBlockData(worldIn, checkPos, oldState);
+            saveBlockData(worldIn, checkPos, oldState, blockSave);
             worldIn.setBlockState(checkPos, this.getDefaultState());
         }
     }
 
-    public static void saveBlockData(World worldIn, BlockPos checkPos, BlockState oldState) {
-        BlockSave blockSave = BlockSave.get(worldIn);
+    public static void saveBlockData(World worldIn, BlockPos checkPos, BlockState oldState, BlockSave blockSave) {
         TileEntity te = worldIn.getTileEntity(checkPos);
         CompoundNBT nbtData = new CompoundNBT();
         if (te != null) {
@@ -257,13 +254,13 @@ public class GooBase extends Block {
         builder.add(ACTIVE);
     }
 
-    public boolean handleSpecialCases(World world, BlockState blockState, BlockPos blockPos, boolean animate, Direction direction) {
+    public boolean handleSpecialCases(World world, BlockState blockState, BlockPos blockPos, boolean animate, Direction direction, BlockSave blockSave) {
         if (blockState.getBlock() == Blocks.PISTON || blockState.getBlock() == Blocks.STICKY_PISTON) {
             if (blockState.get(PistonBlock.EXTENDED)) {
                 BlockState newstate = blockState.with(PistonBlock.EXTENDED, false);
                 BlockPos additionalPos = blockPos.offset(blockState.get(PistonBlock.FACING));
-                setBlockToGoo(newstate, world, blockPos, animate, direction);
-                setBlockToGoo(Blocks.AIR.getDefaultState(), world, additionalPos, animate, direction);
+                setBlockToGoo(newstate, world, blockPos, animate, direction, blockSave);
+                setBlockToGoo(Blocks.AIR.getDefaultState(), world, additionalPos, animate, direction, blockSave);
                 return true;
             } else {
                 return false;
@@ -274,31 +271,31 @@ public class GooBase extends Block {
             BlockState oldState = world.getBlockState(additionalPos);
             if (oldState.getBlock() == Blocks.PISTON || oldState.getBlock() == Blocks.STICKY_PISTON) {
                 BlockState newstate = oldState.with(PistonBlock.EXTENDED, false);
-                setBlockToGoo(newstate, world, additionalPos, animate, direction);
-                setBlockToGoo(Blocks.AIR.getDefaultState(), world, blockPos, animate, direction);
+                setBlockToGoo(newstate, world, additionalPos, animate, direction, blockSave);
+                setBlockToGoo(Blocks.AIR.getDefaultState(), world, blockPos, animate, direction, blockSave);
             }
             return true;
         }
         if (blockState.getBlock() instanceof DoorBlock) {
             if (blockState.get(DoorBlock.HALF).equals(DoubleBlockHalf.LOWER)) {
-                setBlockToGoo(blockState, world, blockPos, animate, direction);
-                setBlockToGoo(Blocks.AIR.getDefaultState(), world, blockPos.up(), animate, direction);
+                setBlockToGoo(blockState, world, blockPos, animate, direction, blockSave);
+                setBlockToGoo(Blocks.AIR.getDefaultState(), world, blockPos.up(), animate, direction, blockSave);
             } else {
-                setBlockToGoo(blockState, world, blockPos.down(), animate, direction);
-                setBlockToGoo(Blocks.AIR.getDefaultState(), world, blockPos, animate, direction);
+                setBlockToGoo(blockState, world, blockPos.down(), animate, direction, blockSave);
+                setBlockToGoo(Blocks.AIR.getDefaultState(), world, blockPos, animate, direction, blockSave);
             }
             return true;
         }
         if (blockState.getBlock() instanceof BedBlock) {
             if (blockState.get(BedBlock.PART).equals(BedPart.HEAD)) {
                 BlockPos additionalPos = blockPos.offset(blockState.get(BedBlock.HORIZONTAL_FACING).getOpposite());
-                setBlockToGoo(blockState, world, blockPos, animate, direction);
-                setBlockToGoo(Blocks.AIR.getDefaultState(), world, additionalPos, animate, direction);
+                setBlockToGoo(blockState, world, blockPos, animate, direction, blockSave);
+                setBlockToGoo(Blocks.AIR.getDefaultState(), world, additionalPos, animate, direction, blockSave);
             } else {
                 BlockPos additionalPos = blockPos.offset(blockState.get(BedBlock.HORIZONTAL_FACING));
                 BlockState newState = world.getBlockState(additionalPos);
-                setBlockToGoo(newState, world, additionalPos, animate, direction);
-                setBlockToGoo(Blocks.AIR.getDefaultState(), world, blockPos, animate, direction);
+                setBlockToGoo(newState, world, additionalPos, animate, direction, blockSave);
+                setBlockToGoo(Blocks.AIR.getDefaultState(), world, blockPos, animate, direction, blockSave);
             }
             return true;
         }

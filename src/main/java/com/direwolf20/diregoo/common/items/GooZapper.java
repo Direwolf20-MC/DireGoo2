@@ -3,6 +3,7 @@ package com.direwolf20.diregoo.common.items;
 import com.direwolf20.diregoo.Config;
 import com.direwolf20.diregoo.DireGoo;
 import com.direwolf20.diregoo.common.blocks.GooBase;
+import com.direwolf20.diregoo.common.worldsave.BlockSave;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.server.ServerWorld;
 
@@ -23,6 +24,7 @@ public class GooZapper extends FELaserBase {
 
     @Override
     public void laserAction(ServerWorld world, BlockPos pos) {
-        GooBase.resetBlock(world, pos, true, 20, true);
+        BlockSave blockSave = BlockSave.get(world);
+        GooBase.resetBlock(world, pos, true, 20, true, blockSave);
     }
 }
