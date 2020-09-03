@@ -44,6 +44,7 @@ public class ModEntities {
                 EntityType.Builder.<LaserGunParticleEntity>create(LaserGunParticleEntity::new, EntityClassification.MISC)
                         .setTrackingRange(64)
                         .setUpdateInterval(1)
+                        .size(0.1f, 0.1f)
                         .setShouldReceiveVelocityUpdates(false)
                         .setCustomClientFactory(((spawnEntity, world) -> new LaserGunParticleEntity(LaserGunParticleEntity.TYPE, world)))
                         .build("")
