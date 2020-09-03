@@ -4,8 +4,8 @@ import com.direwolf20.diregoo.client.renderer.AntiGooRender;
 import com.direwolf20.diregoo.client.renderer.GooScannerRender;
 import com.direwolf20.diregoo.client.renderer.RenderZapperLaser;
 import com.direwolf20.diregoo.common.items.AntigooPaste;
+import com.direwolf20.diregoo.common.items.FELaserBase;
 import com.direwolf20.diregoo.common.items.GooScanner;
-import com.direwolf20.diregoo.common.items.GooZapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -32,7 +32,7 @@ public class ClientEvents {
                 continue;
 
             ItemStack heldItem = getZapper(player);
-            if (player.isHandActive() && heldItem.getItem() instanceof GooZapper) {
+            if (player.isHandActive() && heldItem.getItem() instanceof FELaserBase) {
                 RenderZapperLaser.renderLaser(evt, player, Minecraft.getInstance().getRenderPartialTicks());
             }
         }
@@ -40,9 +40,9 @@ public class ClientEvents {
 
     public static ItemStack getZapper(PlayerEntity player) {
         ItemStack heldItem = player.getHeldItemMainhand();
-        if (!(heldItem.getItem() instanceof GooZapper)) {
+        if (!(heldItem.getItem() instanceof FELaserBase)) {
             heldItem = player.getHeldItemOffhand();
-            if (!(heldItem.getItem() instanceof GooZapper)) {
+            if (!(heldItem.getItem() instanceof FELaserBase)) {
                 return ItemStack.EMPTY;
             }
         }

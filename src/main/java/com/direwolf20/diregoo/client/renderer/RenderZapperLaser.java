@@ -1,9 +1,10 @@
 package com.direwolf20.diregoo.client.renderer;
 
-import com.direwolf20.diregoo.Config;
 import com.direwolf20.diregoo.DireGoo;
 import com.direwolf20.diregoo.client.events.ClientEvents;
 import com.direwolf20.diregoo.client.renderer.util.OurRenderTypes;
+import com.direwolf20.diregoo.common.items.FELaserBase;
+import com.direwolf20.diregoo.common.items.GooFreezer;
 import com.direwolf20.diregoo.common.items.GooZapper;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
@@ -12,6 +13,7 @@ import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
 import net.minecraft.util.HandSide;
@@ -34,7 +36,9 @@ public class RenderZapperLaser {
         /*if (!MiningProperties.getCanMine(stack))
             return;*/
 
-        int range = Config.ITEM_ZAPPER_RANGE.get();
+        if (!(stack.getItem() instanceof FELaserBase)) return;
+
+        int range = ((FELaserBase) stack.getItem()).getRange();
 
         Vector3d playerPos = player.getEyePosition(ticks);
         RayTraceResult trace = player.pick(range, 0.0F, false);
@@ -47,24 +51,38 @@ public class RenderZapperLaser {
 
     private static void drawLasers(RenderWorldLastEvent event, Vector3d from, RayTraceResult trace, double xOffset, double yOffset, double zOffset, float r, float g, float b, float thickness, PlayerEntity player, float ticks, float speedModifier) {
         Hand activeHand;
-        if (player.getHeldItemMainhand().getItem() instanceof GooZapper) {
+        Item laserItem = player.getHeldItemMainhand().getItem();
+        if (laserItem instanceof FELaserBase) {
             activeHand = Hand.MAIN_HAND;
-        } else if (player.getHeldItemOffhand().getItem() instanceof GooZapper) {
+        } else if (laserItem instanceof FELaserBase) {
             activeHand = Hand.OFF_HAND;
         } else {
             return;
         }
 
         IVertexBuilder builder;
-        ItemStack stack = player.getHeldItem(activeHand);
         double distance = from.subtract(trace.getHitVec()).length();
         long gameTime = player.world.getGameTime();
         double v = gameTime * speedModifier;
         float additiveThickness = (thickness * 3.5f) * calculateLaserFlickerModifier(gameTime);
-
         float beam2r = 1f;
         float beam2g = 1f;
         float beam2b = 1f;
+        if (laserItem instanceof GooZapper) {
+            r = 1f;
+            g = 0f;
+            b = 0f;
+            beam2r = 1f;
+            beam2g = 1f;
+            beam2b = 1f;
+        } else if (laserItem instanceof GooFreezer) {
+            r = 0f;
+            g = 1f;
+            b = 1f;
+            beam2r = 0f;
+            beam2g = 0.65f;
+            beam2b = 1f;
+        }
 
         Vector3d view = Minecraft.getInstance().gameRenderer.getActiveRenderInfo().getProjectedView();
         IRenderTypeBuffer.Impl buffer = Minecraft.getInstance().getRenderTypeBuffers().getBufferSource();

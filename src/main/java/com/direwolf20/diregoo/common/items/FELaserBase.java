@@ -20,15 +20,20 @@ import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.energy.CapabilityEnergy;
 
 public class FELaserBase extends FEItemBase {
-    public static int RFCost;
-    public static int FireRange;
-
     public FELaserBase(Item.Properties properties) {
         super(properties, 1000000);
     }
 
     public FELaserBase(Item.Properties properties, int MaxRF) {
         super(properties, MaxRF);
+    }
+
+    public int getRange() {
+        return 15;
+    }
+
+    public int getRFCost() {
+        return 1000;
     }
 
     @Override
@@ -41,7 +46,7 @@ public class FELaserBase extends FEItemBase {
             // Debug code for free energy
             itemstack.getCapability(CapabilityEnergy.ENERGY).ifPresent(e -> e.receiveEnergy(10000, false));
         } else {
-            if (canUseItem(itemstack, RFCost)) {
+            if (canUseItem(itemstack, getRFCost())) {
                 player.setActiveHand(hand);
                 return new ActionResult<>(ActionResultType.PASS, itemstack);
             }
@@ -56,13 +61,13 @@ public class FELaserBase extends FEItemBase {
 
         // Server Side
         if (!world.isRemote) {
-            if (!canUseItem(stack, RFCost)) {
+            if (!canUseItem(stack, getRFCost())) {
                 player.resetActiveHand();
             }
-            stack.getCapability(CapabilityEnergy.ENERGY).ifPresent(e -> e.extractEnergy(RFCost, false));
+            stack.getCapability(CapabilityEnergy.ENERGY).ifPresent(e -> e.extractEnergy(getRFCost(), false));
 
-            BlockRayTraceResult lookingAt = VectorHelper.getLookingAt((PlayerEntity) player, RayTraceContext.FluidMode.NONE, FireRange);
-            if (lookingAt == null || (world.getBlockState(VectorHelper.getLookingAt((PlayerEntity) player, stack, FireRange).getPos()) == Blocks.AIR.getDefaultState()))
+            BlockRayTraceResult lookingAt = VectorHelper.getLookingAt((PlayerEntity) player, RayTraceContext.FluidMode.NONE, getRange());
+            if (lookingAt == null || (world.getBlockState(VectorHelper.getLookingAt((PlayerEntity) player, stack, getRange()).getPos()) == Blocks.AIR.getDefaultState()))
                 return;
             BlockState blockState = world.getBlockState(lookingAt.getPos());
             if (!(blockState.getBlock() instanceof GooBase))
