@@ -86,8 +86,8 @@ public class GooBase extends Block {
 
     public static boolean handleFrozen(BlockPos pos, BlockState state, World worldIn, Random rand) {
         if (!worldIn.isAreaLoaded(pos, 3))
-            return false; // Forge: prevent loading unloaded chunks when checking neighbor's light and spreading
-        if (rand.nextInt(100) > Config.FREEZE_MELT_CHANCE.get()) return false;
+            return true; // Forge: prevent loading unloaded chunks when checking neighbor's light and spreading
+        if (rand.nextInt(100) > Config.FREEZE_MELT_CHANCE.get()) return true;
         int frozenState = state.get(FROZEN);
         if (frozenState > 0) {
             frozenState--;
