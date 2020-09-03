@@ -81,10 +81,12 @@ public class GooBase extends Block {
         if (!(oldState.getBlock() instanceof GooBase)) {
             return;
         }
-        worldIn.setBlockState(pos, oldState.with(FROZEN, 3));
+        worldIn.setBlockState(pos, oldState.with(FROZEN, 3).with(ACTIVE, true));
     }
 
     public static boolean handleFrozen(BlockPos pos, BlockState state, World worldIn) {
+        if (!worldIn.isAreaLoaded(pos, 3))
+            return false; // Forge: prevent loading unloaded chunks when checking neighbor's light and spreading
         int frozenState = state.get(FROZEN);
         if (frozenState > 0) {
             frozenState--;
@@ -143,9 +145,9 @@ public class GooBase extends Block {
      */
     @Override
     public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
+        if (handleFrozen(pos, state, worldIn)) return;
         if (!shouldGooSpread(state, worldIn, pos, rand))
             return;
-        if (handleFrozen(pos, state, worldIn)) return;
         boolean animate = false;
         if (Config.ANIMATE_SPREAD.get())
             animate = worldIn.isPlayerWithin(pos.getX(), pos.getY(), pos.getZ(), 20);
@@ -183,7 +185,7 @@ public class GooBase extends Block {
                 return false; //If the adjacent block is anything other than goo its not surrounded
             }
         }
-        if (state.get(ACTIVE))
+        if (state.get(ACTIVE) && state.get(FROZEN) == 0)
             worldIn.setBlockState(pos, state.with(ACTIVE, false));
         return true;
     }
