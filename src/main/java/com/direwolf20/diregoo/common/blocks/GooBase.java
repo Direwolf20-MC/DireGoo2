@@ -145,16 +145,15 @@ public class GooBase extends Block {
     @Override
     public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
         BlockSave blockSave = BlockSave.get(worldIn);
-        if (blockSave.getBlockChangeThisTick(worldIn.getGameTime()) >= 3000) return;
-        if (blockSave.getChunkChangesThisTick(worldIn.getGameTime()) >= 50) return;
+        if (blockSave.getBlockChangeThisTick(worldIn.getGameTime()) >= 1000) return;
+        if (blockSave.getChunkChangesThisTick(worldIn.getGameTime()) >= 100) return;
 
         if (blockSave.getGooDeathEvent()) {
-            if (blockSave.getBlockChangeThisTick(worldIn.getGameTime()) >= 500) return;
+            if (blockSave.getBlockChangeThisTick(worldIn.getGameTime()) >= 250) return;
             if (blockSave.getChunkChangesThisTick(worldIn.getGameTime()) >= 50) return;
             blockSave.addBlockChange(worldIn.getGameTime());
             blockSave.addChunkChange(worldIn.getGameTime(), worldIn.getChunk(pos).getPos());
-            boolean animate = false; //worldIn.isPlayerWithin(pos.getX(), pos.getY(), pos.getZ(), 10);
-            //if (rand.nextInt(100) < 25) //If this happens 100% of the time its super laggy, even at low randomTickSpeeds
+            boolean animate = worldIn.isPlayerWithin(pos.getX(), pos.getY(), pos.getZ(), 10);
             resetBlock(worldIn, pos, animate, 20, false, blockSave);
             return;
         }
