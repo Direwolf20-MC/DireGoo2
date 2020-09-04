@@ -16,6 +16,7 @@ public class GeneratorLanguage extends LanguageProvider {
         add("diregoo.tooltip.screen.xrange", "Range X");
         add("diregoo.tooltip.itemenergy", "Energy: %d/%d");
         addBlock(ModBlocks.ANTI_GOO_FIELD_GEN, "Antigoo Field Generator");
+        addBlock(ModBlocks.ZAPPER_TURRET_BLOCK, "Zapper Turret");
         //addBlock(ModBlocks.CHARGING_STATION, "Charging Station");
         //add("itemGroup.charginggadgets", "Charging Gadgets");
         //add("screen.charginggadgets.energy", "Energy: %s/%s FE");

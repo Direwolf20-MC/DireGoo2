@@ -23,8 +23,10 @@ public class GeneratorItemModels extends ItemModelProvider {
         registerBlockModel(ModBlocks.GOO_BLOCK_BURST.get());
         registerBlockModel(ModBlocks.GOO_BLOCK_POISON.get());
         registerBlockModel(ModBlocks.TURRET_BLOCK.get());
+        registerBlockModel(ModBlocks.ZAPPER_TURRET_BLOCK.get());
         registerBlockModel(ModBlocks.ANTI_GOO_FIELD_GEN.get());
         //registerBlockModel(ModBlocks.GOO_DETECTOR.get());
+
         String path = ModBlocks.GOO_DETECTOR.get().getRegistryName().getPath();
         getBuilder(path).parent(new ModelFile.UncheckedModelFile(modLoc("block/" + path))).transforms()
                 .transform(ModelBuilder.Perspective.THIRDPERSON_RIGHT)

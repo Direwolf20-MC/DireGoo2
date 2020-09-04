@@ -1,0 +1,30 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "diregoo:block/zapperturretblock",
+      "x": 180
+    },
+    "facing=up": {
+      "model": "diregoo:block/zapperturretblock"
+    },
+    "facing=north": {
+      "model": "diregoo:block/zapperturretblock",
+      "x": 90
+    },
+    "facing=south": {
+      "model": "diregoo:block/zapperturretblock",
+      "x": 90,
+      "y": 180
+    },
+    "facing=west": {
+      "model": "diregoo:block/zapperturretblock",
+      "x": 90,
+      "y": 270
+    },
+    "facing=east": {
+      "model": "diregoo:block/zapperturretblock",
+      "x": 90,
+      "y": 90
+    }
+  }
+}

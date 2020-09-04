@@ -7,7 +7,8 @@ f6827a0806f63c183f204c96d015142c1a5edfde assets/diregoo/blockstates/gooblockburs
 fb23baa694c14b58b09cf71ef309e925f8fbda37 assets/diregoo/blockstates/goorenderburst.json
 d5dbdecc8aa2f12044bed2a6f22b5190e1313bcd assets/diregoo/blockstates/goorenderterrain.json
 32d4d79130faf1f0ef5d8a67fd3040944bb46c0e assets/diregoo/blockstates/turretblock.json
-8ed3bbae6b2acb329155f227d055eb2c28fdc33a assets/diregoo/lang/en_us.json
+a9db38cdb80eb757509918a3473b3717373b44b4 assets/diregoo/blockstates/zapperturretblock.json
+60807e83bedcfa22f6b96af1f5116658841029c0 assets/diregoo/lang/en_us.json
 dc0f2cf452506952a26ffa6314e2765365653f3b assets/diregoo/models/block/antigoofieldgen.json
 eabaf964c46976fcf81eca53b6111376574a2473 assets/diregoo/models/block/gooblock.json
 7b4a145c356a3807bb370e83ae58e4e78da88f52 assets/diregoo/models/block/gooblockburst.json
@@ -42,6 +43,7 @@ a2e0399fb012ce992f7c39f5d30cb96cb68603d5 assets/diregoo/models/block/goorenderte
 8dffd199d6d239cc005b0a5684b3a5099ce5b487 assets/diregoo/models/block/goorenderterrain8.json
 4e7d421abc12bda8bb03bf9a24a02a80199c0a7a assets/diregoo/models/block/goorenderterrain9.json
 b3bbfa3fc1bc4afe49d80510824e814914f65409 assets/diregoo/models/block/turretblock.json
+c274d921bc00169b218e15cee4dca4395366b10d assets/diregoo/models/block/zapperturretblock.json
 6c33590af1e36ec3ccae9519ba4c48871244954d assets/diregoo/models/item/antigoodust.json
 2e6b8e7ae3ec4ad5835b810310ceaafbb4a3792c assets/diregoo/models/item/antigoofieldgen.json
 1c795b0b03f93ee833f5bd3d89d8dc95ba7afea4 assets/diregoo/models/item/antigoopaste.json
@@ -58,6 +60,7 @@ d928810f67639d44754831d24c4defa3023b32fa assets/diregoo/models/item/goofreezer.j
 6f04fdcea6ebf9058db2329667713cd51f1e58a2 assets/diregoo/models/item/gooscanner.json
 9c380e447a096f487b69215cdb21aaa5e9120e37 assets/diregoo/models/item/goozapper.json
 b3d4e4113f5dd58c167bb7098b2293b42f7cefbc assets/diregoo/models/item/turretblock.json
+d708b53753543054f31dac6464c9009b2fa55038 assets/diregoo/models/item/zapperturretblock.json
 2fb58d66c0e568598b9400850dd89e58b7ed41df data/diregoo/loot_tables/blocks/gooblock.json
 2fb58d66c0e568598b9400850dd89e58b7ed41df data/diregoo/loot_tables/blocks/gooblockburst.json
 b200b522d11361ac08cfbdcfd88f51e75e9db046 data/diregoo/loot_tables/blocks/gooblockterrain.json
