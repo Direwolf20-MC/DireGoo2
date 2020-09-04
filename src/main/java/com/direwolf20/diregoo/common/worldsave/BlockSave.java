@@ -10,15 +10,13 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.nbt.NBTUtil;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.storage.WorldSavedData;
 import net.minecraftforge.common.util.Constants;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class BlockSave extends WorldSavedData {
     private static final String NAME = DireGoo.MOD_ID + "_blocksave";
@@ -28,7 +26,16 @@ public class BlockSave extends WorldSavedData {
     private final ArrayList<BlockPos> antigooList = new ArrayList<>();
     private final SetMultimap<BlockPos, BlockPos> antigooFieldList = HashMultimap.create();
     private boolean gooDeathEvent = false;
-
+    private final LinkedHashMap<Long, Integer> blockChangeCounter = new LinkedHashMap<Long, Integer>() {
+        protected boolean removeEldestEntry(Map.Entry<Long, Integer> eldest) {
+            return size() > 10;
+        }
+    };
+    private final LinkedHashMap<Long, Set<ChunkPos>> chunkChangeCounter = new LinkedHashMap<Long, Set<ChunkPos>>() {
+        protected boolean removeEldestEntry(Map.Entry<Long, Set<ChunkPos>> eldest) {
+            return size() > 10;
+        }
+    };
 
     public BlockSave() {
         super(NAME);
@@ -258,4 +265,37 @@ public class BlockSave extends WorldSavedData {
         this.gooDeathEvent = gooDeathEvent;
         this.markDirty();
     }
+
+    public void addBlockChange(long gametime) {
+        blockChangeCounter.compute(gametime, (k, v) -> (v == null) ? 1 : v + 1);
+    }
+
+    public int getBlockChangeThisTick(long gametime) {
+        return blockChangeCounter.getOrDefault(gametime, 0);
+    }
+
+    public LinkedHashMap<Long, Integer> getBlockChangeCounter() {
+        return blockChangeCounter;
+    }
+
+    public void addChunkChange(long gametime, ChunkPos chunkPos) {
+        if (chunkChangeCounter.containsKey(gametime)) {
+            Set<ChunkPos> tempSet = chunkChangeCounter.get(gametime);
+            tempSet.add(chunkPos);
+            chunkChangeCounter.replace(gametime, tempSet);
+        } else {
+            Set<ChunkPos> tempSet = new HashSet<>();
+            tempSet.add(chunkPos);
+            chunkChangeCounter.put(gametime, tempSet);
+        }
+    }
+
+    public int getChunkChangesThisTick(long gametime) {
+        return chunkChangeCounter.getOrDefault(gametime, new HashSet<ChunkPos>()).size();
+    }
+
+    public LinkedHashMap<Long, Set<ChunkPos>> getChunkChangeCounter() {
+        return chunkChangeCounter;
+    }
+
 }
