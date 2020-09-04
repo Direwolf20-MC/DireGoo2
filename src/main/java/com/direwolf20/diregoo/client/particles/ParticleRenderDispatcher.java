@@ -1,6 +1,7 @@
 package com.direwolf20.diregoo.client.particles;
 
 import com.direwolf20.diregoo.DireGoo;
+import com.direwolf20.diregoo.client.particles.freezeparticle.FreezeParticleType;
 import com.direwolf20.diregoo.client.particles.goodripparticle.GooDripParticleType;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
@@ -14,5 +15,6 @@ public class ParticleRenderDispatcher {
     @SubscribeEvent
     public static void registerFactories(ParticleFactoryRegisterEvent evt) {
         Minecraft.getInstance().particles.registerFactory(ModParticles.GOO_DRIP_PARTICLE, GooDripParticleType.GooDripFactory::new);
+        Minecraft.getInstance().particles.registerFactory(ModParticles.FREEZE_PARTICLE, FreezeParticleType.FreezeParticleFactory::new);
     }
 }

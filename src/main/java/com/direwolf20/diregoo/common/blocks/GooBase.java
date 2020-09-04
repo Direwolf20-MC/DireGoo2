@@ -1,6 +1,7 @@
 package com.direwolf20.diregoo.common.blocks;
 
 import com.direwolf20.diregoo.Config;
+import com.direwolf20.diregoo.client.particles.ModParticles;
 import com.direwolf20.diregoo.common.entities.GooEntity;
 import com.direwolf20.diregoo.common.entities.GooSpreadEntity;
 import com.direwolf20.diregoo.common.worldsave.BlockSave;
@@ -21,6 +22,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
@@ -367,5 +369,39 @@ public class GooBase extends Block {
     @Deprecated
     public PushReaction getPushReaction(BlockState state) {
         return PushReaction.BLOCK;
+    }
+
+    @Override
+    public void animateTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand) {
+        if (stateIn.get(FROZEN) == 0) return;
+        //if (rand.nextInt(100) >= 50) return;
+        Vector3d pos2 = new Vector3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
+        Random random = new Random();
+        int sideRandom = random.nextInt(Direction.values().length);
+        Direction direction = Direction.values()[sideRandom]; //Pick a side at random, this is the side the particle will spawn on
+        double d0 = pos2.getX();
+        double d1 = pos2.getY();
+        double d2 = pos2.getZ();
+        if (direction.getXOffset() != 0) { //if the chose side is X, then randomly pick the y/z positions. Move the X position to just outside the edge of the block
+            d0 = pos2.getX() + ((double) direction.getXOffset() / 2 + (0.1 * direction.getXOffset()));
+            d1 = pos2.getY() + random.nextDouble() - 0.5;
+            d2 = pos2.getZ() + random.nextDouble() - 0.5;
+        } else if (direction.getYOffset() != 0) {
+            d0 = pos2.getX() + random.nextDouble() - 0.5;
+            d1 = pos2.getY() + ((double) direction.getYOffset() / 2 + (0.1 * direction.getYOffset()));
+            if (d1 > pos2.getY()) return; //Don't spawn particles on top of block they look funny
+            d2 = pos2.getZ() + random.nextDouble() - 0.5;
+        } else if (direction.getZOffset() != 0) {
+            d0 = pos2.getX() + random.nextDouble() - 0.5;
+            d1 = pos2.getY() + random.nextDouble() - 0.5;
+            d2 = pos2.getZ() + ((double) direction.getZOffset() / 2 + (0.1 * direction.getZOffset()));
+        }
+        float min = 0.25f;
+        float max = 0.75f;
+        float r = 0f;
+        float g = min + rand.nextFloat() * (max - min);
+        float b = 1f;
+        worldIn.addParticle(ModParticles.FREEZE_PARTICLE, d0, d1, d2, r, g, b);
+        //worldIn.addParticle(ParticleTypes.FLAME, d0, d1, d2, 0.0D, 0.0D, 0.0D);
     }
 }

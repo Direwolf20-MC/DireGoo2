@@ -1,6 +1,7 @@
 package com.direwolf20.diregoo.client.particles;
 
 import com.direwolf20.diregoo.DireGoo;
+import com.direwolf20.diregoo.client.particles.freezeparticle.FreezeParticleType;
 import com.direwolf20.diregoo.client.particles.goodripparticle.GooDripParticleType;
 import net.minecraft.particles.ParticleType;
 import net.minecraftforge.event.RegistryEvent;
@@ -21,10 +22,14 @@ public class ModParticles {
     @ObjectHolder("goodrip_particle")
     public static GooDripParticleType GOO_DRIP_PARTICLE;
 
+    @ObjectHolder("freeze_particle")
+    public static FreezeParticleType FREEZE_PARTICLE;
+
     @SubscribeEvent
     public static void registerParticles(RegistryEvent.Register<ParticleType<?>> evt) {
         evt.getRegistry().registerAll(
-                new GooDripParticleType().setRegistryName("goodrip_particle")
+                new GooDripParticleType().setRegistryName("goodrip_particle"),
+                new FreezeParticleType().setRegistryName("freeze_particle")
         );
     }
 }
