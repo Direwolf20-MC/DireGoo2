@@ -147,12 +147,12 @@ public class GooBase extends Block {
     @Override
     public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
         BlockSave blockSave = BlockSave.get(worldIn);
-        if (blockSave.getBlockChangeThisTick(worldIn.getGameTime()) >= 250) return;
-        if (blockSave.getChunkChangesThisTick(worldIn.getGameTime()) >= 50) return;
+        if (blockSave.getBlockChangeThisTick(worldIn.getGameTime()) >= Config.MAX_BLOCK_CHANGES.get()) return;
+        if (blockSave.getChunkChangesThisTick(worldIn.getGameTime()) >= Config.MAX_CHUNK_CHANGES.get()) return;
 
         if (blockSave.getGooDeathEvent()) {
-            if (blockSave.getBlockChangeThisTick(worldIn.getGameTime()) >= 125) return;
-            if (blockSave.getChunkChangesThisTick(worldIn.getGameTime()) >= 10) return;
+            if (blockSave.getBlockChangeThisTick(worldIn.getGameTime()) >= Config.MAX_BLOCK_CHANGES.get() / 2) return;
+            if (blockSave.getChunkChangesThisTick(worldIn.getGameTime()) >= Config.MAX_CHUNK_CHANGES.get() / 2) return;
             boolean animate = worldIn.isPlayerWithin(pos.getX(), pos.getY(), pos.getZ(), 10);
             resetBlock(worldIn, pos, animate, 20, false, blockSave);
             return;
