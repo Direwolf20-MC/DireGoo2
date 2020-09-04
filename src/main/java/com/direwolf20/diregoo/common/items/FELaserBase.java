@@ -73,11 +73,11 @@ public class FELaserBase extends FEItemBase {
             if (!(blockState.getBlock() instanceof GooBase))
                 return;
 
-            laserAction((ServerWorld) world, lookingAt.getPos());
+            laserAction((ServerWorld) world, lookingAt.getPos(), player);
         }
     }
 
-    public void laserAction(ServerWorld world, BlockPos pos) {
+    public void laserAction(ServerWorld world, BlockPos pos, LivingEntity player) {
         return;
     }
 

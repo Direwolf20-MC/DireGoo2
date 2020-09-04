@@ -151,6 +151,8 @@ public class GooBase extends Block {
         if (blockSave.getChunkChangesThisTick(worldIn.getGameTime()) >= 50) return;
 
         if (blockSave.getGooDeathEvent()) {
+            if (blockSave.getBlockChangeThisTick(worldIn.getGameTime()) >= 125) return;
+            if (blockSave.getChunkChangesThisTick(worldIn.getGameTime()) >= 10) return;
             boolean animate = worldIn.isPlayerWithin(pos.getX(), pos.getY(), pos.getZ(), 10);
             resetBlock(worldIn, pos, animate, 20, false, blockSave);
             return;
