@@ -5,6 +5,7 @@ import com.direwolf20.diregoo.client.screens.TurretScreen;
 import com.direwolf20.diregoo.client.screens.ZapperTurretScreen;
 import com.direwolf20.diregoo.client.tilerenders.AntiGooFieldGenTileEntityRender;
 import com.direwolf20.diregoo.client.tilerenders.TurretBlockTileEntityRender;
+import com.direwolf20.diregoo.client.tilerenders.ZapperTurretTileEntityRender;
 import com.direwolf20.diregoo.common.blocks.ModBlocks;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
@@ -34,5 +35,6 @@ public final class ClientSetup {
     private static void registerRenderers() {
         ClientRegistry.bindTileEntityRenderer(ModBlocks.TURRETBLOCK_TILE.get(), TurretBlockTileEntityRender::new);
         ClientRegistry.bindTileEntityRenderer(ModBlocks.ANTI_GOO_FIELD_GEN_TILE.get(), AntiGooFieldGenTileEntityRender::new);
+        ClientRegistry.bindTileEntityRenderer(ModBlocks.ZAPPERTURRET_TILE.get(), ZapperTurretTileEntityRender::new);
     }
 }

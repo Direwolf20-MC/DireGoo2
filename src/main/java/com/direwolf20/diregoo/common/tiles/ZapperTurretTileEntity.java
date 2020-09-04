@@ -3,6 +3,7 @@ package com.direwolf20.diregoo.common.tiles;
 import com.direwolf20.diregoo.Config;
 import com.direwolf20.diregoo.common.blocks.GooBase;
 import com.direwolf20.diregoo.common.blocks.ModBlocks;
+import com.direwolf20.diregoo.common.blocks.ZapperTurretBlock;
 import com.direwolf20.diregoo.common.container.ZapperTurretContainer;
 import com.direwolf20.diregoo.common.worldsave.BlockSave;
 import net.minecraft.block.BlockState;
@@ -13,6 +14,7 @@ import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.NBTUtil;
 import net.minecraft.tileentity.ITickableTileEntity;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
@@ -28,7 +30,7 @@ import java.util.stream.Collectors;
 
 public class ZapperTurretTileEntity extends FETileBase implements ITickableTileEntity, INamedContainerProvider {
 
-    Queue<BlockPos> clearBlocksQueue = new LinkedList<>();
+    public Queue<BlockPos> clearBlocksQueue = new LinkedList<>();
     private int searchCooldown;
     private int shootCooldown;
     private int firingCooldown;
@@ -48,6 +50,7 @@ public class ZapperTurretTileEntity extends FETileBase implements ITickableTileE
 
     public void generateTurretQueue() {
         int range = Config.TURRET_RANGE.get();
+        Direction direction = this.getBlockState().get(ZapperTurretBlock.FACING);
         clearBlocksQueue = BlockPos.getAllInBox(this.pos.add(range, range, range), this.pos.add(-range, -range, -range))
                 .filter(blockPos -> world.getBlockState(blockPos).getBlock() instanceof GooBase)
                 .map(BlockPos::toImmutable)
