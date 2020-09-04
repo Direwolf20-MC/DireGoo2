@@ -374,7 +374,6 @@ public class GooBase extends Block {
     @Override
     public void animateTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand) {
         if (stateIn.get(FROZEN) == 0) return;
-        //if (rand.nextInt(100) >= 50) return;
         Vector3d pos2 = new Vector3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
         Random random = new Random();
         int sideRandom = random.nextInt(Direction.values().length);
@@ -396,12 +395,9 @@ public class GooBase extends Block {
             d1 = pos2.getY() + random.nextDouble() - 0.5;
             d2 = pos2.getZ() + ((double) direction.getZOffset() / 2 + (0.1 * direction.getZOffset()));
         }
-        float min = 0.25f;
-        float max = 0.75f;
-        float r = 0f;
-        float g = min + rand.nextFloat() * (max - min);
+        float r = rand.nextFloat();
         float b = 1f;
+        float g = r + ((b - r) / 2);
         worldIn.addParticle(ModParticles.FREEZE_PARTICLE, d0, d1, d2, r, g, b);
-        //worldIn.addParticle(ParticleTypes.FLAME, d0, d1, d2, 0.0D, 0.0D, 0.0D);
     }
 }
