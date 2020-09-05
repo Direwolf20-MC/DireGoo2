@@ -4,6 +4,7 @@ import com.direwolf20.diregoo.Config;
 import com.direwolf20.diregoo.client.particles.ModParticles;
 import com.direwolf20.diregoo.common.entities.GooEntity;
 import com.direwolf20.diregoo.common.entities.GooSpreadEntity;
+import com.direwolf20.diregoo.common.events.ChunkSave;
 import com.direwolf20.diregoo.common.worldsave.BlockSave;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
@@ -45,7 +46,7 @@ public class GooBase extends Block {
     public static void resetBlock(ServerWorld world, BlockPos pos, boolean render, int gooRenderLife, boolean calcSideRender, BlockSave blockSave) {
         blockSave.addBlockChange(world.getGameTime());
         blockSave.addChunkChange(world.getGameTime(), world.getChunk(pos).getPos());
-        BlockState oldState = blockSave.getStateFromPos(pos);
+        BlockState oldState = ChunkSave.getStateFromPos(pos, blockSave, world.getChunk(pos).getPos());
         if (render)
             world.addEntity(new GooEntity(world, pos, world.getBlockState(pos), gooRenderLife, calcSideRender));
         if (oldState == null) {
@@ -54,7 +55,7 @@ public class GooBase extends Block {
         }
         if (!resetSpecialCase(oldState, world, pos, render, gooRenderLife, blockSave)) {
             world.setBlockState(pos, oldState);
-            blockSave.pop(pos);
+            ChunkSave.pop(pos, world.getChunk(pos).getPos());
         }
         CompoundNBT oldNBT = blockSave.getTEFromPos(pos);
         if (oldNBT == null) return;
@@ -155,7 +156,7 @@ public class GooBase extends Block {
         if (blockSave.getGooDeathEvent()) {
             if (blockSave.getBlockChangeThisTick(worldIn.getGameTime()) >= Config.MAX_BLOCK_CHANGES.get() / 2) return;
             if (blockSave.getChunkChangesThisTick(worldIn.getGameTime()) >= Config.MAX_CHUNK_CHANGES.get() / 2) return;
-            boolean animate = worldIn.isPlayerWithin(pos.getX(), pos.getY(), pos.getZ(), 10);
+            boolean animate = worldIn.isPlayerWithin(pos.getX(), pos.getY(), pos.getZ(), 25);
             resetBlock(worldIn, pos, animate, 20, false, blockSave);
             return;
         }
@@ -261,7 +262,7 @@ public class GooBase extends Block {
             blockSave.pushTE(checkPos, nbtData);
         }
         if (!oldState.equals(Blocks.AIR.getDefaultState()))
-            blockSave.push(checkPos, oldState);
+            ChunkSave.push(checkPos, oldState, blockSave, worldIn.getChunk(checkPos).getPos());
     }
 
     @Override
@@ -334,7 +335,7 @@ public class GooBase extends Block {
                 if (world.getBlockState(pos.up()).getBlock() instanceof GooBase && render)
                     world.addEntity(new GooEntity(world, pos.up(), world.getBlockState(pos.up()), gooRenderLife, true));
                 world.setBlockState(pos.up(), oldState.with(DoorBlock.HALF, DoubleBlockHalf.UPPER));
-                blockSave.pop(pos);
+                ChunkSave.pop(pos, world.getChunk(pos).getPos());
                 blockSave.addBlockChange(world.getGameTime());
                 blockSave.addChunkChange(world.getGameTime(), world.getChunk(pos).getPos());
                 return true;
@@ -347,7 +348,7 @@ public class GooBase extends Block {
                 if (world.getBlockState(additionalPos).getBlock() instanceof GooBase && render)
                     world.addEntity(new GooEntity(world, additionalPos, world.getBlockState(additionalPos), gooRenderLife, true));
                 world.setBlockState(additionalPos, oldState.with(BedBlock.PART, BedPart.FOOT));
-                blockSave.pop(pos);
+                ChunkSave.pop(pos, world.getChunk(pos).getPos());
                 blockSave.addBlockChange(world.getGameTime());
                 blockSave.addChunkChange(world.getGameTime(), world.getChunk(pos).getPos());
                 return true;

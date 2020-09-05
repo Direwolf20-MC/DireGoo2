@@ -24,7 +24,7 @@ public class ServerEvents {
         if (blockSave.checkAnti(pos))
             blockSave.removeAnti(pos, world);
         if (state.getBlock() instanceof GooBase) {
-            blockSave.pop(pos);
+            ChunkSave.pop(pos, world.getChunk(pos).getPos());
             blockSave.popTE(pos);
         }
     }

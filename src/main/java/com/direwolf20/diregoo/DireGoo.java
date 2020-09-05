@@ -6,6 +6,7 @@ import com.direwolf20.diregoo.common.blocks.ModBlocks;
 import com.direwolf20.diregoo.common.commands.ModCommands;
 import com.direwolf20.diregoo.common.entities.GoonadeEntity;
 import com.direwolf20.diregoo.common.entities.GoonadeFreezeEntity;
+import com.direwolf20.diregoo.common.events.ChunkSave;
 import com.direwolf20.diregoo.common.events.ServerEvents;
 import com.direwolf20.diregoo.common.items.ModItems;
 import com.direwolf20.diregoo.common.network.PacketHandler;
@@ -90,6 +91,7 @@ public class DireGoo
         // some preinit code
         PacketHandler.register();
         MinecraftForge.EVENT_BUS.register(ServerEvents.class);
+        MinecraftForge.EVENT_BUS.register(ChunkSave.class);
         //Dispenser thingy
         DefaultDispenseItemBehavior goonadeFreezeBehavior = new ProjectileDispenseBehavior() {
             protected ProjectileEntity getProjectileEntity(World worldIn, IPosition position, ItemStack stackIn) {

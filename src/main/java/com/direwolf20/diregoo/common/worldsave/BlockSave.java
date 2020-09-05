@@ -20,8 +20,8 @@ import java.util.*;
 
 public class BlockSave extends WorldSavedData {
     private static final String NAME = DireGoo.MOD_ID + "_blocksave";
-    private final HashMap<Long, Short> blockMap = new HashMap<>();
-    private final HashMap<Short, BlockState> blockMapPalette = new HashMap<>();
+    //private final HashMap<Long, Short> blockMap = new HashMap<>();
+    public final HashMap<Short, BlockState> blockMapPalette = new HashMap<>();
     private final HashMap<BlockPos, CompoundNBT> teMap = new HashMap<>();
     private final ArrayList<BlockPos> antigooList = new ArrayList<>();
     private final SetMultimap<BlockPos, BlockPos> antigooFieldList = HashMultimap.create();
@@ -44,19 +44,19 @@ public class BlockSave extends WorldSavedData {
     @Override
     public void read(CompoundNBT nbt) {
         long startTime = System.nanoTime();
-        blockMap.clear();
+        //blockMap.clear();
         blockMapPalette.clear();
         teMap.clear();
         antigooList.clear();
 
-        ListNBT list = nbt.getList("blockmap", Constants.NBT.TAG_COMPOUND);
+        /*ListNBT list = nbt.getList("blockmap", Constants.NBT.TAG_COMPOUND);
         for (int i = 0; i < list.size(); i++) {
             Long blockpos = list.getCompound(i).getLong("pos");
             short key = list.getCompound(i).getShort("key");
 
             blockMap.put(blockpos, key);
         }
-        System.out.println("Read: " + list.size() + "GooBlocks");
+        System.out.println("Read: " + list.size() + "GooBlocks");*/
 
         ListNBT listPalette = nbt.getList("blockmappalette", Constants.NBT.TAG_COMPOUND);
         for (int i = 0; i < listPalette.size(); i++) {
@@ -95,8 +95,8 @@ public class BlockSave extends WorldSavedData {
     @Override
     public CompoundNBT write(CompoundNBT compound) {
         long startTime = System.nanoTime();
-        ListNBT nbt = new ListNBT();
 
+        /*ListNBT nbt = new ListNBT();
         for (Map.Entry<Long, Short> blockData : blockMap.entrySet()) {
             CompoundNBT comp = new CompoundNBT();
             comp.putLong("pos", blockData.getKey());
@@ -104,6 +104,8 @@ public class BlockSave extends WorldSavedData {
             nbt.add(comp);
         }
         compound.put("blockmap", nbt);
+        System.out.println("Write: " + nbt.size() + " GooBlocks");
+        */
 
         ListNBT nbtPalette = new ListNBT();
         for (Map.Entry<Short, BlockState> blockData : blockMapPalette.entrySet()) {
@@ -114,7 +116,6 @@ public class BlockSave extends WorldSavedData {
         }
         compound.put("blockmappalette", nbtPalette);
 
-        System.out.println("Write: " + nbt.size() + " GooBlocks");
         ListNBT nbtTE = new ListNBT();
 
         for (Map.Entry<BlockPos, CompoundNBT> teData : teMap.entrySet()) {
@@ -161,9 +162,9 @@ public class BlockSave extends WorldSavedData {
         return storage;
     }
 
-    public HashMap<Long, Short> getBlockMap() {
+    /*public HashMap<Long, Short> getBlockMap() {
         return blockMap;
-    }
+    }*/
 
     public HashMap<Short, BlockState> getBlockMapPalette() {
         return blockMapPalette;
@@ -177,7 +178,7 @@ public class BlockSave extends WorldSavedData {
         return -1;
     }
 
-    public void push(BlockPos pos, BlockState state) {
+    /*public void push(BlockPos pos, BlockState state) {
         short palettePosition = getPalettePosition(state);
         if (palettePosition == -1) {
             blockMapPalette.put((short) blockMapPalette.values().size(), state);
@@ -190,7 +191,7 @@ public class BlockSave extends WorldSavedData {
     public void pop(BlockPos pos) {
         this.blockMap.remove(pos.toLong());
         this.markDirty();
-    }
+    }*/
 
     public void pushTE(BlockPos pos, CompoundNBT nbt) {
         this.teMap.put(pos, nbt);
@@ -249,9 +250,9 @@ public class BlockSave extends WorldSavedData {
         return antigooList;
     }
 
-    public BlockState getStateFromPos(BlockPos pos) {
+    /*public BlockState getStateFromPos(BlockPos pos) {
         return this.blockMapPalette.get(this.blockMap.get(pos.toLong()));
-    }
+    }*/
 
     public CompoundNBT getTEFromPos(BlockPos pos) {
         return this.teMap.get(pos);
