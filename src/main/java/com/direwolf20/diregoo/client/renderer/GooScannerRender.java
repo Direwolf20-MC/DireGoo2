@@ -74,14 +74,15 @@ public class GooScannerRender {
     public static void discoverGoo(PlayerEntity player) {
         //Find all the goo in an area around the player
         BlockPos playerPos = new BlockPos(player.getPosX(), player.getPosY(), player.getPosZ());
+        int radius = 200;
         if (!player.isSneaking())
-            gooBlocksList = BlockPos.getAllInBox(playerPos.add(-50, -50, -50), playerPos.add(50, 50, 50))
+            gooBlocksList = BlockPos.getAllInBox(playerPos.add(-radius, -radius, -radius), playerPos.add(radius, radius, radius))
                     .filter(blockPos -> player.world.getBlockState(blockPos).getBlock() instanceof GooBase)
                     .map(BlockPos::toImmutable)
                     .sorted(Comparator.comparingDouble(blockPos -> playerPos.distanceSq(blockPos)))
                     .collect(Collectors.toList());
         else
-            gooBlocksList = BlockPos.getAllInBox(playerPos.add(-50, -50, -50), playerPos.add(50, 50, 50))
+            gooBlocksList = BlockPos.getAllInBox(playerPos.add(-radius, -radius, -radius), playerPos.add(radius, radius, radius))
                     .filter(blockPos -> player.world.getBlockState(blockPos).getBlock() instanceof GooBase && player.world.getBlockState(blockPos).get(GooBase.ACTIVE))
                     .map(BlockPos::toImmutable)
                     .sorted(Comparator.comparingDouble(blockPos -> playerPos.distanceSq(blockPos)))
