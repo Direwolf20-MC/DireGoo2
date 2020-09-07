@@ -67,10 +67,17 @@ public class ZapperTurretTileEntityRender extends TileEntityRenderer<ZapperTurre
             diffY = pos.getY() + .5f - tile.getPos().getY();
             diffZ = pos.getZ() + .5f - tile.getPos().getZ();
             endLaser = new Vector3f(diffX, diffY, diffZ);
-            builder = bufferIn.getBuffer(OurRenderTypes.LASER_MAIN_BEAM);
-            drawMiningLaser(builder, positionMatrix2, endLaser, startLaser, 1, 0, 0, 1f, 0.1f, v, v + diffY * 1.5, tile);
-            builder = bufferIn.getBuffer(OurRenderTypes.LASER_MAIN_CORE);
-            drawMiningLaser(builder, positionMatrix2, endLaser, startLaser, 1, 1, 1, 1f, 0.05f, v, v + diffY - 2.5 * 1.5, tile);
+            if (tile.getShootCooldown() > 2) {
+                builder = bufferIn.getBuffer(OurRenderTypes.LASER_MAIN_BEAM);
+                drawMiningLaser(builder, positionMatrix2, endLaser, startLaser, 1, 0, 0, 1f, 0.1f, v, v + diffY * 1.5, tile);
+                builder = bufferIn.getBuffer(OurRenderTypes.LASER_MAIN_CORE);
+                drawMiningLaser(builder, positionMatrix2, endLaser, startLaser, 1, 1, 1, 1f, 0.05f, v, v + diffY - 2.5 * 1.5, tile);
+            } else {
+                builder = bufferIn.getBuffer(OurRenderTypes.LASER_MAIN_BEAM);
+                drawMiningLaser(builder, positionMatrix2, endLaser, startLaser, 0, 1, 1, 1f, 0.1f, v, v + diffY * 1.5, tile);
+                builder = bufferIn.getBuffer(OurRenderTypes.LASER_MAIN_CORE);
+                drawMiningLaser(builder, positionMatrix2, endLaser, startLaser, 0, 0.65f, 1, 1f, 0.05f, v, v + diffY - 2.5 * 1.5, tile);
+            }
         }
         //}
 

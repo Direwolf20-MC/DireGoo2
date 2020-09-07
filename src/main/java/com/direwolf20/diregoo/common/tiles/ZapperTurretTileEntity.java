@@ -99,6 +99,31 @@ public class ZapperTurretTileEntity extends FETileBase implements ITickableTileE
         markDirtyClient();
     }
 
+    public void freezeNextSet(BlockPos startPos) {
+        int radius = 3;
+        Direction forward = this.getBlockState().get(ZapperTurretBlock.FACING);
+        boolean vertical = forward.getAxis().isVertical();
+        Direction up = vertical ? Direction.NORTH : Direction.UP;
+        Direction down = up.getOpposite();
+        Direction side = forward.getOpposite();
+        Direction right = vertical ? up.rotateY() : side.rotateYCCW();
+        Direction left = right.getOpposite();
+        clearBlocksQueue = BlockPos.getAllInBox(startPos.offset(up, radius).offset(left, radius), startPos.offset(down, radius).offset(right, radius))
+                .filter(blockPos -> world.getBlockState(blockPos).getBlock() instanceof GooBase)
+                .map(BlockPos::toImmutable)
+                .collect(Collectors.toCollection(HashSet::new));
+
+        if (clearBlocksQueue.size() != 0) {
+            for (BlockPos pos : clearBlocksQueue) {
+                GooBase.freezeGoo((ServerWorld) world, pos);
+            }
+        }
+        List<GooSpreadEntity> gooSpreadEntities = world.getEntitiesWithinAABB(GooSpreadEntity.class, new AxisAlignedBB(startPos.offset(up, radius).offset(left, radius), startPos.offset(down, radius).offset(right, radius)));
+        for (GooSpreadEntity gooSpreadEntity : gooSpreadEntities)
+            gooSpreadEntity.remove();
+        markDirtyClient();
+    }
+
     public Direction getFacing() {
         return this.getBlockState().get(ZapperTurretBlock.FACING);
     }
@@ -117,7 +142,7 @@ public class ZapperTurretTileEntity extends FETileBase implements ITickableTileE
     }
 
     public void shoot() {
-        if (remainingShots == 0) {
+        if (remainingShots <= 0) {
             isShooting = false;
             currentPos = BlockPos.ZERO;
             markDirtyClient();
@@ -140,6 +165,9 @@ public class ZapperTurretTileEntity extends FETileBase implements ITickableTileE
             if (!isShooting()) return;
             if (shootCooldown > 0) {
                 shootCooldown--;
+                if (shootCooldown == 2) {
+                    freezeNextSet(currentPos);
+                }
                 markDirtyClient();
                 return;
             } else {
