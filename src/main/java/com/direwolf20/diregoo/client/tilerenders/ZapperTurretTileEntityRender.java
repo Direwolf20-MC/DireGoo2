@@ -16,6 +16,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.math.vector.Vector3f;
 
+import java.util.Set;
+
 public class ZapperTurretTileEntityRender extends TileEntityRenderer<ZapperTurretTileEntity> {
 
     public ZapperTurretTileEntityRender(TileEntityRendererDispatcher rendererDispatcherIn) {
@@ -56,6 +58,21 @@ public class ZapperTurretTileEntityRender extends TileEntityRenderer<ZapperTurre
         drawMiningLaser(builder, positionMatrix2, endLaser, startLaser, 1, 0, 0, 1f, 0.5f, v, v + diffY * 1.5, tile);
         builder = bufferIn.getBuffer(OurRenderTypes.LASER_MAIN_CORE);
         drawMiningLaser(builder, positionMatrix2, endLaser, startLaser, 1, 1, 1, 1f, 0.25f, v, v + diffY - 2.5 * 1.5, tile);
+
+        startLaser = new Vector3f(diffX, diffY, diffZ);
+        //if (shotCooldown >= 8) {
+        Set<BlockPos> blocks = tile.getClearBlocksQueue();
+        for (BlockPos pos : blocks) {
+            diffX = pos.getX() + .5f - tile.getPos().getX();
+            diffY = pos.getY() + .5f - tile.getPos().getY();
+            diffZ = pos.getZ() + .5f - tile.getPos().getZ();
+            endLaser = new Vector3f(diffX, diffY, diffZ);
+            builder = bufferIn.getBuffer(OurRenderTypes.LASER_MAIN_BEAM);
+            drawMiningLaser(builder, positionMatrix2, endLaser, startLaser, 1, 0, 0, 1f, 0.1f, v, v + diffY * 1.5, tile);
+            builder = bufferIn.getBuffer(OurRenderTypes.LASER_MAIN_CORE);
+            drawMiningLaser(builder, positionMatrix2, endLaser, startLaser, 1, 1, 1, 1f, 0.05f, v, v + diffY - 2.5 * 1.5, tile);
+        }
+        //}
 
         matrixStackIn.pop();
     }

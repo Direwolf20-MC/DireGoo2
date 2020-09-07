@@ -12,6 +12,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.ListNBT;
 import net.minecraft.nbt.NBTUtil;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.util.Direction;
@@ -20,6 +21,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.common.util.Constants;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -33,6 +35,8 @@ public class ZapperTurretTileEntity extends FETileBase implements ITickableTileE
     private int shootCooldown;
     private int remainingShots;
     private boolean isShooting;
+
+    private Set<BlockPos> clearBlocksQueue = new HashSet<>();
 
     private BlockPos currentPos = BlockPos.ZERO;
 
@@ -56,6 +60,10 @@ public class ZapperTurretTileEntity extends FETileBase implements ITickableTileE
         isShooting = shooting;
     }
 
+    public Set<BlockPos> getClearBlocksQueue() {
+        return clearBlocksQueue;
+    }
+
     @Nullable
     @Override
     public Container createMenu(int i, PlayerInventory playerInventory, PlayerEntity playerEntity) {
@@ -64,7 +72,6 @@ public class ZapperTurretTileEntity extends FETileBase implements ITickableTileE
     }
 
     public void clearNextSet(BlockPos startPos) {
-        Set<BlockPos> clearBlocksQueue;
         int radius = 2;
         Direction forward = this.getBlockState().get(ZapperTurretBlock.FACING);
         boolean vertical = forward.getAxis().isVertical();
@@ -81,7 +88,7 @@ public class ZapperTurretTileEntity extends FETileBase implements ITickableTileE
         if (clearBlocksQueue.size() != 0) {
             BlockSave blockSave = BlockSave.get(world);
             for (BlockPos pos : clearBlocksQueue) {
-                GooBase.resetBlock((ServerWorld) world, pos, true, 40, true, blockSave);
+                GooBase.resetBlock((ServerWorld) world, pos, true, 10, true, blockSave);
             }
         }
         List<GooSpreadEntity> gooSpreadEntities = world.getEntitiesWithinAABB(GooSpreadEntity.class, new AxisAlignedBB(startPos.offset(up, radius).offset(left, radius), startPos.offset(down, radius).offset(right, radius)));
@@ -89,28 +96,8 @@ public class ZapperTurretTileEntity extends FETileBase implements ITickableTileE
             gooSpreadEntity.remove();
         remainingShots--;
         shootCooldown = getMaxShootCooldown();
+        markDirtyClient();
     }
-
-   /* public int getFiringCooldown() {
-        return firingCooldown;
-    }
-
-    public BlockPos getCurrentTarget() {
-        return currentTarget;
-    }*/
-
-    public void decrementCooldowns() {
-        //if (searchCooldown > 0) searchCooldown--;
-        if (shootCooldown > 0) shootCooldown--;
-    }
-
-    /*public void decrementFiring() {
-        if (firingCooldown > 0) firingCooldown--;
-        if (firingCooldown == 0) {
-            currentTarget = BlockPos.ZERO;
-            markDirtyClient();
-        }
-    }*/
 
     public Direction getFacing() {
         return this.getBlockState().get(ZapperTurretBlock.FACING);
@@ -130,29 +117,15 @@ public class ZapperTurretTileEntity extends FETileBase implements ITickableTileE
     }
 
     public void shoot() {
-        currentPos = currentPos.offset(getFacing());
-        clearNextSet(currentPos);
         if (remainingShots == 0) {
             isShooting = false;
             currentPos = BlockPos.ZERO;
-        }
-        markDirtyClient();
-    }
-
-    /*public void shoot() {
-        if (energyStorage.getEnergyStored() < Config.TURRET_RFCOST.get())
-            return;
-        BlockPos shootPos = clearBlocksQueue.remove();
-        int shootDuration = 5;
-        if (world.getBlockState(shootPos).getBlock() instanceof GooBase) {
-            BlockSave blockSave = BlockSave.get(world);
-            GooBase.resetBlock((ServerWorld) world, shootPos, true, shootDuration, true, blockSave);
-            firingCooldown = shootDuration;
-            currentTarget = shootPos;
-            energyStorage.consumeEnergy(Config.TURRET_RFCOST.get(), false);
             markDirtyClient();
         }
-    }*/
+        currentPos = currentPos.offset(getFacing());
+        clearNextSet(currentPos);
+        markDirtyClient();
+    }
 
     @Override
     public void tick() {
@@ -184,6 +157,12 @@ public class ZapperTurretTileEntity extends FETileBase implements ITickableTileE
         remainingShots = tag.getInt("remainingShots");
         isShooting = tag.getBoolean("isShooting");
         currentPos = NBTUtil.readBlockPos(tag.getCompound("currentPos"));
+        clearBlocksQueue.clear();
+        ListNBT clearBlocksList = tag.getList("clearBlocksQueue", Constants.NBT.TAG_COMPOUND);
+        for (int i = 0; i < clearBlocksList.size(); i++) {
+            BlockPos blockPos = NBTUtil.readBlockPos(clearBlocksList.getCompound(i).getCompound("pos"));
+            clearBlocksQueue.add(blockPos);
+        }
     }
 
     @Override
@@ -192,6 +171,13 @@ public class ZapperTurretTileEntity extends FETileBase implements ITickableTileE
         tag.putInt("remainingShots", remainingShots);
         tag.putBoolean("isShooting", isShooting);
         tag.put("currentPos", NBTUtil.writeBlockPos(currentPos));
+        ListNBT list = new ListNBT();
+        for (BlockPos pos : clearBlocksQueue) {
+            CompoundNBT comp = new CompoundNBT();
+            comp.put("pos", NBTUtil.writeBlockPos(pos));
+            list.add(comp);
+        }
+        tag.put("clearBlocksQueue", list);
         return super.write(tag);
     }
 
