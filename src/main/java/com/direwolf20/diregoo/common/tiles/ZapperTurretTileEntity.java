@@ -1,10 +1,10 @@
 package com.direwolf20.diregoo.common.tiles;
 
-import com.direwolf20.diregoo.Config;
 import com.direwolf20.diregoo.common.blocks.GooBase;
 import com.direwolf20.diregoo.common.blocks.ModBlocks;
 import com.direwolf20.diregoo.common.blocks.ZapperTurretBlock;
 import com.direwolf20.diregoo.common.container.ZapperTurretContainer;
+import com.direwolf20.diregoo.common.entities.GooSpreadEntity;
 import com.direwolf20.diregoo.common.worldsave.BlockSave;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
@@ -23,22 +23,37 @@ import net.minecraft.world.server.ServerWorld;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class ZapperTurretTileEntity extends FETileBase implements ITickableTileEntity, INamedContainerProvider {
 
-    public Queue<BlockPos> clearBlocksQueue = new LinkedList<>();
-    private int searchCooldown;
     private int shootCooldown;
-    private int firingCooldown;
+    private int remainingShots;
+    private boolean isShooting;
 
-    private BlockPos currentTarget = BlockPos.ZERO;
+    private BlockPos currentPos = BlockPos.ZERO;
 
     public ZapperTurretTileEntity() {
         super(ModBlocks.ZAPPERTURRET_TILE.get());
+    }
+
+    public boolean isShooting() {
+        return isShooting;
+    }
+
+    public BlockPos getCurrentPos() {
+        return currentPos;
+    }
+
+    public int getShootCooldown() {
+        return shootCooldown;
+    }
+
+    public void setShooting(boolean shooting) {
+        isShooting = shooting;
     }
 
     @Nullable
@@ -48,39 +63,83 @@ public class ZapperTurretTileEntity extends FETileBase implements ITickableTileE
         return new ZapperTurretContainer(this, this.FETileData, i, playerInventory);
     }
 
-    public void generateTurretQueue() {
-        int range = Config.TURRET_RANGE.get();
-        Direction direction = this.getBlockState().get(ZapperTurretBlock.FACING);
-        clearBlocksQueue = BlockPos.getAllInBox(this.pos.add(range, range, range), this.pos.add(-range, -range, -range))
+    public void clearNextSet(BlockPos startPos) {
+        Set<BlockPos> clearBlocksQueue;
+        int radius = 2;
+        Direction forward = this.getBlockState().get(ZapperTurretBlock.FACING);
+        boolean vertical = forward.getAxis().isVertical();
+        Direction up = vertical ? Direction.NORTH : Direction.UP;
+        Direction down = up.getOpposite();
+        Direction side = forward.getOpposite();
+        Direction right = vertical ? up.rotateY() : side.rotateYCCW();
+        Direction left = right.getOpposite();
+        clearBlocksQueue = BlockPos.getAllInBox(startPos.offset(up, radius).offset(left, radius), startPos.offset(down, radius).offset(right, radius))
                 .filter(blockPos -> world.getBlockState(blockPos).getBlock() instanceof GooBase)
                 .map(BlockPos::toImmutable)
-                .sorted(Comparator.comparingDouble(blockPos -> this.getPos().distanceSq(blockPos)))
-                .collect(Collectors.toCollection(LinkedList::new));
+                .collect(Collectors.toCollection(HashSet::new));
 
+        if (clearBlocksQueue.size() != 0) {
+            BlockSave blockSave = BlockSave.get(world);
+            for (BlockPos pos : clearBlocksQueue) {
+                GooBase.resetBlock((ServerWorld) world, pos, true, 40, true, blockSave);
+            }
+        }
+        List<GooSpreadEntity> gooSpreadEntities = world.getEntitiesWithinAABB(GooSpreadEntity.class, new AxisAlignedBB(startPos.offset(up, radius).offset(left, radius), startPos.offset(down, radius).offset(right, radius)));
+        for (GooSpreadEntity gooSpreadEntity : gooSpreadEntities)
+            gooSpreadEntity.remove();
+        remainingShots--;
+        shootCooldown = getMaxShootCooldown();
     }
 
-    public int getFiringCooldown() {
+   /* public int getFiringCooldown() {
         return firingCooldown;
     }
 
     public BlockPos getCurrentTarget() {
         return currentTarget;
-    }
+    }*/
 
     public void decrementCooldowns() {
-        if (searchCooldown > 0) searchCooldown--;
+        //if (searchCooldown > 0) searchCooldown--;
         if (shootCooldown > 0) shootCooldown--;
     }
 
-    public void decrementFiring() {
+    /*public void decrementFiring() {
         if (firingCooldown > 0) firingCooldown--;
         if (firingCooldown == 0) {
             currentTarget = BlockPos.ZERO;
             markDirtyClient();
         }
+    }*/
+
+    public Direction getFacing() {
+        return this.getBlockState().get(ZapperTurretBlock.FACING);
+    }
+
+    public void beginShooting() {
+        if (isShooting()) return;
+        isShooting = true;
+        remainingShots = 15;
+        currentPos = this.pos.offset(getFacing());
+        clearNextSet(currentPos);
+        markDirtyClient();
+    }
+
+    public int getMaxShootCooldown() {
+        return 10;
     }
 
     public void shoot() {
+        currentPos = currentPos.offset(getFacing());
+        clearNextSet(currentPos);
+        if (remainingShots == 0) {
+            isShooting = false;
+            currentPos = BlockPos.ZERO;
+        }
+        markDirtyClient();
+    }
+
+    /*public void shoot() {
         if (energyStorage.getEnergyStored() < Config.TURRET_RFCOST.get())
             return;
         BlockPos shootPos = clearBlocksQueue.remove();
@@ -93,7 +152,7 @@ public class ZapperTurretTileEntity extends FETileBase implements ITickableTileE
             energyStorage.consumeEnergy(Config.TURRET_RFCOST.get(), false);
             markDirtyClient();
         }
-    }
+    }*/
 
     @Override
     public void tick() {
@@ -105,18 +164,13 @@ public class ZapperTurretTileEntity extends FETileBase implements ITickableTileE
         //Server Only
         if (!world.isRemote) {
             energyStorage.receiveEnergy(625, false); //Testing
-            if (firingCooldown > 0)
-                decrementFiring();
-            else {
-                decrementCooldowns();
-                if (searchCooldown == 0 && clearBlocksQueue.isEmpty()) {
-                    generateTurretQueue(); //Scan around the turret for blocks to shoot - add to a queue
-                    searchCooldown = 200; //Ticks before we can search for goo again
-                }
-                if (shootCooldown == 0 && !clearBlocksQueue.isEmpty()) {
-                    shoot(); //Shoot at the next block in the queue
-                    shootCooldown = 5; //Ticks before the turret can shoot again after finishing firing
-                }
+            if (!isShooting()) return;
+            if (shootCooldown > 0) {
+                shootCooldown--;
+                markDirtyClient();
+                return;
+            } else {
+                shoot();
             }
         }
     }
@@ -126,18 +180,18 @@ public class ZapperTurretTileEntity extends FETileBase implements ITickableTileE
     @Override
     public void read(BlockState state, CompoundNBT tag) {
         super.read(state, tag);
-        currentTarget = NBTUtil.readBlockPos(tag.getCompound("currentTarget"));
-        searchCooldown = tag.getInt("searchCooldown");
         shootCooldown = tag.getInt("shootCooldown");
-        firingCooldown = tag.getInt("firingCooldown");
+        remainingShots = tag.getInt("remainingShots");
+        isShooting = tag.getBoolean("isShooting");
+        currentPos = NBTUtil.readBlockPos(tag.getCompound("currentPos"));
     }
 
     @Override
     public CompoundNBT write(CompoundNBT tag) {
-        tag.put("currentTarget", NBTUtil.writeBlockPos(currentTarget));
-        tag.putInt("searchCooldown", searchCooldown);
         tag.putInt("shootCooldown", shootCooldown);
-        tag.putInt("firingCooldown", firingCooldown);
+        tag.putInt("remainingShots", remainingShots);
+        tag.putBoolean("isShooting", isShooting);
+        tag.put("currentPos", NBTUtil.writeBlockPos(currentPos));
         return super.write(tag);
     }
 

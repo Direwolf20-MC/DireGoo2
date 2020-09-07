@@ -68,7 +68,11 @@ public class ZapperTurretBlock extends Block {
         if (!(te instanceof ZapperTurretTileEntity))
             return ActionResultType.FAIL;
 
-        NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider) te, pos);
+        if (player.isSneaking()) {
+            ((ZapperTurretTileEntity) te).beginShooting();
+        } else {
+            NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider) te, pos);
+        }
         return ActionResultType.SUCCESS;
     }
 }

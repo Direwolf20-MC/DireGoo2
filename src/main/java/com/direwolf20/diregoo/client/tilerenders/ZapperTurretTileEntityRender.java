@@ -24,17 +24,15 @@ public class ZapperTurretTileEntityRender extends TileEntityRenderer<ZapperTurre
 
     @Override
     public void render(ZapperTurretTileEntity tile, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int combinedLightsIn, int combinedOverlayIn) {
+        if (!tile.isShooting()) return;
         drawAllMiningLasers(tile, matrixStackIn, partialTicks, bufferIn);
     }
 
     public static void drawAllMiningLasers(ZapperTurretTileEntity tile, MatrixStack matrixStackIn, float f, IRenderTypeBuffer bufferIn) {
-        //if (tile.getFiringCooldown() == 0) return;
-        //OurRenderTypes.updateRenders();
-        //BlockPos targetBlock = tile.getCurrentTarget();
         Direction facing = tile.getBlockState().get(ZapperTurretBlock.FACING);
-        BlockPos targetBlock = tile.getPos().offset(facing, 5);
+        BlockPos targetBlock = tile.getCurrentPos();
+        if (targetBlock == BlockPos.ZERO) return;
 
-        //IRenderTypeBuffer.Impl buffer = Minecraft.getInstance().getRenderTypeBuffers().getBufferSource();
         IVertexBuilder builder;
 
         matrixStackIn.push();
@@ -48,6 +46,11 @@ public class ZapperTurretTileEntityRender extends TileEntityRenderer<ZapperTurre
         float diffZ = targetBlock.getZ() + .5f - tile.getPos().getZ();
         Vector3f startLaser = new Vector3f(0.5f + facing.getXOffset() / 2, .5f + facing.getYOffset() / 2, 0.5f + facing.getZOffset() / 2);
         Vector3f endLaser = new Vector3f(diffX, diffY, diffZ);
+        float shotCooldown = (1 - ((float) tile.getShootCooldown() / (tile.getMaxShootCooldown() + 1)));
+        if (shotCooldown > 0) {
+            Vector3f addition = new Vector3f(facing.getXOffset() * shotCooldown, facing.getYOffset() * shotCooldown, facing.getZOffset() * shotCooldown);
+            endLaser.add(addition);
+        }
 
         builder = bufferIn.getBuffer(OurRenderTypes.LASER_MAIN_BEAM);
         drawMiningLaser(builder, positionMatrix2, endLaser, startLaser, 1, 0, 0, 1f, 0.5f, v, v + diffY * 1.5, tile);
