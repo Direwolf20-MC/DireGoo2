@@ -33,7 +33,7 @@ public class ZapperTurretContainer extends FEContainerBase {
     public void setup(PlayerInventory inventory) {
         addSlot(new SlotItemHandler(handler, 0, 47, 41));
         addSlot(new SlotItemHandler(handler, 1, 85, 41));
-        addSlot(new SlotItemHandler(handler, 1, 122, 41));
+        addSlot(new SlotItemHandler(handler, 2, 122, 41));
         super.setup(inventory);
     }
 
