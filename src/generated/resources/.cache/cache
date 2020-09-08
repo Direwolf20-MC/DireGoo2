@@ -47,6 +47,12 @@ c274d921bc00169b218e15cee4dca4395366b10d assets/diregoo/models/block/zapperturre
 6c33590af1e36ec3ccae9519ba4c48871244954d assets/diregoo/models/item/antigoodust.json
 2e6b8e7ae3ec4ad5835b810310ceaafbb4a3792c assets/diregoo/models/item/antigoofieldgen.json
 1c795b0b03f93ee833f5bd3d89d8dc95ba7afea4 assets/diregoo/models/item/antigoopaste.json
+253b23aefb4167ee6fd5051bf55a26e54b5ca096 assets/diregoo/models/item/corefreeze.json
+3d9c0cd9f66d1b590133c6b587e67cf07360763e assets/diregoo/models/item/coremelt.json
+39188fb1cf309a84e61e8e3de9a404ce685fee8e assets/diregoo/models/item/focust1.json
+46142fd63923f76ec61a6eb72180031af351cd5c assets/diregoo/models/item/focust2.json
+ae4fe64b1b2c5ea7a7056f8ee25b1473c3c638ce assets/diregoo/models/item/focust3.json
+24219d950dd9ca5084d4749935c569bb6f70453a assets/diregoo/models/item/focust4.json
 4821a2d79206256ff0dc37c84e52315a9d0aeb01 assets/diregoo/models/item/gooblock.json
 d387bc1a16687d830ae825beb3f6a67e91850227 assets/diregoo/models/item/gooblockburst.json
 ad163ea28747d2aa131e745203f4dede6000ce66 assets/diregoo/models/item/gooblockpoison.json
@@ -59,6 +65,10 @@ d928810f67639d44754831d24c4defa3023b32fa assets/diregoo/models/item/goofreezer.j
 3780612fa808440d07983eb4ec692af40c38df38 assets/diregoo/models/item/gooresidue.json
 6f04fdcea6ebf9058db2329667713cd51f1e58a2 assets/diregoo/models/item/gooscanner.json
 9c380e447a096f487b69215cdb21aaa5e9120e37 assets/diregoo/models/item/goozapper.json
+1a657bf02f0d5c50f34a1ace688a5447ca4ba61a assets/diregoo/models/item/powerampt1.json
+64fa930ab26ef9a0f3c359fc1d2083aa1d39897c assets/diregoo/models/item/powerampt2.json
+867339473495923236fc4d6d2623a9bb899f8d56 assets/diregoo/models/item/powerampt3.json
+89d420548075d1a5403d1648edb665c0cc3495de assets/diregoo/models/item/powerampt4.json
 b3d4e4113f5dd58c167bb7098b2293b42f7cefbc assets/diregoo/models/item/turretblock.json
 d708b53753543054f31dac6464c9009b2fa55038 assets/diregoo/models/item/zapperturretblock.json
 2fb58d66c0e568598b9400850dd89e58b7ed41df data/diregoo/loot_tables/blocks/gooblock.json

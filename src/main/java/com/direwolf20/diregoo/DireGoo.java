@@ -58,6 +58,7 @@ public class DireGoo
         // Register all of our items, blocks, item blocks, etc
         ModBlocks.BLOCKS.register(event);
         ModItems.ITEMS.register(event);
+        ModItems.BASICITEMS.register(event);
         ModBlocks.TILES_ENTITIES.register(event);
         ModBlocks.CONTAINERS.register(event);
 

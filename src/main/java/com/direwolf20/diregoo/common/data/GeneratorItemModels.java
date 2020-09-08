@@ -5,10 +5,12 @@ import com.direwolf20.diregoo.common.blocks.ModBlocks;
 import com.direwolf20.diregoo.common.items.ModItems;
 import net.minecraft.block.Block;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.item.Item;
 import net.minecraftforge.client.model.generators.ExistingFileHelper;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.client.model.generators.ModelBuilder;
 import net.minecraftforge.client.model.generators.ModelFile;
+import net.minecraftforge.fml.RegistryObject;
 
 public class GeneratorItemModels extends ItemModelProvider {
     public GeneratorItemModels(DataGenerator generator, ExistingFileHelper existingFileHelper) {
@@ -100,9 +102,10 @@ public class GeneratorItemModels extends ItemModelProvider {
                 .end()
                 .end();
 
-        String goonade = ModItems.GOONADE.get().getRegistryName().getPath();
-        singleTexture(goonade, mcLoc("item/handheld"), "layer0", modLoc("item/" + goonade));
-
+        for (RegistryObject<Item> item : ModItems.BASICITEMS.getEntries()) {
+            registerBasicItem(item.get());
+        }
+        /*
         String goonadefreeze = ModItems.GOONADE_FREEZE.get().getRegistryName().getPath();
         singleTexture(goonadefreeze, mcLoc("item/handheld"), "layer0", modLoc("item/" + goonadefreeze));
 
@@ -116,12 +119,17 @@ public class GeneratorItemModels extends ItemModelProvider {
         singleTexture(antigooDust, mcLoc("item/handheld"), "layer0", modLoc("item/" + antigooDust));
 
         String gooresidue = ModItems.GOO_RESIDUE.get().getRegistryName().getPath();
-        singleTexture(gooresidue, mcLoc("item/handheld"), "layer0", modLoc("item/" + gooresidue));
+        singleTexture(gooresidue, mcLoc("item/handheld"), "layer0", modLoc("item/" + gooresidue));*/
     }
 
     private void registerBlockModel(Block block) {
         String path = block.getRegistryName().getPath();
         getBuilder(path).parent(new ModelFile.UncheckedModelFile(modLoc("block/" + path)));
+    }
+
+    private void registerBasicItem(Item item) {
+        String path = item.getRegistryName().getPath();
+        singleTexture(path, mcLoc("item/handheld"), "layer0", modLoc("item/" + path));
     }
 
     @Override
