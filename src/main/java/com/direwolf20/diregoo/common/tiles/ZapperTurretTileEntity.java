@@ -5,12 +5,15 @@ import com.direwolf20.diregoo.common.blocks.ModBlocks;
 import com.direwolf20.diregoo.common.blocks.ZapperTurretBlock;
 import com.direwolf20.diregoo.common.container.ZapperTurretContainer;
 import com.direwolf20.diregoo.common.entities.GooSpreadEntity;
+import com.direwolf20.diregoo.common.items.CoreFreeze;
+import com.direwolf20.diregoo.common.items.CoreMelt;
 import com.direwolf20.diregoo.common.worldsave.BlockSave;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.nbt.NBTUtil;
@@ -39,11 +42,9 @@ public class ZapperTurretTileEntity extends FETileBase implements ITickableTileE
     private int shootCooldown;
     private int remainingShots;
     private boolean isShooting;
-
     private Set<BlockPos> clearBlocksQueue = new HashSet<>();
-
     private BlockPos currentPos = BlockPos.ZERO;
-
+    private ItemStackHandler inventoryStacks = new ItemStackHandler(ZapperTurretContainer.SLOTS);
     private LazyOptional<ItemStackHandler> inventory = LazyOptional.of(() -> new ItemStackHandler(ZapperTurretContainer.SLOTS));
 
     public ZapperTurretTileEntity() {
@@ -74,11 +75,27 @@ public class ZapperTurretTileEntity extends FETileBase implements ITickableTileE
     @Override
     public Container createMenu(int i, PlayerInventory playerInventory, PlayerEntity playerEntity) {
         assert world != null;
-        return new ZapperTurretContainer(this, this.FETileData, i, playerInventory, this.inventory.orElse(new ItemStackHandler(ZapperTurretContainer.SLOTS)));
+        return new ZapperTurretContainer(this, this.FETileData, i, playerInventory, inventoryStacks);
+    }
+
+    public boolean validateSlots() {
+        ItemStack core = inventoryStacks.getStackInSlot(0);
+        if (!(core.getItem() instanceof CoreMelt) && !(core.getItem() instanceof CoreFreeze))
+            return false;
+
+        return true;
+    }
+
+    public int getRadius() {
+        return 1;
+    }
+
+    public int getRange() {
+        return 1;
     }
 
     public void clearNextSet(BlockPos startPos) {
-        int radius = 2;
+        int radius = getRadius();
         Direction forward = this.getBlockState().get(ZapperTurretBlock.FACING);
         boolean vertical = forward.getAxis().isVertical();
         Direction up = vertical ? Direction.NORTH : Direction.UP;
@@ -106,7 +123,7 @@ public class ZapperTurretTileEntity extends FETileBase implements ITickableTileE
     }
 
     public void freezeNextSet(BlockPos startPos) {
-        int radius = 3;
+        int radius = getRadius();
         Direction forward = this.getBlockState().get(ZapperTurretBlock.FACING);
         boolean vertical = forward.getAxis().isVertical();
         Direction up = vertical ? Direction.NORTH : Direction.UP;
@@ -137,7 +154,7 @@ public class ZapperTurretTileEntity extends FETileBase implements ITickableTileE
     public void beginShooting() {
         if (isShooting()) return;
         isShooting = true;
-        remainingShots = 15;
+        remainingShots = getRange();
         currentPos = this.pos.offset(getFacing());
         clearNextSet(currentPos);
         markDirtyClient();
@@ -169,6 +186,7 @@ public class ZapperTurretTileEntity extends FETileBase implements ITickableTileE
 
         //Server Only
         if (!world.isRemote) {
+            //System.out.println(validateSlots());
             energyStorage.receiveEnergy(625, false); //Testing
             if (!isShooting()) return;
             if (shootCooldown > 0) {
