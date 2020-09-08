@@ -32,8 +32,8 @@ public class ChunkSave {
             tempMap.put(blockpos, key);
         }
         blockMap.put(chunkPos, tempMap);
-        if (tempMap.size() > 0)
-            System.out.println("Read: " + tempMap.size() + " GooBlocks in " + chunkPos);
+        /*if (tempMap.size() > 0)
+            System.out.println("Read: " + tempMap.size() + " GooBlocks in " + chunkPos);*/
     }
 
     @SubscribeEvent
@@ -50,8 +50,8 @@ public class ChunkSave {
         }
         CompoundNBT compound = event.getData();
         compound.put("blockmap", nbt);
-        if (nbt.size() > 0)
-            System.out.println("Write: " + nbt.size() + " GooBlocks in " + chunkPos);
+        /*if (nbt.size() > 0)
+            System.out.println("Write: " + nbt.size() + " GooBlocks in " + chunkPos);*/
     }
 
     @SubscribeEvent
