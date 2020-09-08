@@ -21,7 +21,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -39,6 +43,8 @@ public class ZapperTurretTileEntity extends FETileBase implements ITickableTileE
     private Set<BlockPos> clearBlocksQueue = new HashSet<>();
 
     private BlockPos currentPos = BlockPos.ZERO;
+
+    private LazyOptional<ItemStackHandler> inventory = LazyOptional.of(() -> new ItemStackHandler(ZapperTurretContainer.SLOTS));
 
     public ZapperTurretTileEntity() {
         super(ModBlocks.ZAPPERTURRET_TILE.get());
@@ -68,7 +74,7 @@ public class ZapperTurretTileEntity extends FETileBase implements ITickableTileE
     @Override
     public Container createMenu(int i, PlayerInventory playerInventory, PlayerEntity playerEntity) {
         assert world != null;
-        return new ZapperTurretContainer(this, this.FETileData, i, playerInventory);
+        return new ZapperTurretContainer(this, this.FETileData, i, playerInventory, this.inventory.orElse(new ItemStackHandler(ZapperTurretContainer.SLOTS)));
     }
 
     public void clearNextSet(BlockPos startPos) {
@@ -183,6 +189,7 @@ public class ZapperTurretTileEntity extends FETileBase implements ITickableTileE
     @Override
     public void read(BlockState state, CompoundNBT tag) {
         super.read(state, tag);
+        inventory.ifPresent(h -> h.deserializeNBT(tag.getCompound("inv")));
         shootCooldown = tag.getInt("shootCooldown");
         remainingShots = tag.getInt("remainingShots");
         isShooting = tag.getBoolean("isShooting");
@@ -197,6 +204,7 @@ public class ZapperTurretTileEntity extends FETileBase implements ITickableTileE
 
     @Override
     public CompoundNBT write(CompoundNBT tag) {
+        inventory.ifPresent(h -> tag.put("inv", h.serializeNBT()));
         tag.putInt("shootCooldown", shootCooldown);
         tag.putInt("remainingShots", remainingShots);
         tag.putBoolean("isShooting", isShooting);
@@ -209,6 +217,15 @@ public class ZapperTurretTileEntity extends FETileBase implements ITickableTileE
         }
         tag.put("clearBlocksQueue", list);
         return super.write(tag);
+    }
+
+    @Nonnull
+    @Override
+    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, final @Nullable Direction side) {
+        if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+            return inventory.cast();
+
+        return super.getCapability(cap, side);
     }
 
     @Nonnull

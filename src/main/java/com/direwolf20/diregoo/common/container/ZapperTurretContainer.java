@@ -9,18 +9,20 @@ import net.minecraft.util.IIntArray;
 import net.minecraft.util.IntArray;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraftforge.items.ItemStackHandler;
+import net.minecraftforge.items.SlotItemHandler;
 
 import javax.annotation.Nullable;
 
 public class ZapperTurretContainer extends FEContainerBase {
-    //private static final int SLOTS = 0;
+    public static final int SLOTS = 3;
 
     public ZapperTurretContainer(int windowId, PlayerInventory playerInventory, PacketBuffer extraData) {
-        this((ZapperTurretTileEntity) playerInventory.player.world.getTileEntity(extraData.readBlockPos()), new IntArray(4), windowId, playerInventory);
+        this((ZapperTurretTileEntity) playerInventory.player.world.getTileEntity(extraData.readBlockPos()), new IntArray(4), windowId, playerInventory, new ItemStackHandler((SLOTS)));
     }
 
-    public ZapperTurretContainer(@Nullable ZapperTurretTileEntity tile, IIntArray turretData, int windowId, PlayerInventory playerInventory) {
-        super(ModBlocks.ZAPPER_TURRET_CONTAINER.get(), tile, turretData, windowId, playerInventory);
+    public ZapperTurretContainer(@Nullable ZapperTurretTileEntity tile, IIntArray turretData, int windowId, PlayerInventory playerInventory, ItemStackHandler handler) {
+        super(ModBlocks.ZAPPER_TURRET_CONTAINER.get(), tile, turretData, windowId, playerInventory, handler);
         this.tile = tile;
         this.data = turretData;
         this.setup(playerInventory);
@@ -29,8 +31,9 @@ public class ZapperTurretContainer extends FEContainerBase {
 
     @Override
     public void setup(PlayerInventory inventory) {
-        //addSlot(new RestrictedSlot(handler, 0, 65, 43));
-        //addSlot(new RestrictedSlot(handler, 1, 119, 43));
+        addSlot(new SlotItemHandler(handler, 0, 47, 41));
+        addSlot(new SlotItemHandler(handler, 1, 85, 41));
+        addSlot(new SlotItemHandler(handler, 1, 122, 41));
         super.setup(inventory);
     }
 

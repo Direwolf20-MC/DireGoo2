@@ -23,6 +23,10 @@ public abstract class FEScreenBase<T extends FEContainerBase> extends ContainerS
         this.container = container;
     }
 
+    public ResourceLocation getBackground() {
+        return background;
+    }
+
     @Override
     public void render(MatrixStack stack, int mouseX, int mouseY, float partialTicks) {
         this.renderBackground(stack);
@@ -43,7 +47,7 @@ public abstract class FEScreenBase<T extends FEContainerBase> extends ContainerS
     @Override
     protected void drawGuiContainerBackgroundLayer(MatrixStack stack, float partialTicks, int mouseX, int mouseY) {
         RenderSystem.color4f(1, 1, 1, 1);
-        getMinecraft().getTextureManager().bindTexture(background);
+        getMinecraft().getTextureManager().bindTexture(getBackground());
         this.blit(stack, guiLeft, guiTop, 0, 0, xSize, ySize);
 
         int maxEnergy = this.container.getMaxPower(), height = 70;
