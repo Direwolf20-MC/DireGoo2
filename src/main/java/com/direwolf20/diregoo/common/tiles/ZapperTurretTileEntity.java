@@ -7,6 +7,7 @@ import com.direwolf20.diregoo.common.container.ZapperTurretContainer;
 import com.direwolf20.diregoo.common.entities.GooSpreadEntity;
 import com.direwolf20.diregoo.common.items.CoreFreeze;
 import com.direwolf20.diregoo.common.items.CoreMelt;
+import com.direwolf20.diregoo.common.items.zapperupgrades.*;
 import com.direwolf20.diregoo.common.worldsave.BlockSave;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
@@ -63,10 +64,6 @@ public class ZapperTurretTileEntity extends FETileBase implements ITickableTileE
         return shootCooldown;
     }
 
-    public void setShooting(boolean shooting) {
-        isShooting = shooting;
-    }
-
     public Set<BlockPos> getClearBlocksQueue() {
         return clearBlocksQueue;
     }
@@ -83,18 +80,40 @@ public class ZapperTurretTileEntity extends FETileBase implements ITickableTileE
         if (!(core.getItem() instanceof CoreMelt) && !(core.getItem() instanceof CoreFreeze))
             return false;
 
+        if (!(inventoryStacks.getStackInSlot(1).getItem() instanceof BaseFocusCrystal))
+            return false;
+
+        if (!(inventoryStacks.getStackInSlot(2).getItem() instanceof BasePowerAmp))
+            return false;
+
         return true;
     }
 
     public int getRadius() {
-        return 1;
+        if (inventoryStacks.getStackInSlot(1).getItem() instanceof FocusT1) return 1;
+        if (inventoryStacks.getStackInSlot(1).getItem() instanceof FocusT2) return 2;
+        if (inventoryStacks.getStackInSlot(1).getItem() instanceof FocusT3) return 3;
+        if (inventoryStacks.getStackInSlot(1).getItem() instanceof FocusT4) return 4;
+        return 0;
     }
 
     public int getRange() {
-        return 1;
+        if (inventoryStacks.getStackInSlot(2).getItem() instanceof PowerAmpT1) return 8;
+        if (inventoryStacks.getStackInSlot(2).getItem() instanceof PowerAmpT2) return 16;
+        if (inventoryStacks.getStackInSlot(2).getItem() instanceof PowerAmpT3) return 24;
+        if (inventoryStacks.getStackInSlot(2).getItem() instanceof PowerAmpT4) return 32;
+        return 0;
     }
 
-    public void clearNextSet(BlockPos startPos) {
+    public void processGoo(ServerWorld world, BlockPos pos) {
+        BlockSave blockSave = BlockSave.get(world);
+        if (isMelting())
+            GooBase.resetBlock(world, pos, true, 10, true, blockSave);
+        else
+            GooBase.freezeGoo(world, pos);
+    }
+
+    public void processNextSet(BlockPos startPos) {
         int radius = getRadius();
         Direction forward = this.getBlockState().get(ZapperTurretBlock.FACING);
         boolean vertical = forward.getAxis().isVertical();
@@ -109,9 +128,8 @@ public class ZapperTurretTileEntity extends FETileBase implements ITickableTileE
                 .collect(Collectors.toCollection(HashSet::new));
 
         if (clearBlocksQueue.size() != 0) {
-            BlockSave blockSave = BlockSave.get(world);
             for (BlockPos pos : clearBlocksQueue) {
-                GooBase.resetBlock((ServerWorld) world, pos, true, 10, true, blockSave);
+                processGoo((ServerWorld) world, pos);
             }
         }
         List<GooSpreadEntity> gooSpreadEntities = world.getEntitiesWithinAABB(GooSpreadEntity.class, new AxisAlignedBB(startPos.offset(up, radius).offset(left, radius), startPos.offset(down, radius).offset(right, radius)));
@@ -122,58 +140,51 @@ public class ZapperTurretTileEntity extends FETileBase implements ITickableTileE
         markDirtyClient();
     }
 
-    public void freezeNextSet(BlockPos startPos) {
-        int radius = getRadius();
-        Direction forward = this.getBlockState().get(ZapperTurretBlock.FACING);
-        boolean vertical = forward.getAxis().isVertical();
-        Direction up = vertical ? Direction.NORTH : Direction.UP;
-        Direction down = up.getOpposite();
-        Direction side = forward.getOpposite();
-        Direction right = vertical ? up.rotateY() : side.rotateYCCW();
-        Direction left = right.getOpposite();
-        clearBlocksQueue = BlockPos.getAllInBox(startPos.offset(up, radius).offset(left, radius), startPos.offset(down, radius).offset(right, radius))
-                .filter(blockPos -> world.getBlockState(blockPos).getBlock() instanceof GooBase)
-                .map(BlockPos::toImmutable)
-                .collect(Collectors.toCollection(HashSet::new));
-
-        if (clearBlocksQueue.size() != 0) {
-            for (BlockPos pos : clearBlocksQueue) {
-                GooBase.freezeGoo((ServerWorld) world, pos);
-            }
-        }
-        List<GooSpreadEntity> gooSpreadEntities = world.getEntitiesWithinAABB(GooSpreadEntity.class, new AxisAlignedBB(startPos.offset(up, radius).offset(left, radius), startPos.offset(down, radius).offset(right, radius)));
-        for (GooSpreadEntity gooSpreadEntity : gooSpreadEntities)
-            gooSpreadEntity.remove();
-        markDirtyClient();
-    }
-
     public Direction getFacing() {
         return this.getBlockState().get(ZapperTurretBlock.FACING);
     }
 
     public void beginShooting() {
-        if (isShooting()) return;
+        if (isShooting() || !validateSlots()) return;
         isShooting = true;
         remainingShots = getRange();
         currentPos = this.pos.offset(getFacing());
-        clearNextSet(currentPos);
+        processNextSet(currentPos);
         markDirtyClient();
     }
 
     public int getMaxShootCooldown() {
-        return 10;
+        if (isMelting())
+            return 4;
+        else
+            return 4;
+    }
+
+    public boolean isFreezing() {
+        return inventoryStacks.getStackInSlot(0).getItem() instanceof CoreFreeze;
+    }
+
+    public boolean isMelting() {
+        return inventoryStacks.getStackInSlot(0).getItem() instanceof CoreMelt;
     }
 
     public void shoot() {
+        if (!validateSlots()) {
+            isShooting = false;
+            remainingShots = 0;
+            return;
+        }
         if (remainingShots <= 0) {
             isShooting = false;
-            currentPos = currentPos.offset(getFacing());
-            freezeNextSet(currentPos);
+            if (isFreezing()) {
+                currentPos = currentPos.offset(getFacing());
+                processNextSet(currentPos);
+            }
             currentPos = BlockPos.ZERO;
             markDirtyClient();
         }
         currentPos = currentPos.offset(getFacing());
-        clearNextSet(currentPos);
+        processNextSet(currentPos);
         markDirtyClient();
     }
 
@@ -186,14 +197,10 @@ public class ZapperTurretTileEntity extends FETileBase implements ITickableTileE
 
         //Server Only
         if (!world.isRemote) {
-            //System.out.println(validateSlots());
             energyStorage.receiveEnergy(625, false); //Testing
             if (!isShooting()) return;
             if (shootCooldown > 0) {
                 shootCooldown--;
-                if (shootCooldown == getMaxShootCooldown() / 2) {
-                    freezeNextSet(currentPos);
-                }
                 markDirtyClient();
                 return;
             } else {
@@ -207,7 +214,8 @@ public class ZapperTurretTileEntity extends FETileBase implements ITickableTileE
     @Override
     public void read(BlockState state, CompoundNBT tag) {
         super.read(state, tag);
-        inventory.ifPresent(h -> h.deserializeNBT(tag.getCompound("inv")));
+        inventoryStacks.deserializeNBT(tag.getCompound("inv"));
+        //inventory.ifPresent(h -> h.deserializeNBT(tag.getCompound("inv")));
         shootCooldown = tag.getInt("shootCooldown");
         remainingShots = tag.getInt("remainingShots");
         isShooting = tag.getBoolean("isShooting");
@@ -222,7 +230,8 @@ public class ZapperTurretTileEntity extends FETileBase implements ITickableTileE
 
     @Override
     public CompoundNBT write(CompoundNBT tag) {
-        inventory.ifPresent(h -> tag.put("inv", h.serializeNBT()));
+        tag.put("inv", inventoryStacks.serializeNBT());
+        //inventory.ifPresent(h -> tag.put("inv", h.serializeNBT()));
         tag.putInt("shootCooldown", shootCooldown);
         tag.putInt("remainingShots", remainingShots);
         tag.putBoolean("isShooting", isShooting);
@@ -249,7 +258,7 @@ public class ZapperTurretTileEntity extends FETileBase implements ITickableTileE
     @Nonnull
     @Override
     public AxisAlignedBB getRenderBoundingBox() {
-        return new AxisAlignedBB(pos.up(10).north(10).east(10), pos.down(10).south(10).west(10));
+        return new AxisAlignedBB(pos.up(32).north(32).east(32), pos.down(32).south(32).west(32));
     }
 
     @Override
