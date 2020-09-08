@@ -60,7 +60,11 @@ public class GooBase extends Block {
         CompoundNBT oldNBT = blockSave.getTEFromPos(pos);
         if (oldNBT == null) return;
         TileEntity te = world.getTileEntity(pos);
-        te.read(oldState, oldNBT);
+        try {
+            te.read(oldState, oldNBT);
+        } catch (Exception e) {
+            System.out.println("Failed to restore tile data for block: " + oldState + " with NBT: " + oldNBT + ". Consider adding it to the blacklist");
+        }
         blockSave.popTE(pos);
     }
 
