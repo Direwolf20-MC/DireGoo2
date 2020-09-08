@@ -144,6 +144,8 @@ public class ZapperTurretTileEntity extends FETileBase implements ITickableTileE
     public void shoot() {
         if (remainingShots <= 0) {
             isShooting = false;
+            currentPos = currentPos.offset(getFacing());
+            freezeNextSet(currentPos);
             currentPos = BlockPos.ZERO;
             markDirtyClient();
         }
