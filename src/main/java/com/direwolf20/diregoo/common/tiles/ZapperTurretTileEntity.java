@@ -167,7 +167,7 @@ public class ZapperTurretTileEntity extends FETileBase implements ITickableTileE
             if (!isShooting()) return;
             if (shootCooldown > 0) {
                 shootCooldown--;
-                if (shootCooldown == 5) {
+                if (shootCooldown == getMaxShootCooldown() / 2) {
                     freezeNextSet(currentPos);
                 }
                 markDirtyClient();
