@@ -54,7 +54,7 @@ public class ZapperTurretTileEntityRender extends TileEntityRenderer<ZapperTurre
             endLaser.add(addition);
         }
 
-        if (tile.isMelting()) {
+        /*if (tile.isMelting()) {
             builder = bufferIn.getBuffer(OurRenderTypes.LASER_MAIN_BEAM);
             drawMiningLaser(builder, positionMatrix2, endLaser, startLaser, 1, 0, 0, 1f, 0.5f, v, v + diffY * 1.5, tile);
             builder = bufferIn.getBuffer(OurRenderTypes.LASER_MAIN_CORE);
@@ -64,9 +64,9 @@ public class ZapperTurretTileEntityRender extends TileEntityRenderer<ZapperTurre
             drawMiningLaser(builder, positionMatrix2, endLaser, startLaser, 0, 1, 1, 1f, 0.5f, v, v + diffY * 1.5, tile);
             builder = bufferIn.getBuffer(OurRenderTypes.LASER_MAIN_CORE);
             drawMiningLaser(builder, positionMatrix2, endLaser, startLaser, 0, 0.65f, 1, 1f, 0.25f, v, v + diffY - 2.5 * 1.5, tile);
-        }
+        }*/
 
-        startLaser = new Vector3f(diffX, diffY, diffZ);
+        //startLaser = new Vector3f(diffX, diffY, diffZ);
 
         Set<BlockPos> blocks = tile.getClearBlocksQueue();
         for (BlockPos pos : blocks) {
