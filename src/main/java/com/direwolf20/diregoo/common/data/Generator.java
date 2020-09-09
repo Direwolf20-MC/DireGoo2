@@ -19,7 +19,8 @@ public class Generator {
     }
 
     private static void registerServerProviders(DataGenerator generator) {
-        //generator.addProvider(new GeneratorLoot(generator));
+        generator.addProvider(new GeneratorLoots(generator));
+        generator.addProvider(new GeneratorBlockTags(generator));
         //generator.addProvider(new GeneratorRecipes(generator));
     }
 
@@ -29,6 +30,6 @@ public class Generator {
         generator.addProvider(new GeneratorBlockStates(generator, helper));
         generator.addProvider(new GeneratorItemModels(generator, helper));
         generator.addProvider(new GeneratorLanguage(generator));
-        generator.addProvider(new GeneratorLoots(generator));
+        //generator.addProvider(new GeneratorLoots(generator));
     }
 }

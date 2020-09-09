@@ -2,6 +2,7 @@ package com.direwolf20.diregoo.common.blocks;
 
 import com.direwolf20.diregoo.Config;
 import com.direwolf20.diregoo.client.particles.ModParticles;
+import com.direwolf20.diregoo.common.data.GeneratorBlockTags;
 import com.direwolf20.diregoo.common.entities.GooEntity;
 import com.direwolf20.diregoo.common.entities.GooSpreadEntity;
 import com.direwolf20.diregoo.common.events.ChunkSave;
@@ -186,11 +187,16 @@ public class GooBase extends Block {
             }
     }
 
+    /**
+     * MultiPurpose function. #1 used to check if goo can spread into this block. #2 used to check if goo should 'deactivate' or 'reactivate'
+     */
     public boolean isAdjacentValid(ServerWorld worldIn, BlockPos pos, BlockState state) {
         if (state.getBlock() instanceof GooBase)
             return false; //No eating other goo blocks
         if (state.getBlockHardness(worldIn, pos) < 0)
             return false; //No Eating bedrock
+        if (state.isIn(GeneratorBlockTags.GOORESISTANT))
+            return false; //No Eating our GooRestistant blocktag.
         if (pos.getY() < 0 || pos.getY() > 254)
             return false; //No spreading below Y=0
         return true;

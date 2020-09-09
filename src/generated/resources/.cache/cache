@@ -74,3 +74,4 @@ d708b53753543054f31dac6464c9009b2fa55038 assets/diregoo/models/item/zapperturret
 2fb58d66c0e568598b9400850dd89e58b7ed41df data/diregoo/loot_tables/blocks/gooblock.json
 2fb58d66c0e568598b9400850dd89e58b7ed41df data/diregoo/loot_tables/blocks/gooblockburst.json
 b200b522d11361ac08cfbdcfd88f51e75e9db046 data/diregoo/loot_tables/blocks/gooblockterrain.json
+382fba2cebe5c574c99d08aff0c1f079facc9b45 data/diregoo/tags/blocks/gooresistant.json
