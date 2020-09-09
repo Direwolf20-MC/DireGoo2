@@ -17,7 +17,7 @@ public class ServerEvents {
 
     @SubscribeEvent
     public static void UpdateWorldSave(BlockEvent.BreakEvent event) {
-        World world = event.getWorld().getWorld();
+        World world = event.getPlayer().world;
         BlockPos pos = event.getPos();
         BlockState state = event.getState();
         BlockSave blockSave = BlockSave.get(world);

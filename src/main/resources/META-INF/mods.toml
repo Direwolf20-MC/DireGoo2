@@ -1,6 +1,7 @@
 modLoader="javafml"
-loaderVersion="[32,)"
+loaderVersion="[33,)"
 issueTrackerURL="https://github.com/Direwolf20-MC/DireGoo2"
+license="MIT (https://github.com/Direwolf20-MC/DireGoo2/blob/master/LICENSE.md)"
 
 [[mods]]
 modId="diregoo"
@@ -18,7 +19,7 @@ license="MIT (https://github.com/Direwolf20-MC/DireGoo2/blob/master/LICENSE.txt)
 [[dependencies.diregoo]]
     modId="forge"
     mandatory=true
-    versionRange="[32,)"
+    versionRange="[33,)"
     ordering="NONE"
     side="BOTH"
 
@@ -26,6 +27,6 @@ license="MIT (https://github.com/Direwolf20-MC/DireGoo2/blob/master/LICENSE.txt)
 [[dependencies.diregoo]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.16.1]"
+    versionRange="[1.16.2]"
     ordering="NONE"
     side="BOTH"
