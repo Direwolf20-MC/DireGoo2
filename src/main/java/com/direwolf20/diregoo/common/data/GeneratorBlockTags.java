@@ -3,30 +3,30 @@ package com.direwolf20.diregoo.common.data;
 import com.direwolf20.diregoo.DireGoo;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
+import net.minecraft.data.BlockTagsProvider;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.data.TagsProvider;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ITag;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.registry.Registry;
+import net.minecraftforge.common.data.ExistingFileHelper;
 
 import java.nio.file.Path;
 
 import static net.minecraft.tags.BlockTags.makeWrapperTag;
 
 
-public class GeneratorBlockTags extends TagsProvider<Block> {
+public class GeneratorBlockTags extends BlockTagsProvider {
 
     public static final ITag.INamedTag<Block> GOORESISTANT = makeWrapperTag("diregoo:gooresistant");
 
-    public GeneratorBlockTags(DataGenerator generatorIn) {
-        super(generatorIn, Registry.BLOCK);
+    public GeneratorBlockTags(DataGenerator generatorIn, ExistingFileHelper exFileHelper) {
+        super(generatorIn, DireGoo.MOD_ID, exFileHelper);
     }
 
     @Override
     public void registerTags() {
-        //Todo: Add in forge 1.16.2
-        //this.getOrCreateBuilder(GOORESISTANT).addTag(BlockTags.BEDS);
-        //this.getOrCreateBuilder(GOORESISTANT).addTag(BlockTags.DOORS);
+        this.getOrCreateBuilder(GOORESISTANT).addTag(BlockTags.DOORS);
+        this.getOrCreateBuilder(GOORESISTANT).addTag(BlockTags.BEDS);
         this.getOrCreateBuilder(GOORESISTANT).add(Blocks.PISTON, Blocks.PISTON_HEAD, Blocks.STICKY_PISTON, Blocks.MOVING_PISTON);
 
     }
@@ -36,7 +36,7 @@ public class GeneratorBlockTags extends TagsProvider<Block> {
      */
     @Override
     protected Path makePath(ResourceLocation id) {
-        return this.generator.getOutputFolder().resolve("data/" + DireGoo.MOD_ID + "/tags/blocks/" + id.getPath() + ".json");
+        return this.generator.getOutputFolder().resolve("data/" + id.getNamespace() + "/tags/blocks/" + id.getPath() + ".json");
     }
 
     /**

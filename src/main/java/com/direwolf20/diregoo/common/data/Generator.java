@@ -12,15 +12,16 @@ public class Generator {
     @SubscribeEvent
     public static void gatherData(GatherDataEvent event) {
         if (event.includeServer())
-            registerServerProviders(event.getGenerator());
+            registerServerProviders(event.getGenerator(), event);
 
         if (event.includeClient())
             registerClientProviders(event.getGenerator(), event);
     }
 
-    private static void registerServerProviders(DataGenerator generator) {
+    private static void registerServerProviders(DataGenerator generator, GatherDataEvent event) {
+        ExistingFileHelper helper = event.getExistingFileHelper();
         generator.addProvider(new GeneratorLoots(generator));
-        generator.addProvider(new GeneratorBlockTags(generator));
+        generator.addProvider(new GeneratorBlockTags(generator, helper));
         //generator.addProvider(new GeneratorRecipes(generator));
     }
 
