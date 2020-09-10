@@ -4,6 +4,7 @@ import com.direwolf20.diregoo.Config;
 import com.direwolf20.diregoo.DireGoo;
 import com.direwolf20.diregoo.common.blocks.GooBase;
 import com.direwolf20.diregoo.common.container.ZapperItemContainer;
+import com.direwolf20.diregoo.common.container.ZapperSlotHandler;
 import com.direwolf20.diregoo.common.worldsave.BlockSave;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -48,7 +49,7 @@ public class GooZapper extends FELaserBase {
     public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
         ItemStack itemstack = player.getHeldItem(hand);
         if (!world.isRemote && player.isSneaking()) {
-            ZapperItemContainer.ZapperSlotHandler handler = getInventory(itemstack);
+            ZapperSlotHandler handler = getInventory(itemstack);
             NetworkHooks.openGui((ServerPlayerEntity) player, new SimpleNamedContainerProvider(
                     (windowId, playerInventory, playerEntity) -> new ZapperItemContainer(windowId, playerInventory, handler, itemstack), new StringTextComponent("")));
             return new ActionResult<>(ActionResultType.PASS, itemstack);
@@ -57,14 +58,14 @@ public class GooZapper extends FELaserBase {
         }
     }
 
-    public static ZapperItemContainer.ZapperSlotHandler getInventory(ItemStack stack) {
+    public static ZapperSlotHandler getInventory(ItemStack stack) {
         CompoundNBT compound = stack.getOrCreateTag();
-        ZapperItemContainer.ZapperSlotHandler handler = new ZapperItemContainer.ZapperSlotHandler(ZapperItemContainer.SLOTS, stack);
+        ZapperSlotHandler handler = new ZapperSlotHandler(ZapperItemContainer.SLOTS, stack);
         handler.deserializeNBT(compound.getCompound("inv"));
-        return !compound.contains("inv") ? setInventory(stack, new ZapperItemContainer.ZapperSlotHandler(ZapperItemContainer.SLOTS, stack)) : handler;
+        return !compound.contains("inv") ? setInventory(stack, new ZapperSlotHandler(ZapperItemContainer.SLOTS, stack)) : handler;
     }
 
-    public static ZapperItemContainer.ZapperSlotHandler setInventory(ItemStack stack, ZapperItemContainer.ZapperSlotHandler handler) {
+    public static ZapperSlotHandler setInventory(ItemStack stack, ZapperSlotHandler handler) {
         stack.getOrCreateTag().put("inv", handler.serializeNBT());
         return handler;
     }

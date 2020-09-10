@@ -3,7 +3,6 @@ package com.direwolf20.diregoo.common.container;
 import com.direwolf20.diregoo.common.blocks.ModBlocks;
 import com.direwolf20.diregoo.common.items.CoreFreeze;
 import com.direwolf20.diregoo.common.items.CoreMelt;
-import com.direwolf20.diregoo.common.items.GooZapper;
 import com.direwolf20.diregoo.common.items.zapperupgrades.BaseFocusCrystal;
 import com.direwolf20.diregoo.common.items.zapperupgrades.BasePowerAmp;
 import net.minecraft.entity.player.PlayerEntity;
@@ -13,7 +12,6 @@ import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
 import javax.annotation.Nonnull;
@@ -24,7 +22,7 @@ public class ZapperItemContainer extends Container {
     public ItemStack stack;
 
     public ZapperItemContainer(int windowId, PlayerInventory playerInventory, PacketBuffer buf) {
-        this(windowId, playerInventory, new ZapperSlotHandler(3, new ItemStack(GooZapper::new)), new ItemStack(GooZapper::new));
+        this(windowId, playerInventory, new ZapperSlotHandler(3, ItemStack.EMPTY), ItemStack.EMPTY);
     }
 
     public ZapperItemContainer(int windowId, PlayerInventory playerInventory, ZapperSlotHandler handler, ItemStack stack) {
@@ -58,12 +56,6 @@ public class ZapperItemContainer extends Container {
     @Override
     public boolean canInteractWith(PlayerEntity playerIn) {
         return true;
-    }
-
-    @Override
-    public void detectAndSendChanges() {
-        //GooZapper.setInventory(stack, handler);
-        super.detectAndSendChanges();
     }
 
     @Override
@@ -110,20 +102,6 @@ public class ZapperItemContainer extends Container {
                 return stack.getItem() instanceof BasePowerAmp;
 
             return super.isItemValid(stack);
-        }
-    }
-
-    public static class ZapperSlotHandler extends ItemStackHandler {
-        ItemStack stack;
-
-        public ZapperSlotHandler(int size, ItemStack itemStack) {
-            super(size);
-            this.stack = itemStack;
-        }
-
-        @Override
-        protected void onContentsChanged(int slot) {
-            GooZapper.setInventory(stack, this);
         }
     }
 
