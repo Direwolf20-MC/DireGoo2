@@ -2,6 +2,7 @@ package com.direwolf20.diregoo.common.entities;
 
 import com.direwolf20.diregoo.DireGoo;
 import com.direwolf20.diregoo.common.blocks.GooBase;
+import com.direwolf20.diregoo.common.blocks.GooBlockTerrain;
 import com.direwolf20.diregoo.common.worldsave.BlockSave;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -16,6 +17,7 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.registries.ObjectHolder;
 
@@ -74,9 +76,18 @@ public class GooSpreadEntity extends EntityBase {
     protected void onSetDespawning() {
         if (!world.isRemote) {
             BlockSave blockSave = BlockSave.get(world);
-            BlockState oldState = getOriginalBlockState();
-            GooBase.saveBlockData(world, this.targetPos, oldState, blockSave);
-            world.setBlockState(this.targetPos, dataManager.get(gooBlockState).get());
+            BlockState oldState = world.getBlockState(this.targetPos);
+            BlockState gooState = getGooBlockState();
+            boolean stillValid;
+            if (getGooBlockState().getBlock() instanceof GooBlockTerrain)
+                stillValid = ((GooBlockTerrain) gooState.getBlock()).isAdjacentValid((ServerWorld) world, this.targetPos, oldState); //In case the blockstate changes between the entity spawn and death
+            else
+                stillValid = ((GooBase) gooState.getBlock()).isAdjacentValid((ServerWorld) world, this.targetPos, oldState); //In case the blockstate changes between the entity spawn and death
+            if (stillValid) {
+                GooBase.saveBlockData(world, this.targetPos, oldState, blockSave);
+                world.setBlockState(this.targetPos, dataManager.get(gooBlockState).get());
+            }
+
         }
     }
 
