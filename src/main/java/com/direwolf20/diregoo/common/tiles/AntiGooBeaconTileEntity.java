@@ -1,8 +1,14 @@
 package com.direwolf20.diregoo.common.tiles;
 
 import com.direwolf20.diregoo.common.blocks.ModBlocks;
+import com.direwolf20.diregoo.common.container.AntiGooBeaconContainer;
+import com.direwolf20.diregoo.common.container.ZapperTurretContainer;
 import com.direwolf20.diregoo.common.worldsave.BlockSave;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.nbt.NBTUtil;
@@ -10,17 +16,28 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.ItemStackHandler;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class AntiGooBeaconTileEntity extends TileEntity implements ITickableTileEntity/*, INamedContainerProvider*/ {
+public class AntiGooBeaconTileEntity extends TileEntity implements ITickableTileEntity, INamedContainerProvider {
 
     private boolean isActive = false;
     private Set<BlockPos> protectedBlocksList = new HashSet<>();
+    private ItemStackHandler inventoryStacks = new ItemStackHandler(ZapperTurretContainer.SLOTS);
+    private LazyOptional<ItemStackHandler> inventory = LazyOptional.of(() -> new ItemStackHandler(ZapperTurretContainer.SLOTS));
 
     public AntiGooBeaconTileEntity() {
         super(ModBlocks.ANTI_GOO_BEACON_TILE.get());
@@ -34,12 +51,12 @@ public class AntiGooBeaconTileEntity extends TileEntity implements ITickableTile
         return protectedBlocksList;
     }
 
-    /*@Nullable
+    @Nullable
     @Override
     public Container createMenu(int i, PlayerInventory playerInventory, PlayerEntity playerEntity) {
         assert world != null;
-        return new AntiGooFieldGenContainer(this, this.FETileData, i, playerInventory);
-    }*/
+        return new AntiGooBeaconContainer(this, i, playerInventory, inventoryStacks);
+    }
 
     @Override
     public void tick() {
@@ -82,6 +99,7 @@ public class AntiGooBeaconTileEntity extends TileEntity implements ITickableTile
     @Override
     public void read(BlockState state, CompoundNBT tag) {
         super.read(state, tag);
+        inventoryStacks.deserializeNBT(tag.getCompound("inv"));
         isActive = tag.getBoolean("active");
         protectedBlocksList = new HashSet<>();
         ListNBT antigoo = tag.getList("protectedblockslist", Constants.NBT.TAG_COMPOUND);
@@ -93,6 +111,7 @@ public class AntiGooBeaconTileEntity extends TileEntity implements ITickableTile
 
     @Override
     public CompoundNBT write(CompoundNBT tag) {
+        tag.put("inv", inventoryStacks.serializeNBT());
         tag.putBoolean("active", isActive);
         ListNBT anti = new ListNBT();
         for (BlockPos blockPos : protectedBlocksList) {
@@ -104,10 +123,19 @@ public class AntiGooBeaconTileEntity extends TileEntity implements ITickableTile
         return super.write(tag);
     }
 
-    /*@Override
+    @Nonnull
+    @Override
+    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, final @Nullable Direction side) {
+        if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+            return inventory.cast();
+
+        return super.getCapability(cap, side);
+    }
+
+    @Override
     public ITextComponent getDisplayName() {
         return new StringTextComponent("Anti Goo Field Gen Tile");
-    }*/
+    }
 
     //TE Data Stuff
 

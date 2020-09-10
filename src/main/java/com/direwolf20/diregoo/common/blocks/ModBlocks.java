@@ -4,6 +4,7 @@ import com.direwolf20.diregoo.DireGoo;
 import com.direwolf20.diregoo.common.blocks.goospreadblocks.GooRender;
 import com.direwolf20.diregoo.common.blocks.goospreadblocks.GooRenderBurst;
 import com.direwolf20.diregoo.common.blocks.goospreadblocks.GooRenderTerrain;
+import com.direwolf20.diregoo.common.container.AntiGooBeaconContainer;
 import com.direwolf20.diregoo.common.container.AntiGooFieldGenContainer;
 import com.direwolf20.diregoo.common.container.TurretContainer;
 import com.direwolf20.diregoo.common.container.ZapperTurretContainer;
@@ -59,6 +60,7 @@ public class ModBlocks {
      * Containers
      */
     public static final RegistryObject<ContainerType<AntiGooFieldGenContainer>> ANTI_GOO_FIELD_GEN_CONTAINER = CONTAINERS.register("anti_goo_field_gen_container", () -> IForgeContainerType.create(AntiGooFieldGenContainer::new));
+    public static final RegistryObject<ContainerType<AntiGooBeaconContainer>> ANTI_GOO_BEACON_CONTAINER = CONTAINERS.register("anti_goo_beacon_container", () -> IForgeContainerType.create(AntiGooBeaconContainer::new));
     public static final RegistryObject<ContainerType<TurretContainer>> TURRET_CONTAINER = CONTAINERS.register("turret_container", () -> IForgeContainerType.create(TurretContainer::new));
     public static final RegistryObject<ContainerType<ZapperTurretContainer>> ZAPPER_TURRET_CONTAINER = CONTAINERS.register("zapper_turret_container", () -> IForgeContainerType.create(ZapperTurretContainer::new));
 

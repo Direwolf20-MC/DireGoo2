@@ -1,5 +1,6 @@
 package com.direwolf20.diregoo.client;
 
+import com.direwolf20.diregoo.client.screens.AntiGooBeaconScreen;
 import com.direwolf20.diregoo.client.screens.AntiGooFieldGenScreen;
 import com.direwolf20.diregoo.client.screens.TurretScreen;
 import com.direwolf20.diregoo.client.screens.ZapperTurretScreen;
@@ -26,7 +27,7 @@ public final class ClientSetup {
         ScreenManager.registerFactory(ModBlocks.ANTI_GOO_FIELD_GEN_CONTAINER.get(), AntiGooFieldGenScreen::new);
         ScreenManager.registerFactory(ModBlocks.TURRET_CONTAINER.get(), TurretScreen::new);
         ScreenManager.registerFactory(ModBlocks.ZAPPER_TURRET_CONTAINER.get(), ZapperTurretScreen::new);
-        //ScreenManager.registerFactory(ModContainers.FILTER_CONTAINER.get(), FilterScreen::new);
+        ScreenManager.registerFactory(ModBlocks.ANTI_GOO_BEACON_CONTAINER.get(), AntiGooBeaconScreen::new);
     }
 
     /**
