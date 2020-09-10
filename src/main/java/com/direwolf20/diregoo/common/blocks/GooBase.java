@@ -254,7 +254,7 @@ public class GooBase extends Block {
 
     public void setBlockToGoo(BlockState oldState, World worldIn, BlockPos checkPos, boolean animate, Direction direction, BlockSave blockSave) {
         if (animate) {
-            worldIn.addEntity(new GooSpreadEntity(worldIn, checkPos, this.getDefaultState(), oldState, gooSpreadAnimationTime, direction.getOpposite().getIndex()));
+            worldIn.addEntity(new GooSpreadEntity(worldIn, checkPos, this.getDefaultState(), gooSpreadAnimationTime, direction.getOpposite().getIndex()));
         } else {
             saveBlockData(worldIn, checkPos, oldState, blockSave);
             worldIn.setBlockState(checkPos, this.getDefaultState());

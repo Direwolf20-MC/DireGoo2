@@ -28,7 +28,7 @@ public class GooSpreadEntity extends EntityBase {
     public static EntityType<GooSpreadEntity> TYPE;
 
     private static final DataParameter<Optional<BlockState>> gooBlockState = EntityDataManager.createKey(GooSpreadEntity.class, DataSerializers.OPTIONAL_BLOCK_STATE);
-    private static final DataParameter<Optional<BlockState>> originalBlockState = EntityDataManager.createKey(GooSpreadEntity.class, DataSerializers.OPTIONAL_BLOCK_STATE);
+    //private static final DataParameter<Optional<BlockState>> originalBlockState = EntityDataManager.createKey(GooSpreadEntity.class, DataSerializers.OPTIONAL_BLOCK_STATE);
     private static final DataParameter<Integer> MAXLIFE = EntityDataManager.createKey(GooSpreadEntity.class, DataSerializers.VARINT);
     private static final DataParameter<Integer> DIRECTION = EntityDataManager.createKey(GooSpreadEntity.class, DataSerializers.VARINT);
 
@@ -36,13 +36,13 @@ public class GooSpreadEntity extends EntityBase {
         super(type, world);
     }
 
-    public GooSpreadEntity(World world, BlockPos spawnPos, BlockState gooBlock, BlockState originalState, int maxLife, int directionFrom) {
+    public GooSpreadEntity(World world, BlockPos spawnPos, BlockState gooBlock, int maxLife, int directionFrom) {
         this(TYPE, world);
 
         setPosition(spawnPos.getX(), spawnPos.getY(), spawnPos.getZ());
         targetPos = spawnPos;
         dataManager.set(gooBlockState, Optional.of(gooBlock));
-        dataManager.set(originalBlockState, Optional.of(originalState));
+        //dataManager.set(originalBlockState, Optional.of(originalState));
         dataManager.set(MAXLIFE, maxLife);
         dataManager.set(DIRECTION, directionFrom);
     }
@@ -51,9 +51,9 @@ public class GooSpreadEntity extends EntityBase {
         return dataManager.get(gooBlockState).get();
     }
 
-    public BlockState getOriginalBlockState() {
+    /*public BlockState getOriginalBlockState() {
         return dataManager.get(originalBlockState).get();
-    }
+    }*/
 
     public Direction getDirection() {
         return Direction.values()[dataManager.get(DIRECTION)];
@@ -62,7 +62,7 @@ public class GooSpreadEntity extends EntityBase {
     @Override
     protected void registerData() {
         dataManager.register(gooBlockState, Optional.of(Blocks.AIR.getDefaultState()));
-        dataManager.register(originalBlockState, Optional.of(Blocks.AIR.getDefaultState()));
+        //dataManager.register(originalBlockState, Optional.of(Blocks.AIR.getDefaultState()));
         dataManager.register(MAXLIFE, 80);
         dataManager.register(DIRECTION, 0);
     }
@@ -95,7 +95,7 @@ public class GooSpreadEntity extends EntityBase {
     protected void readAdditional(CompoundNBT compound) {
         super.readAdditional(compound);
         dataManager.set(gooBlockState, Optional.ofNullable(NBTUtil.readBlockState(compound.getCompound("gooblockstate"))));
-        dataManager.set(originalBlockState, Optional.ofNullable(NBTUtil.readBlockState(compound.getCompound("originalBlockState"))));
+        //dataManager.set(originalBlockState, Optional.ofNullable(NBTUtil.readBlockState(compound.getCompound("originalBlockState"))));
         dataManager.set(MAXLIFE, compound.getInt("maxlife"));
         dataManager.set(DIRECTION, compound.getInt("direction"));
     }
@@ -103,7 +103,7 @@ public class GooSpreadEntity extends EntityBase {
     @Override
     protected void writeAdditional(CompoundNBT compound) {
         compound.put("gooblockstate", NBTUtil.writeBlockState(dataManager.get(gooBlockState).get()));
-        compound.put("originalBlockState", NBTUtil.writeBlockState(dataManager.get(originalBlockState).get()));
+        //compound.put("originalBlockState", NBTUtil.writeBlockState(dataManager.get(originalBlockState).get()));
         compound.putInt("maxlife", dataManager.get(MAXLIFE));
         compound.putInt("direction", dataManager.get(DIRECTION));
         super.writeAdditional(compound);
