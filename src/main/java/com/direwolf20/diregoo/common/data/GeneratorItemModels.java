@@ -27,7 +27,7 @@ public class GeneratorItemModels extends ItemModelProvider {
         registerBlockModel(ModBlocks.TURRET_BLOCK.get());
         registerBlockModel(ModBlocks.ZAPPER_TURRET_BLOCK.get());
         registerBlockModel(ModBlocks.ANTI_GOO_FIELD_GEN.get());
-        //registerBlockModel(ModBlocks.GOO_DETECTOR.get());
+        registerBlockModel(ModBlocks.ANTI_GOO_BEACON.get());
 
         String path = ModBlocks.GOO_DETECTOR.get().getRegistryName().getPath();
         getBuilder(path).parent(new ModelFile.UncheckedModelFile(modLoc("block/" + path))).transforms()

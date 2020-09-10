@@ -7,6 +7,7 @@ import com.direwolf20.diregoo.common.blocks.goospreadblocks.GooRenderTerrain;
 import com.direwolf20.diregoo.common.container.AntiGooFieldGenContainer;
 import com.direwolf20.diregoo.common.container.TurretContainer;
 import com.direwolf20.diregoo.common.container.ZapperTurretContainer;
+import com.direwolf20.diregoo.common.tiles.AntiGooBeaconTileEntity;
 import com.direwolf20.diregoo.common.tiles.AntiGooFieldGenTileEntity;
 import com.direwolf20.diregoo.common.tiles.TurretBlockTileEntity;
 import com.direwolf20.diregoo.common.tiles.ZapperTurretTileEntity;
@@ -36,6 +37,7 @@ public class ModBlocks {
     public static final RegistryObject<Block> TURRET_BLOCK = BLOCKS.register("turretblock", TurretBlock::new);
     public static final RegistryObject<Block> ZAPPER_TURRET_BLOCK = BLOCKS.register("zapperturretblock", ZapperTurretBlock::new);
     public static final RegistryObject<Block> ANTI_GOO_FIELD_GEN = BLOCKS.register("antigoofieldgen", AntiGooFieldGen::new);
+    public static final RegistryObject<Block> ANTI_GOO_BEACON = BLOCKS.register("antigoobeacon", AntiGooBeacon::new);
     public static final RegistryObject<Block> GOO_DETECTOR = BLOCKS.register("goodetector", GooDetector::new);
     public static final RegistryObject<Block> GOO_RENDER = BLOCKS.register("goorender", GooRender::new);
     public static final RegistryObject<Block> GOO_RENDER_TERRAIN = BLOCKS.register("goorenderterrain", GooRenderTerrain::new);
@@ -48,6 +50,8 @@ public class ModBlocks {
             TILES_ENTITIES.register("turretblock", () -> TileEntityType.Builder.create(TurretBlockTileEntity::new, ModBlocks.TURRET_BLOCK.get()).build(null));
     public static final RegistryObject<TileEntityType<AntiGooFieldGenTileEntity>> ANTI_GOO_FIELD_GEN_TILE =
             TILES_ENTITIES.register("antigoofieldgen", () -> TileEntityType.Builder.create(AntiGooFieldGenTileEntity::new, ModBlocks.ANTI_GOO_FIELD_GEN.get()).build(null));
+    public static final RegistryObject<TileEntityType<AntiGooBeaconTileEntity>> ANTI_GOO_BEACON_TILE =
+            TILES_ENTITIES.register("antigoobeacon", () -> TileEntityType.Builder.create(AntiGooBeaconTileEntity::new, ModBlocks.ANTI_GOO_BEACON.get()).build(null));
     public static final RegistryObject<TileEntityType<ZapperTurretTileEntity>> ZAPPERTURRET_TILE =
             TILES_ENTITIES.register("zapperturretblock", () -> TileEntityType.Builder.create(ZapperTurretTileEntity::new, ModBlocks.ZAPPER_TURRET_BLOCK.get()).build(null));
 

@@ -28,6 +28,7 @@ public class GeneratorBlockStates extends BlockStateProvider {
         buildCubeAll(ModBlocks.GOO_BLOCK_POISON.get());
         buildCubeAll(ModBlocks.TURRET_BLOCK.get());
         buildCubeAll(ModBlocks.ANTI_GOO_FIELD_GEN.get());
+        buildCubeAll(ModBlocks.ANTI_GOO_BEACON.get());
 
         directionalBlock(ModBlocks.ZAPPER_TURRET_BLOCK.get(), models().orientableVertical(
                 Objects.requireNonNull(ModBlocks.ZAPPER_TURRET_BLOCK.get().getRegistryName()).getPath(),

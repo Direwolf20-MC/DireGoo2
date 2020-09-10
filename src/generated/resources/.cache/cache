@@ -1,3 +1,4 @@
+377886e4b35f703c4e7c957946dc4c4c773b1f9f assets/diregoo/blockstates/antigoobeacon.json
 4d8e96f5e5e2d2ad3464a1e402af6a37877ca6cf assets/diregoo/blockstates/antigoofieldgen.json
 a494681d4657f14837bd357053770cc6407e5755 assets/diregoo/blockstates/gooblock.json
 f6827a0806f63c183f204c96d015142c1a5edfde assets/diregoo/blockstates/gooblockburst.json
@@ -9,6 +10,7 @@ d5dbdecc8aa2f12044bed2a6f22b5190e1313bcd assets/diregoo/blockstates/goorenderter
 32d4d79130faf1f0ef5d8a67fd3040944bb46c0e assets/diregoo/blockstates/turretblock.json
 a9db38cdb80eb757509918a3473b3717373b44b4 assets/diregoo/blockstates/zapperturretblock.json
 60807e83bedcfa22f6b96af1f5116658841029c0 assets/diregoo/lang/en_us.json
+4112510722b9274ff96d970d66e3ed9d1a793439 assets/diregoo/models/block/antigoobeacon.json
 dc0f2cf452506952a26ffa6314e2765365653f3b assets/diregoo/models/block/antigoofieldgen.json
 eabaf964c46976fcf81eca53b6111376574a2473 assets/diregoo/models/block/gooblock.json
 7b4a145c356a3807bb370e83ae58e4e78da88f52 assets/diregoo/models/block/gooblockburst.json
@@ -44,6 +46,7 @@ a2e0399fb012ce992f7c39f5d30cb96cb68603d5 assets/diregoo/models/block/goorenderte
 4e7d421abc12bda8bb03bf9a24a02a80199c0a7a assets/diregoo/models/block/goorenderterrain9.json
 b3bbfa3fc1bc4afe49d80510824e814914f65409 assets/diregoo/models/block/turretblock.json
 c274d921bc00169b218e15cee4dca4395366b10d assets/diregoo/models/block/zapperturretblock.json
+9de0ae619484dbe27c18e182e14f3f491db4012d assets/diregoo/models/item/antigoobeacon.json
 6c33590af1e36ec3ccae9519ba4c48871244954d assets/diregoo/models/item/antigoodust.json
 2e6b8e7ae3ec4ad5835b810310ceaafbb4a3792c assets/diregoo/models/item/antigoofieldgen.json
 1c795b0b03f93ee833f5bd3d89d8dc95ba7afea4 assets/diregoo/models/item/antigoopaste.json
