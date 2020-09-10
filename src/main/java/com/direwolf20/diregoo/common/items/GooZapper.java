@@ -10,6 +10,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.container.SimpleNamedContainerProvider;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
@@ -17,13 +18,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fml.network.NetworkHooks;
-import net.minecraftforge.items.ItemStackHandler;
 
 public class GooZapper extends FELaserBase {
 
-    private LazyOptional<ItemStackHandler> inventory = LazyOptional.of(() -> new ItemStackHandler(ZapperItemContainer.SLOTS));
+    //private LazyOptional<ItemStackHandler> inventory = LazyOptional.of(() -> new ItemStackHandler(ZapperItemContainer.SLOTS));
 
     public GooZapper() {
         super(new Properties().maxStackSize(1).group(DireGoo.itemGroup), Config.ITEM_ZAPPER_RFMAX.get());
@@ -49,12 +48,25 @@ public class GooZapper extends FELaserBase {
     public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
         ItemStack itemstack = player.getHeldItem(hand);
         if (!world.isRemote && player.isSneaking()) {
-            ItemStackHandler handler = inventory.orElseThrow(RuntimeException::new);
+            ZapperItemContainer.ZapperSlotHandler handler = getInventory(itemstack);
             NetworkHooks.openGui((ServerPlayerEntity) player, new SimpleNamedContainerProvider(
-                    (windowId, playerInventory, playerEntity) -> new ZapperItemContainer(windowId, playerInventory, handler), new StringTextComponent("")));
+                    (windowId, playerInventory, playerEntity) -> new ZapperItemContainer(windowId, playerInventory, handler, itemstack), new StringTextComponent("")));
             return new ActionResult<>(ActionResultType.PASS, itemstack);
         } else {
             return super.onItemRightClick(world, player, hand);
         }
     }
+
+    public static ZapperItemContainer.ZapperSlotHandler getInventory(ItemStack stack) {
+        CompoundNBT compound = stack.getOrCreateTag();
+        ZapperItemContainer.ZapperSlotHandler handler = new ZapperItemContainer.ZapperSlotHandler(ZapperItemContainer.SLOTS, stack);
+        handler.deserializeNBT(compound.getCompound("inv"));
+        return !compound.contains("inv") ? setInventory(stack, new ZapperItemContainer.ZapperSlotHandler(ZapperItemContainer.SLOTS, stack)) : handler;
+    }
+
+    public static ZapperItemContainer.ZapperSlotHandler setInventory(ItemStack stack, ZapperItemContainer.ZapperSlotHandler handler) {
+        stack.getOrCreateTag().put("inv", handler.serializeNBT());
+        return handler;
+    }
+
 }
