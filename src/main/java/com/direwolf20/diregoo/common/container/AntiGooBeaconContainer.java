@@ -9,6 +9,8 @@ import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.IIntArray;
+import net.minecraft.util.IntArray;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraftforge.items.IItemHandler;
@@ -19,24 +21,26 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class AntiGooBeaconContainer extends Container {
-    private static final int SLOTS = 1;
+    public static final int SLOTS = 1;
     public ItemStackHandler handler;
 
+    public final IIntArray data;
     // Tile can be null and shouldn't be used for accessing any data that needs to be up to date on both sides
     public AntiGooBeaconTileEntity tile;
 
     public AntiGooBeaconContainer(int windowId, PlayerInventory playerInventory, PacketBuffer extraData) {
-        this((AntiGooBeaconTileEntity) playerInventory.player.world.getTileEntity(extraData.readBlockPos()), windowId, playerInventory, new ItemStackHandler(SLOTS));
+        this((AntiGooBeaconTileEntity) playerInventory.player.world.getTileEntity(extraData.readBlockPos()), new IntArray(1), windowId, playerInventory, new ItemStackHandler(SLOTS));
     }
 
-    public AntiGooBeaconContainer(@Nullable AntiGooBeaconTileEntity tile, int windowId, PlayerInventory playerInventory, ItemStackHandler handler) {
+    public AntiGooBeaconContainer(@Nullable AntiGooBeaconTileEntity tile, IIntArray antiGooBeaconData, int windowId, PlayerInventory playerInventory, ItemStackHandler handler) {
         super(ModBlocks.ANTI_GOO_BEACON_CONTAINER.get(), windowId);
 
         this.handler = handler;
         this.tile = tile;
-
+        this.data = antiGooBeaconData;
         this.setup(playerInventory);
 
+        trackIntArray(antiGooBeaconData);
     }
 
     public void setup(PlayerInventory inventory) {
@@ -89,6 +93,10 @@ public class AntiGooBeaconContainer extends Container {
     public boolean canInteractWith(PlayerEntity playerIn) {
         BlockPos pos = this.tile.getPos();
         return this.tile != null && !this.tile.isRemoved() && playerIn.getDistanceSq(new Vector3d(pos.getX(), pos.getY(), pos.getZ()).add(0.5D, 0.5D, 0.5D)) <= 64D;
+    }
+
+    public int getFuelRemaining() {
+        return this.data.get(0);
     }
 
     static class RestrictedSlot extends SlotItemHandler {

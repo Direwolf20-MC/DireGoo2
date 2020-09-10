@@ -2,6 +2,7 @@ package com.direwolf20.diregoo.client.screens;
 
 import com.direwolf20.diregoo.DireGoo;
 import com.direwolf20.diregoo.common.container.AntiGooBeaconContainer;
+import com.direwolf20.diregoo.common.util.MagicHelpers;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
@@ -61,6 +62,9 @@ public class AntiGooBeaconScreen extends ContainerScreen<AntiGooBeaconContainer>
     @Override
     protected void drawGuiContainerForegroundLayer(MatrixStack stack, int mouseX, int mouseY) {
         Minecraft.getInstance().fontRenderer.drawString(stack, I18n.format("block.diregoo.antigoobeaconblock"), 55, 8, Color.DARK_GRAY.getRGB());
+        if (container.getFuelRemaining() > 0) {
+            Minecraft.getInstance().fontRenderer.drawString(stack, new TranslationTextComponent("screen.diregoo.antigoobeacon.fuel_remaining", MagicHelpers.ticksInSeconds(this.container.getFuelRemaining())).getString(), 45, 30, Color.DARK_GRAY.getRGB());
+        }
         /*Minecraft.getInstance().fontRenderer.drawString(stack, I18n.format("block.diregoo.focusSlot"), 47, 30, Color.DARK_GRAY.getRGB());
         Minecraft.getInstance().fontRenderer.drawString(stack, I18n.format("block.diregoo.powerSlot"), 85, 30, Color.DARK_GRAY.getRGB());
         Minecraft.getInstance().fontRenderer.drawString(stack, I18n.format("block.diregoo.beamSlot"), 122, 30, Color.DARK_GRAY.getRGB());*/

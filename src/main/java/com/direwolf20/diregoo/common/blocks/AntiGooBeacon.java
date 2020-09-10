@@ -67,10 +67,10 @@ public class AntiGooBeacon extends Block {
                 return ActionResultType.FAIL;
 
             if (player.isSneaking()) {
-                if (((AntiGooBeaconTileEntity) te).isActive())
+                /*if (((AntiGooBeaconTileEntity) te).isActive())
                     ((AntiGooBeaconTileEntity) te).removeField();
                 else
-                    ((AntiGooBeaconTileEntity) te).addField();
+                    ((AntiGooBeaconTileEntity) te).addField();*/
                 return ActionResultType.SUCCESS;
             } else {
                 NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider) te, pos);

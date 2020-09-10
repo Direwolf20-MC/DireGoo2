@@ -3,5 +3,6 @@
   "block.diregoo.zapperturretblock": "Zapper Turret",
   "diregoo.tooltip.itemenergy": "Energy: %d/%d",
   "diregoo.tooltip.screen.xrange": "Range X",
+  "screen.diregoo.antigoobeacon.fuel_remaining": "Fuel Time Remaining: %d",
   "screen.diregoo.energy": "Energy: %s/%s FE"
 }
