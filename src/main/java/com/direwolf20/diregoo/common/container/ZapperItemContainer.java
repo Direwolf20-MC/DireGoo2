@@ -55,7 +55,8 @@ public class ZapperItemContainer extends Container {
 
     @Override
     public boolean canInteractWith(PlayerEntity playerIn) {
-        return true;
+        ItemStack stack = playerIn.getHeldItemMainhand();
+        return stack.equals(this.stack) && !stack.isEmpty();
     }
 
     @Override
