@@ -122,11 +122,17 @@ public class ZapperTurretTileEntity extends FETileBase implements ITickableTileE
         Direction side = forward.getOpposite();
         Direction right = vertical ? up.rotateY() : side.rotateYCCW();
         Direction left = right.getOpposite();
-        clearBlocksQueue = BlockPos.getAllInBox(startPos.offset(up, radius).offset(left, radius), startPos.offset(down, radius).offset(right, radius))
-                .filter(blockPos -> world.getBlockState(blockPos).getBlock() instanceof GooBase)
-                .map(BlockPos::toImmutable)
-                .collect(Collectors.toCollection(HashSet::new));
-
+        if (isMelting()) {
+            clearBlocksQueue = BlockPos.getAllInBox(startPos.offset(up, radius).offset(left, radius), startPos.offset(down, radius).offset(right, radius))
+                    .filter(blockPos -> world.getBlockState(blockPos).getBlock() instanceof GooBase)
+                    .map(BlockPos::toImmutable)
+                    .collect(Collectors.toCollection(HashSet::new));
+        } else if (isFreezing()) {
+            clearBlocksQueue = BlockPos.getAllInBox(startPos.offset(up, radius).offset(left, radius), startPos.offset(down, radius).offset(right, radius))
+                    .filter(blockPos -> (world.getBlockState(blockPos).getBlock() instanceof GooBase) && (world.getBlockState(blockPos).get(GooBase.FROZEN) < 3))
+                    .map(BlockPos::toImmutable)
+                    .collect(Collectors.toCollection(HashSet::new));
+        }
         if (clearBlocksQueue.size() != 0) {
             for (BlockPos pos : clearBlocksQueue) {
                 processGoo((ServerWorld) world, pos);
