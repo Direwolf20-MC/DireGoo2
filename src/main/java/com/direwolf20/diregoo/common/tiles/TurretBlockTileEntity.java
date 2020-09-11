@@ -164,7 +164,7 @@ public class TurretBlockTileEntity extends FETileBase implements ITickableTileEn
                 decrementFiring();
             else {
                 decrementCooldowns();
-                if (searchCooldown == 0 && clearBlocksQueue.isEmpty()) {
+                if (searchCooldown == 0) {
                     generateTurretQueue(); //Scan around the turret for blocks to shoot - add to a queue
                     searchCooldown = 200; //Ticks before we can search for goo again
                 }
