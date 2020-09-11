@@ -186,7 +186,7 @@ public class GooBase extends Block {
                 if (Config.ANIMATE_SPREAD.get())
                     world.getPendingBlockTicks().scheduleTick(pos, this, gooSpreadAnimationTime + Config.SPREAD_TICK_DELAY.get());
                 else
-                    world.getPendingBlockTicks().scheduleTick(pos, this, gooSpreadAnimationTime);
+                    world.getPendingBlockTicks().scheduleTick(pos, this, Config.SPREAD_TICK_DELAY.get());
             }
     }
 

@@ -140,7 +140,7 @@ public class Config {
                 .define("canSpreadAll", true);
         PLAYER_SPREAD_RANGE = COMMON_BUILDER.comment("The range from players in which Goo can spread. Goo outside of this range won't spread (Like vanilla mob spawners)")
                 .defineInRange("playerSpreadRange", 100, 0, Integer.MAX_VALUE);
-        SPREAD_TICK_DELAY = COMMON_BUILDER.comment("The max delay (in ticks) for goo to spread - the higher the number the slower the spread. -1 disables this")
+        SPREAD_TICK_DELAY = COMMON_BUILDER.comment("Force extra goo ticks. This is the delay (in ticks) before goo is forced to spread - the higher the number the slower the spread. -1 disables this. Only use this if you want goo to spread even faster than normal")
                 .defineInRange("spreadTickDelay", -1, -1, Integer.MAX_VALUE);
         ANIMATE_SPREAD = COMMON_BUILDER.comment("Does the goo use entities to animate spread, or do simple setblocks?")
                 .define("animateSpread", true);
