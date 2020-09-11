@@ -4,20 +4,28 @@ import com.direwolf20.diregoo.Config;
 import com.direwolf20.diregoo.common.blocks.GooBase;
 import com.direwolf20.diregoo.common.blocks.ModBlocks;
 import com.direwolf20.diregoo.common.container.TurretContainer;
+import com.direwolf20.diregoo.common.items.AntiGooDust;
 import com.direwolf20.diregoo.common.worldsave.BlockSave;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.NBTUtil;
 import net.minecraft.tileentity.ITickableTileEntity;
+import net.minecraft.util.Direction;
+import net.minecraft.util.IIntArray;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -34,6 +42,36 @@ public class TurretBlockTileEntity extends FETileBase implements ITickableTileEn
     private int firingCooldown;
 
     private BlockPos currentTarget = BlockPos.ZERO;
+    private LazyOptional<ItemStackHandler> inventory = LazyOptional.of(() -> new ItemStackHandler(TurretContainer.SLOTS));
+    private int fuelShotsRemaining;
+
+    public final IIntArray FETileData = new IIntArray() {
+        @Override
+        public int get(int index) {
+            switch (index) {
+                case 0:
+                    return energyStorage.getEnergyStored() / 32;
+                case 1:
+                    return energyStorage.getMaxEnergyStored() / 32;
+                case 2:
+                    return fuelShotsRemaining;
+                /*case 3:
+                    return AntiGooFieldGenTileEntity.this.maxBurn;*/
+                default:
+                    throw new IllegalArgumentException("Invalid index: " + index);
+            }
+        }
+
+        @Override
+        public void set(int index, int value) {
+            throw new IllegalStateException("Cannot set values through IIntArray");
+        }
+
+        @Override
+        public int size() {
+            return 3;
+        }
+    };
 
     public TurretBlockTileEntity() {
         super(ModBlocks.TURRETBLOCK_TILE.get());
@@ -43,7 +81,25 @@ public class TurretBlockTileEntity extends FETileBase implements ITickableTileEn
     @Override
     public Container createMenu(int i, PlayerInventory playerInventory, PlayerEntity playerEntity) {
         assert world != null;
-        return new TurretContainer(this, this.FETileData, i, playerInventory);
+        return new TurretContainer(this, this.FETileData, i, playerInventory, this.inventory.orElse(new ItemStackHandler(TurretContainer.SLOTS)));
+    }
+
+    public void checkFuel() {
+        //System.out.println(fuelTicksRemaining);
+        if (fuelShotsRemaining > 0) {
+            fuelShotsRemaining--;
+            markDirty();
+        }
+        if (fuelShotsRemaining <= 0) {
+            ItemStackHandler handler = inventory.orElseThrow(RuntimeException::new);
+            ItemStack stack = handler.getStackInSlot(0);
+            if (stack.getItem() instanceof AntiGooDust) {
+                handler.extractItem(0, 1, false);
+                fuelShotsRemaining = 5;
+                markDirty();
+                return;
+            }
+        }
     }
 
     public void generateTurretQueue() {
@@ -81,11 +137,13 @@ public class TurretBlockTileEntity extends FETileBase implements ITickableTileEn
         if (energyStorage.getEnergyStored() < Config.TURRET_RFCOST.get())
             return;
         BlockPos shootPos = clearBlocksQueue.remove();
-        int shootDuration = 5;
+        int shootDuration = fuelShotsRemaining > 0 ? 2 : 10;
+        checkFuel();
         if (world.getBlockState(shootPos).getBlock() instanceof GooBase) {
             BlockSave blockSave = BlockSave.get(world);
             GooBase.resetBlock((ServerWorld) world, shootPos, true, shootDuration, true, blockSave);
             firingCooldown = shootDuration;
+            shootCooldown = fuelShotsRemaining > 0 ? 0 : 5; //Ticks before the turret can shoot again after finishing firing
             currentTarget = shootPos;
             energyStorage.consumeEnergy(Config.TURRET_RFCOST.get(), false);
             markDirtyClient();
@@ -101,7 +159,7 @@ public class TurretBlockTileEntity extends FETileBase implements ITickableTileEn
 
         //Server Only
         if (!world.isRemote) {
-            //energyStorage.receiveEnergy(625, false); //Testing
+            energyStorage.receiveEnergy(625, false); //Testing
             if (firingCooldown > 0)
                 decrementFiring();
             else {
@@ -112,7 +170,6 @@ public class TurretBlockTileEntity extends FETileBase implements ITickableTileEn
                 }
                 if (shootCooldown == 0 && !clearBlocksQueue.isEmpty()) {
                     shoot(); //Shoot at the next block in the queue
-                    shootCooldown = 5; //Ticks before the turret can shoot again after finishing firing
                 }
             }
         }
@@ -123,6 +180,7 @@ public class TurretBlockTileEntity extends FETileBase implements ITickableTileEn
     @Override
     public void read(BlockState state, CompoundNBT tag) {
         super.read(state, tag);
+        inventory.ifPresent(h -> h.deserializeNBT(tag.getCompound("inv")));
         currentTarget = NBTUtil.readBlockPos(tag.getCompound("currentTarget"));
         searchCooldown = tag.getInt("searchCooldown");
         shootCooldown = tag.getInt("shootCooldown");
@@ -131,11 +189,21 @@ public class TurretBlockTileEntity extends FETileBase implements ITickableTileEn
 
     @Override
     public CompoundNBT write(CompoundNBT tag) {
+        inventory.ifPresent(h -> tag.put("inv", h.serializeNBT()));
         tag.put("currentTarget", NBTUtil.writeBlockPos(currentTarget));
         tag.putInt("searchCooldown", searchCooldown);
         tag.putInt("shootCooldown", shootCooldown);
         tag.putInt("firingCooldown", firingCooldown);
         return super.write(tag);
+    }
+
+    @Nonnull
+    @Override
+    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, final @Nullable Direction side) {
+        if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+            return inventory.cast();
+
+        return super.getCapability(cap, side);
     }
 
     @Nonnull
@@ -147,5 +215,11 @@ public class TurretBlockTileEntity extends FETileBase implements ITickableTileEn
     @Override
     public ITextComponent getDisplayName() {
         return new StringTextComponent("Turret Tile");
+    }
+
+    @Override
+    public void remove() {
+        inventory.invalidate();
+        super.remove();
     }
 }

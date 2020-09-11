@@ -14,6 +14,7 @@ public class GeneratorLanguage extends LanguageProvider {
     protected void addTranslations() {
         add("screen.diregoo.energy", "Energy: %s/%s FE");
         add("screen.diregoo.antigoobeacon.fuel_remaining", "Fuel Time Remaining: %d");
+        add("screen.diregoo.turret.shots_remaining", "Powered Shots Remaining: %d");
         add("diregoo.tooltip.screen.xrange", "Range X");
         add("diregoo.tooltip.itemenergy", "Energy: %d/%d");
         addBlock(ModBlocks.ANTI_GOO_FIELD_GEN, "Antigoo Field Generator");
