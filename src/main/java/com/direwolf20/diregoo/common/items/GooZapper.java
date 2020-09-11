@@ -34,8 +34,6 @@ import java.util.stream.Collectors;
 
 public class GooZapper extends FELaserBase {
 
-    //private LazyOptional<ItemStackHandler> inventory = LazyOptional.of(() -> new ItemStackHandler(ZapperItemContainer.SLOTS));
-
     public GooZapper() {
         super(new Properties().maxStackSize(1).group(DireGoo.itemGroup), Config.ITEM_ZAPPER_RFMAX.get());
     }
@@ -64,7 +62,7 @@ public class GooZapper extends FELaserBase {
         return 0;
     }
 
-    public int getRange(ItemStack stack) {
+    public static int getRange(ItemStack stack) {
         ZapperSlotHandler inventoryStacks = getInventory(stack);
         if (inventoryStacks.getStackInSlot(2).getItem() instanceof PowerAmpT1) return 8;
         if (inventoryStacks.getStackInSlot(2).getItem() instanceof PowerAmpT2) return 12;
@@ -91,20 +89,18 @@ public class GooZapper extends FELaserBase {
         return clearBlocksQueue;
     }
 
-    @Override
     public int getRFCost() {
         return Config.ITEM_ZAPPER_RFCOST.get();
     }
 
-    public boolean isFreezing(ItemStack stack) {
+    public static boolean isFreezing(ItemStack stack) {
         return getInventory(stack).getStackInSlot(0).getItem() instanceof CoreFreeze;
     }
 
-    public boolean isMelting(ItemStack stack) {
+    public static boolean isMelting(ItemStack stack) {
         return getInventory(stack).getStackInSlot(0).getItem() instanceof CoreMelt;
     }
 
-    @Override
     public void laserAction(ServerWorld world, BlockPos pos, LivingEntity player, Hand hand) {
         ItemStack itemstack = player.getHeldItem(hand);
         if (isMelting(itemstack)) {
@@ -118,14 +114,19 @@ public class GooZapper extends FELaserBase {
     @Override
     public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
         ItemStack itemstack = player.getHeldItem(hand);
-        if (!world.isRemote && player.isSneaking()) {
+        if (world.isRemote) return new ActionResult<>(ActionResultType.PASS, itemstack);
+        if (player.isSneaking()) {
             ZapperSlotHandler handler = getInventory(itemstack);
             NetworkHooks.openGui((ServerPlayerEntity) player, new SimpleNamedContainerProvider(
                     (windowId, playerInventory, playerEntity) -> new ZapperItemContainer(windowId, playerInventory, handler, itemstack), new StringTextComponent("")));
             return new ActionResult<>(ActionResultType.PASS, itemstack);
         } else {
-            return super.onItemRightClick(world, player, hand);
+            if (canUseItem(itemstack, getRFCost())) {
+                player.setActiveHand(hand);
+                return new ActionResult<>(ActionResultType.PASS, itemstack);
+            }
         }
+        return new ActionResult<>(ActionResultType.FAIL, itemstack);
     }
 
     @Override
@@ -141,7 +142,7 @@ public class GooZapper extends FELaserBase {
             stack.getCapability(CapabilityEnergy.ENERGY).ifPresent(e -> e.extractEnergy(getRFCost(), false));
 
             BlockRayTraceResult lookingAt = VectorHelper.getLookingAt((PlayerEntity) player, RayTraceContext.FluidMode.NONE, getRange(stack));
-            if (lookingAt == null || (world.getBlockState(VectorHelper.getLookingAt((PlayerEntity) player, stack, getRange()).getPos()) == Blocks.AIR.getDefaultState()))
+            if (lookingAt == null || (world.getBlockState(VectorHelper.getLookingAt((PlayerEntity) player, stack, getRange(stack)).getPos()) == Blocks.AIR.getDefaultState()))
                 return;
 
             Hand hand = player.getActiveHand();

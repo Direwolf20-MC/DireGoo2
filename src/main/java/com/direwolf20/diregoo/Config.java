@@ -57,15 +57,6 @@ public class Config {
     public static ForgeConfigSpec.IntValue ITEM_ZAPPER_RFMAX;
     public static ForgeConfigSpec.IntValue ITEM_ZAPPER_RANGE;
 
-    public static final String SUBCATEGORY_ITEM_FREEZER = "item_freezer";
-    public static ForgeConfigSpec.IntValue ITEM_FREEZER_RFCOST;
-    public static ForgeConfigSpec.IntValue ITEM_FREEZER_RFMAX;
-    public static ForgeConfigSpec.IntValue ITEM_FREEZER_RANGE;
-
-    /*public static final String SUBCATEGORY_ITEM_SCANNER = "item_scanner";
-    public static ForgeConfigSpec.IntValue ITEM_SCANNER_RFCOST;
-    public static ForgeConfigSpec.IntValue ITEM_SCANNER_RFMAX;*/
-
     static {
 
         COMMON_BUILDER.comment("General settings").push(CATEGORY_GENERAL);
@@ -121,14 +112,14 @@ public class Config {
                 .defineInRange("zapperRange", 15, 0, 30);
         COMMON_BUILDER.pop();
 
-        COMMON_BUILDER.comment("Goo Freezer (Item) Settings").push(SUBCATEGORY_ITEM_FREEZER);
+        /*COMMON_BUILDER.comment("Goo Freezer (Item) Settings").push(SUBCATEGORY_ITEM_FREEZER);
         ITEM_FREEZER_RFCOST = COMMON_BUILDER.comment("The RF cost per tick")
                 .defineInRange("freezerRFCost", 1000, 0, Integer.MAX_VALUE);
         ITEM_FREEZER_RFMAX = COMMON_BUILDER.comment("The max RF the Goo Freezer can hold")
                 .defineInRange("freezerRFMax", 1000000, 0, Integer.MAX_VALUE);
         ITEM_FREEZER_RANGE = COMMON_BUILDER.comment("The range of the Goo Freezer")
                 .defineInRange("freezerRange", 15, 0, 30);
-        COMMON_BUILDER.pop();
+        COMMON_BUILDER.pop();*/
 
         /*COMMON_BUILDER.comment("Goo Scanner Settings").push(SUBCATEGORY_ITEM_SCANNER);
         ITEM_SCANNER_RFCOST = COMMON_BUILDER.comment("The RF cost activation")

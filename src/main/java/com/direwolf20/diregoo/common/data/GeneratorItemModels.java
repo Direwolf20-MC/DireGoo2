@@ -83,43 +83,9 @@ public class GeneratorItemModels extends ItemModelProvider {
                 .end()
                 .end();
 
-        String gooFreezer = ModItems.GOO_FREEZER.get().getRegistryName().getPath();
-        singleTexture(gooFreezer, mcLoc("item/handheld"), "layer0", modLoc("item/" + gooFreezer)).transforms()
-                .transform(ModelBuilder.Perspective.THIRDPERSON_RIGHT)
-                .rotation(0, 80, 0)
-                .translation(0, 0, 0)
-                .scale(.5f)
-                .end()
-                .transform(ModelBuilder.Perspective.FIRSTPERSON_RIGHT)
-                .rotation(0, 80, 0)
-                .translation(6, 0, -7)
-                .scale(1f)
-                .end()
-                .transform(ModelBuilder.Perspective.FIRSTPERSON_LEFT)
-                .rotation(0, -80, 0)
-                .translation(6, 0, -7)
-                .scale(1f)
-                .end()
-                .end();
-
         for (RegistryObject<Item> item : ModItems.BASICITEMS.getEntries()) {
             registerBasicItem(item.get());
         }
-        /*
-        String goonadefreeze = ModItems.GOONADE_FREEZE.get().getRegistryName().getPath();
-        singleTexture(goonadefreeze, mcLoc("item/handheld"), "layer0", modLoc("item/" + goonadefreeze));
-
-        String antigoopaste = ModItems.ANTI_GOO_PASTE.get().getRegistryName().getPath();
-        singleTexture(antigoopaste, mcLoc("item/handheld"), "layer0", modLoc("item/" + antigoopaste));
-
-        String gooscanner = ModItems.GOO_SCANNER.get().getRegistryName().getPath();
-        singleTexture(gooscanner, mcLoc("item/handheld"), "layer0", modLoc("item/" + gooscanner));
-
-        String antigooDust = ModItems.ANTI_GOO_DUST.get().getRegistryName().getPath();
-        singleTexture(antigooDust, mcLoc("item/handheld"), "layer0", modLoc("item/" + antigooDust));
-
-        String gooresidue = ModItems.GOO_RESIDUE.get().getRegistryName().getPath();
-        singleTexture(gooresidue, mcLoc("item/handheld"), "layer0", modLoc("item/" + gooresidue));*/
     }
 
     private void registerBlockModel(Block block) {

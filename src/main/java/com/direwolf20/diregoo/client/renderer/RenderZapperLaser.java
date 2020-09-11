@@ -4,7 +4,6 @@ import com.direwolf20.diregoo.DireGoo;
 import com.direwolf20.diregoo.client.events.ClientEvents;
 import com.direwolf20.diregoo.client.renderer.util.OurRenderTypes;
 import com.direwolf20.diregoo.common.items.FELaserBase;
-import com.direwolf20.diregoo.common.items.GooFreezer;
 import com.direwolf20.diregoo.common.items.GooZapper;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
@@ -32,18 +31,13 @@ public class RenderZapperLaser {
     public static void renderLaser(RenderWorldLastEvent event, PlayerEntity player, float ticks) {
         ItemStack stack = ClientEvents.getZapper(player);
 
-
-        /*if (!MiningProperties.getCanMine(stack))
-            return;*/
-
         if (!(stack.getItem() instanceof FELaserBase)) return;
 
-        int range = ((FELaserBase) stack.getItem()).getRange();
+        int range = GooZapper.getRange(stack);
 
         Vector3d playerPos = player.getEyePosition(ticks);
         RayTraceResult trace = player.pick(range, 0.0F, false);
-
-        // parse data from item
+        
         float speedModifier = -0.02f;
 
         drawLasers(event, playerPos, trace, 0, 0, 0, 1f, 0f, 0f, 0.02f, player, ticks, speedModifier);
@@ -60,6 +54,7 @@ public class RenderZapperLaser {
             return;
         }
 
+        ItemStack stack = ClientEvents.getZapper(player);
         IVertexBuilder builder;
         double distance = from.subtract(trace.getHitVec()).length();
         long gameTime = player.world.getGameTime();
@@ -68,14 +63,14 @@ public class RenderZapperLaser {
         float beam2r = 1f;
         float beam2g = 1f;
         float beam2b = 1f;
-        if (laserItem instanceof GooZapper) {
+        if (GooZapper.isMelting(stack)) {
             r = 1f;
             g = 0f;
             b = 0f;
             beam2r = 1f;
             beam2g = 1f;
             beam2b = 1f;
-        } else if (laserItem instanceof GooFreezer) {
+        } else if (GooZapper.isFreezing(stack)) {
             r = 0f;
             g = 1f;
             b = 1f;

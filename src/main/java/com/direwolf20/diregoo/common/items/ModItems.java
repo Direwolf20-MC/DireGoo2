@@ -33,7 +33,6 @@ public class ModItems {
     public static final RegistryObject<Item> ANTI_GOO_DUST = BASICITEMS.register("antigoodust", AntiGooDust::new);
     public static final RegistryObject<Item> GOO_REMOVER = ITEMS.register("gooremover", GooRemover::new);
     public static final RegistryObject<Item> GOO_ZAPPER = ITEMS.register("goozapper", GooZapper::new);
-    public static final RegistryObject<Item> GOO_FREEZER = ITEMS.register("goofreezer", GooFreezer::new);
     public static final RegistryObject<Item> GOONADE = BASICITEMS.register("goonade", Goonade::new);
     public static final RegistryObject<Item> GOONADE_FREEZE = BASICITEMS.register("goonadefreeze", GoonadeFreeze::new);
     public static final RegistryObject<Item> ANTI_GOO_PASTE = BASICITEMS.register("antigoopaste", AntigooPaste::new);
