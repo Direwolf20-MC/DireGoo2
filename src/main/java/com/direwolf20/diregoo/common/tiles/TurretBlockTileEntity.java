@@ -95,7 +95,7 @@ public class TurretBlockTileEntity extends FETileBase implements ITickableTileEn
             ItemStack stack = handler.getStackInSlot(0);
             if (stack.getItem() instanceof AntiGooDust) {
                 handler.extractItem(0, 1, false);
-                fuelShotsRemaining = 5;
+                fuelShotsRemaining = Config.TURRET_BOOST_COUNT.get();
                 markDirty();
                 return;
             }

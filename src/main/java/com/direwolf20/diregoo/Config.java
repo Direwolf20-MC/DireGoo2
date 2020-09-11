@@ -44,6 +44,7 @@ public class Config {
     public static final String SUBCATEGORY_TILE_TURRET = "tile_turret";
     public static ForgeConfigSpec.IntValue TURRET_RANGE;
     public static ForgeConfigSpec.IntValue TURRET_RFCOST;
+    public static ForgeConfigSpec.IntValue TURRET_BOOST_COUNT;
 
     public static final String SUBCATEGORY_TILE_ANTIGOOFIELD = "tile_antigoofield";
     public static ForgeConfigSpec.DoubleValue ANTIGOOFIELDGENRF;
@@ -89,6 +90,8 @@ public class Config {
                 .defineInRange("turretRange", 5, 0, 25);
         TURRET_RFCOST = COMMON_BUILDER.comment("The RF cost per shot (Per block removed)")
                 .defineInRange("turretRFCost", 10000, 0, Integer.MAX_VALUE);
+        TURRET_BOOST_COUNT = COMMON_BUILDER.comment("The number of boosted (Faster) shots per AntiGooDust")
+                .defineInRange("turretBoostCount", 5, 0, Integer.MAX_VALUE);
         COMMON_BUILDER.pop();
 
         COMMON_BUILDER.comment("AntiGoo field Generator Settings").push(SUBCATEGORY_TILE_ANTIGOOFIELD);

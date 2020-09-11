@@ -5,5 +5,5 @@
   "diregoo.tooltip.screen.xrange": "Range X",
   "screen.diregoo.antigoobeacon.fuel_remaining": "Fuel Time Remaining: %d",
   "screen.diregoo.energy": "Energy: %s/%s FE",
-  "screen.diregoo.turret.shots_remaining": "Powered Shots Remaining: %d"
+  "screen.diregoo.turret.shots_remaining": "Boost Shots Remaining: %d"
 }

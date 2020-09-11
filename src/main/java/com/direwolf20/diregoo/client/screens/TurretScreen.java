@@ -1,5 +1,6 @@
 package com.direwolf20.diregoo.client.screens;
 
+import com.direwolf20.diregoo.Config;
 import com.direwolf20.diregoo.DireGoo;
 import com.direwolf20.diregoo.common.container.TurretContainer;
 import com.mojang.blaze3d.matrix.MatrixStack;
@@ -28,7 +29,7 @@ public class TurretScreen extends FEScreenBase<TurretContainer> {
     protected void drawGuiContainerForegroundLayer(MatrixStack stack, int mouseX, int mouseY) {
         Minecraft.getInstance().fontRenderer.drawString(stack, I18n.format("block.diregoo.turret"), 55, 8, Color.DARK_GRAY.getRGB());
         if (container.getFuelShots() > 0) {
-            Minecraft.getInstance().fontRenderer.drawString(stack, new TranslationTextComponent("screen.diregoo.turret.shots_remaining", this.container.getFuelShots() + (this.container.handler.getStackInSlot(0).getStack().getCount() * 5)).getString(), 30, 30, Color.DARK_GRAY.getRGB());
+            Minecraft.getInstance().fontRenderer.drawString(stack, new TranslationTextComponent("screen.diregoo.turret.shots_remaining", this.container.getFuelShots() + (this.container.handler.getStackInSlot(0).getStack().getCount() * Config.TURRET_BOOST_COUNT.get())).getString(), 30, 30, Color.DARK_GRAY.getRGB());
         }
     }
 }
