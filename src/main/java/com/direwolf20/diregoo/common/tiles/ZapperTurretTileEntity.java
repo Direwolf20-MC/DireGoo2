@@ -122,6 +122,7 @@ public class ZapperTurretTileEntity extends FETileBase implements ITickableTileE
         Direction side = forward.getOpposite();
         Direction right = vertical ? up.rotateY() : side.rotateYCCW();
         Direction left = right.getOpposite();
+        clearBlocksQueue.clear();
         if (isMelting()) {
             clearBlocksQueue = BlockPos.getAllInBox(startPos.offset(up, radius).offset(left, radius), startPos.offset(down, radius).offset(right, radius))
                     .filter(blockPos -> world.getBlockState(blockPos).getBlock() instanceof GooBase)
