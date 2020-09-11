@@ -7,6 +7,7 @@ import com.direwolf20.diregoo.common.util.FreezingCollect;
 import com.direwolf20.diregoo.common.util.VectorHelper;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceContext;
@@ -30,7 +31,7 @@ public class GooFreezer extends FELaserBase {
     }
 
     @Override
-    public void laserAction(ServerWorld world, BlockPos pos, LivingEntity player) {
+    public void laserAction(ServerWorld world, BlockPos pos, LivingEntity player, Hand hand) {
         BlockRayTraceResult lookingAt = VectorHelper.getLookingAt((PlayerEntity) player, RayTraceContext.FluidMode.NONE, getRange());
         List<BlockPos> coords = FreezingCollect.collect(player, lookingAt, world);
         for (BlockPos freezepos : coords) {
