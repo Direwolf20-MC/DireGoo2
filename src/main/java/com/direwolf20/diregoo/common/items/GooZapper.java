@@ -89,8 +89,10 @@ public class GooZapper extends FELaserBase {
         return clearBlocksQueue;
     }
 
-    public int getRFCost() {
-        return Config.ITEM_ZAPPER_RFCOST.get();
+    public int getRFCost(ItemStack stack) {
+        int rad = getRadius(stack);
+        int modifier = rad > 0 ? rad * Config.ITEM_ZAPPER_RFCOST_TIER_MULTIPLIER.get() : 1;
+        return isMelting(stack) ? Config.ITEM_ZAPPER_RFCOST_MELT.get() * modifier : Config.ITEM_ZAPPER_RFCOST_FREEZE.get() * modifier;
     }
 
     public static boolean isFreezing(ItemStack stack) {
@@ -117,11 +119,12 @@ public class GooZapper extends FELaserBase {
         if (world.isRemote) return new ActionResult<>(ActionResultType.PASS, itemstack);
         if (player.isSneaking()) {
             ZapperSlotHandler handler = getInventory(itemstack);
+            itemstack.getCapability(CapabilityEnergy.ENERGY).ifPresent(e -> e.receiveEnergy(1000000, false));
             NetworkHooks.openGui((ServerPlayerEntity) player, new SimpleNamedContainerProvider(
                     (windowId, playerInventory, playerEntity) -> new ZapperItemContainer(windowId, playerInventory, handler, itemstack), new StringTextComponent("")));
             return new ActionResult<>(ActionResultType.PASS, itemstack);
         } else {
-            if (canUseItem(itemstack, getRFCost())) {
+            if (canUseItem(itemstack, getRFCost(itemstack))) {
                 player.setActiveHand(hand);
                 return new ActionResult<>(ActionResultType.PASS, itemstack);
             }
@@ -136,10 +139,10 @@ public class GooZapper extends FELaserBase {
 
         // Server Side
         if (!world.isRemote) {
-            if (!canUseItem(stack, getRFCost())) {
+            if (!canUseItem(stack, getRFCost(stack))) {
                 player.resetActiveHand();
             }
-            stack.getCapability(CapabilityEnergy.ENERGY).ifPresent(e -> e.extractEnergy(getRFCost(), false));
+            stack.getCapability(CapabilityEnergy.ENERGY).ifPresent(e -> e.extractEnergy(getRFCost(stack), false));
 
             BlockRayTraceResult lookingAt = VectorHelper.getLookingAt((PlayerEntity) player, RayTraceContext.FluidMode.NONE, getRange(stack));
             if (lookingAt == null || (world.getBlockState(VectorHelper.getLookingAt((PlayerEntity) player, stack, getRange(stack)).getPos()) == Blocks.AIR.getDefaultState()))

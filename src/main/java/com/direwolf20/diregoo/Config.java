@@ -54,9 +54,10 @@ public class Config {
     public static ForgeConfigSpec.IntValue ITEM_REMOVER_RFMAX;
 
     public static final String SUBCATEGORY_ITEM_ZAPPER = "item_zapper";
-    public static ForgeConfigSpec.IntValue ITEM_ZAPPER_RFCOST;
+    public static ForgeConfigSpec.IntValue ITEM_ZAPPER_RFCOST_MELT;
+    public static ForgeConfigSpec.IntValue ITEM_ZAPPER_RFCOST_FREEZE;
+    public static ForgeConfigSpec.IntValue ITEM_ZAPPER_RFCOST_TIER_MULTIPLIER;
     public static ForgeConfigSpec.IntValue ITEM_ZAPPER_RFMAX;
-    public static ForgeConfigSpec.IntValue ITEM_ZAPPER_RANGE;
 
     static {
 
@@ -107,12 +108,14 @@ public class Config {
         COMMON_BUILDER.pop();
 
         COMMON_BUILDER.comment("Goo Zapper (Item) Settings").push(SUBCATEGORY_ITEM_ZAPPER);
-        ITEM_ZAPPER_RFCOST = COMMON_BUILDER.comment("The RF cost per tick")
-                .defineInRange("zapperRFCost", 1000, 0, Integer.MAX_VALUE);
+        ITEM_ZAPPER_RFCOST_MELT = COMMON_BUILDER.comment("The base RF cost per tick while melting")
+                .defineInRange("zapperRFCostMelt", 500, 0, Integer.MAX_VALUE);
+        ITEM_ZAPPER_RFCOST_FREEZE = COMMON_BUILDER.comment("The base RF cost per tick while freezing")
+                .defineInRange("zapperRFCostFreeze", 250, 0, Integer.MAX_VALUE);
+        ITEM_ZAPPER_RFCOST_TIER_MULTIPLIER = COMMON_BUILDER.comment("The RF Cost multiplier per tier of Radius Upgrade. T1 = x. T2 = 2x. T3 = 3x. Etc")
+                .defineInRange("zapperRFCostTierMultiplier", 3, 0, Integer.MAX_VALUE);
         ITEM_ZAPPER_RFMAX = COMMON_BUILDER.comment("The max RF the Goo Zapper can hold")
-                .defineInRange("zapperRFMax", 1000000, 0, Integer.MAX_VALUE);
-        ITEM_ZAPPER_RANGE = COMMON_BUILDER.comment("The range of the Goo Zapper")
-                .defineInRange("zapperRange", 15, 0, 30);
+                .defineInRange("zapperRFMax", 10000000, 0, Integer.MAX_VALUE);
         COMMON_BUILDER.pop();
 
         /*COMMON_BUILDER.comment("Goo Freezer (Item) Settings").push(SUBCATEGORY_ITEM_FREEZER);

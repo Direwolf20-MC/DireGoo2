@@ -5,7 +5,7 @@ import net.minecraftforge.energy.EnergyStorage;
 
 public class EnergisedItem extends EnergyStorage {
     private ItemStack stack;
-    private static final int defaultMaxReceieve = 10000;
+    private static final int defaultMaxReceieve = 1000000;
 
     public EnergisedItem(ItemStack stack, int capacity) {
         super(capacity, defaultMaxReceieve, Integer.MAX_VALUE, 0);

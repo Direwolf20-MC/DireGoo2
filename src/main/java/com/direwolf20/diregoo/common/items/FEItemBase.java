@@ -55,7 +55,7 @@ public class FEItemBase extends Item {
     @Nullable
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
-        return new ItemEnergyProvider(stack, 1000000);
+        return new ItemEnergyProvider(stack, energyCapacity);
     }
 
     @Override
