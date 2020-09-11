@@ -11,6 +11,7 @@ import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.PushReaction;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.IntegerProperty;
@@ -76,6 +77,8 @@ public class GooBase extends Block {
 
     @Override
     public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult result) {
+        ItemStack stack = player.getHeldItemMainhand();
+        if (!stack.isEmpty()) return ActionResultType.PASS;
         if (world.isRemote) return ActionResultType.SUCCESS; //Server Side Only
         world.getPendingBlockTicks().scheduleTick(pos, this, 0);
         return ActionResultType.SUCCESS;
