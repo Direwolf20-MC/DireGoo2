@@ -22,6 +22,7 @@ public class Config {
     public static ForgeConfigSpec.IntValue FREEZE_MELT_CHANCE;
     public static ForgeConfigSpec.IntValue MAX_BLOCK_CHANGES;
     public static ForgeConfigSpec.IntValue MAX_CHUNK_CHANGES;
+    public static ForgeConfigSpec.BooleanValue BATCH_GOO_SPREAD;
 
     public static final String SUBCATEGORY_GOO = "normal_goo";
     public static ForgeConfigSpec.BooleanValue CAN_SPREAD_GOO;
@@ -150,6 +151,8 @@ public class Config {
                 .defineInRange("maxBlockChanges", 250, 1, 2000);
         MAX_CHUNK_CHANGES = COMMON_BUILDER.comment("The maximum number of chunks that can change per tick as a result of goospread. Lowering this number will slow the spread of goo and may improve performance.")
                 .defineInRange("maxChunkChanges", 25, 1, 250);
+        BATCH_GOO_SPREAD = COMMON_BUILDER.comment("Do we batch the goo spread? Should increase performance.")
+                .define("batchSpread", true);
 
         COMMON_BUILDER.comment("Normal Goo Specific Settings").push(SUBCATEGORY_GOO);
         CAN_SPREAD_GOO = COMMON_BUILDER.comment("Can the normal goo spread. Set the false to disable only normal goo spreading.")

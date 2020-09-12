@@ -6,6 +6,7 @@ import com.direwolf20.diregoo.common.data.GeneratorBlockTags;
 import com.direwolf20.diregoo.common.entities.GooEntity;
 import com.direwolf20.diregoo.common.entities.GooSpreadEntity;
 import com.direwolf20.diregoo.common.events.ChunkSave;
+import com.direwolf20.diregoo.common.events.ServerEvents;
 import com.direwolf20.diregoo.common.worldsave.BlockSave;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
@@ -165,7 +166,11 @@ public class GooBase extends Block {
             if (blockSave.getBlockChangeThisTick(worldIn.getGameTime()) >= Config.MAX_BLOCK_CHANGES.get() / 2) return;
             if (blockSave.getChunkChangesThisTick(worldIn.getGameTime()) >= Config.MAX_CHUNK_CHANGES.get() / 2) return;
             boolean animate = worldIn.isPlayerWithin(pos.getX(), pos.getY(), pos.getZ(), 25);
-            resetBlock(worldIn, pos, animate, 20, false, blockSave);
+            if (Config.BATCH_GOO_SPREAD.get()) {
+                ServerEvents.addToClearList(pos, worldIn, animate);
+            } else {
+                resetBlock(worldIn, pos, animate, 20, false, blockSave);
+            }
             return;
         }
         /*blockSave.addBlockChange(worldIn.getGameTime());
@@ -214,12 +219,12 @@ public class GooBase extends Block {
             BlockState testState = worldIn.getBlockState(testPos);
             if (isAdjacentValid(worldIn, testPos, testState)) {
                 if (!state.get(ACTIVE))
-                    worldIn.setBlockState(pos, state.with(ACTIVE, true));
+                    worldIn.setBlockState(pos, state.with(ACTIVE, true), 7);
                 return false; //If the adjacent block is anything other than goo its not surrounded
             }
         }
         if (state.get(ACTIVE) && state.get(FROZEN) == 0)
-            worldIn.setBlockState(pos, state.with(ACTIVE, false));
+            worldIn.setBlockState(pos, state.with(ACTIVE, false), 7);
         return true;
     }
 
@@ -256,11 +261,15 @@ public class GooBase extends Block {
     }
 
     public void setBlockToGoo(BlockState oldState, World worldIn, BlockPos checkPos, boolean animate, Direction direction, BlockSave blockSave) {
-        if (animate) {
-            worldIn.addEntity(new GooSpreadEntity(worldIn, checkPos, this.getDefaultState(), gooSpreadAnimationTime, direction.getOpposite().getIndex()));
+        if (Config.BATCH_GOO_SPREAD.get()) {
+            ServerEvents.addToList(checkPos, direction, (ServerWorld) worldIn, this.getDefaultState(), animate);
         } else {
-            saveBlockData(worldIn, checkPos, oldState, blockSave);
-            worldIn.setBlockState(checkPos, this.getDefaultState());
+            if (animate) {
+                worldIn.addEntity(new GooSpreadEntity(worldIn, checkPos, this.getDefaultState(), gooSpreadAnimationTime, direction.getOpposite().getIndex()));
+            } else {
+                saveBlockData(worldIn, checkPos, oldState, blockSave);
+                worldIn.setBlockState(checkPos, this.getDefaultState());
+            }
         }
         blockSave.addBlockChange(worldIn.getGameTime());
         blockSave.addChunkChange(worldIn.getGameTime(), worldIn.getChunk(checkPos).getPos());
