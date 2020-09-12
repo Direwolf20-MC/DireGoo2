@@ -1,6 +1,7 @@
 package com.direwolf20.diregoo.common.commands;
 
 import com.direwolf20.diregoo.Config;
+import com.direwolf20.diregoo.common.events.ServerEvents;
 import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
@@ -26,6 +27,7 @@ public class CommandCanSpread {
 
     public static int setCanSpread(CommandContext<CommandSource> context, boolean canSpread) throws CommandSyntaxException {
         Config.CAN_SPREAD_ALL.set(canSpread);
+        ServerEvents.clearAllLists();
         getCanSpread(context);
         return 0;
     }

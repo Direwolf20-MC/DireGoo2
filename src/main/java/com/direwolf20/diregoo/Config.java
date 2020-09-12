@@ -22,6 +22,8 @@ public class Config {
     public static ForgeConfigSpec.IntValue FREEZE_MELT_CHANCE;
     public static ForgeConfigSpec.IntValue MAX_BLOCK_CHANGES;
     public static ForgeConfigSpec.IntValue MAX_CHUNK_CHANGES;
+    public static ForgeConfigSpec.IntValue MAX_CHUNK_QUEUE;
+    public static ForgeConfigSpec.IntValue GOO_SPREAD_FREQUENCY;
     public static ForgeConfigSpec.BooleanValue BATCH_GOO_SPREAD;
 
     public static final String SUBCATEGORY_GOO = "normal_goo";
@@ -147,10 +149,14 @@ public class Config {
                 .define("animateSpread", true);
         FREEZE_MELT_CHANCE = COMMON_BUILDER.comment("The chance for Frozen Goo to melt on block tick. The lower this number, the longer it stays frozen.")
                 .defineInRange("freezeMeltChance", 100, 0, 100);
-        MAX_BLOCK_CHANGES = COMMON_BUILDER.comment("The maximum number of goo blocks that can cause a blockchange per tick. Lowering this number will slow the spread of goo and may improve performance.")
-                .defineInRange("maxBlockChanges", 250, 1, 2000);
-        MAX_CHUNK_CHANGES = COMMON_BUILDER.comment("The maximum number of chunks that can change per tick as a result of goospread. Lowering this number will slow the spread of goo and may improve performance.")
-                .defineInRange("maxChunkChanges", 25, 1, 250);
+        MAX_BLOCK_CHANGES = COMMON_BUILDER.comment("The maximum number of goo blocks that can cause a blockchange per chunk in a single tick. Lowering this number will slow the spread of goo and may improve performance.")
+                .defineInRange("maxBlockChanges", 200, 1, 10000);
+        MAX_CHUNK_CHANGES = COMMON_BUILDER.comment("The maximum number of chunks that can change per spreadEvent as a result of goospread. Lowering this number will slow the spread of goo and may improve performance.")
+                .defineInRange("maxChunkChanges", 10, 1, 250);
+        MAX_CHUNK_QUEUE = COMMON_BUILDER.comment("The maximum number of chunks that can be queue'd in the server processing queue. Probably don't need to mess with this unless you know what you're doing and why.")
+                .defineInRange("maxChunkQueue", 100, 1, 500);
+        GOO_SPREAD_FREQUENCY = COMMON_BUILDER.comment("How frequently the server processes a batch of goo. The amount of chunks processed is defined in maxChunkChanges. That many chunks will change every X ticks per this value")
+                .defineInRange("gooSpreadFrequency", 20, 1, 2000);
         BATCH_GOO_SPREAD = COMMON_BUILDER.comment("Do we batch the goo spread? Should increase performance.")
                 .define("batchSpread", true);
 
