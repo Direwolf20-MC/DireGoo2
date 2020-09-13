@@ -6,7 +6,6 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 
 public class CommandShowGrowthCounts {
@@ -28,8 +27,8 @@ public class CommandShowGrowthCounts {
         for (Map.Entry<Long, Set<ChunkPos>> entry : chunkChangeCounter.entrySet()) {
             context.getSource().sendFeedback(new TranslationTextComponent("message.diregoo.command.chunkChangeCounter " + (world.getGameTime() - entry.getKey()) + ": " + blockSave.getChunkChangesThisTick(entry.getKey())), false);
         }*/
-        context.getSource().sendFeedback(new TranslationTextComponent("message.diregoo.command.blockChangeCounter " + blockSave.getBlockChangeThisTick(world.getGameTime() - 1)), false);
-        context.getSource().sendFeedback(new TranslationTextComponent("message.diregoo.command.chunkChangeCounter " + blockSave.getChunkChangesThisTick(world.getGameTime() - 1)), false);
+        //context.getSource().sendFeedback(new TranslationTextComponent("message.diregoo.command.blockChangeCounter " + blockSave.getBlockChangeThisTick(world.getGameTime() - 1)), false);
+        //context.getSource().sendFeedback(new TranslationTextComponent("message.diregoo.command.chunkChangeCounter " + blockSave.getChunkChangesThisTick(world.getGameTime() - 1)), false);
         return 0;
     }
 

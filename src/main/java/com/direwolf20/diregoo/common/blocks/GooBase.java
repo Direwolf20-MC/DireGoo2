@@ -56,10 +56,10 @@ public class GooBase extends Block {
             world.setBlockState(pos, Blocks.AIR.getDefaultState());
             return;
         }
-        /*if (!resetSpecialCase(oldState, world, pos, render, gooRenderLife, blockSave)) {
-            world.setBlockState(pos, oldState);
-            ChunkSave.pop(pos, world.getChunk(pos).getPos());
-        }*/
+        //if (!resetSpecialCase(oldState, world, pos, render, gooRenderLife, blockSave)) {
+        world.setBlockState(pos, oldState);
+        ChunkSave.pop(pos, world.getChunk(pos).getPos());
+        //}
         CompoundNBT oldNBT = blockSave.getTEFromPos(pos);
         if (oldNBT == null) return;
         TileEntity te = world.getTileEntity(pos);
@@ -178,11 +178,18 @@ public class GooBase extends Block {
         if (handleFrozen(pos, state, worldIn, rand)) return;
         if (!shouldGooSpread(state, worldIn, pos, rand))
             return;
+        /*boolean animate = false;
+        if (Config.ANIMATE_SPREAD.get())
+            animate = worldIn.isPlayerWithin(pos.getX(), pos.getY(), pos.getZ(), 20);*/
+        BlockPos gooPos = spreadGoo(state, worldIn, pos, rand, blockSave);
+        forceExtraTick(worldIn, gooPos);
+    }
+
+    public static boolean shouldAnimateSpread(World worldIn, BlockPos pos) {
         boolean animate = false;
         if (Config.ANIMATE_SPREAD.get())
             animate = worldIn.isPlayerWithin(pos.getX(), pos.getY(), pos.getZ(), 20);
-        BlockPos gooPos = spreadGoo(state, worldIn, pos, rand, animate, blockSave);
-        forceExtraTick(worldIn, gooPos);
+        return animate;
     }
 
     public void forceExtraTick(ServerWorld world, BlockPos pos) {
@@ -228,7 +235,7 @@ public class GooBase extends Block {
         return true;
     }
 
-    public BlockPos spreadGoo(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand, boolean animate, BlockSave blockSave) {
+    public BlockPos spreadGoo(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand, BlockSave blockSave) {
         int x = rand.nextInt(Direction.values().length);
         Direction direction = Direction.values()[x];
 
@@ -246,25 +253,23 @@ public class GooBase extends Block {
         }
 
         if (canSpreadHere(checkPos, oldState, worldIn, blockSave)) {
-            if (animate) {
-                List<GooSpreadEntity> list = worldIn.getEntitiesWithinAABB(GooSpreadEntity.class, new AxisAlignedBB(checkPos.getX(), checkPos.getY(), checkPos.getZ(), checkPos.getX() + 0.25d, checkPos.getY() + 0.25d, checkPos.getZ() + 0.25d));
-                if (!list.isEmpty())
-                    return BlockPos.ZERO;
-            }
+            List<GooSpreadEntity> list = worldIn.getEntitiesWithinAABB(GooSpreadEntity.class, new AxisAlignedBB(checkPos.getX(), checkPos.getY(), checkPos.getZ(), checkPos.getX() + 0.25d, checkPos.getY() + 0.25d, checkPos.getZ() + 0.25d));
+            if (!list.isEmpty())
+                return BlockPos.ZERO;
             /*if (handleSpecialCases(worldIn, oldState, checkPos, animate, direction, blockSave))
                 return BlockPos.ZERO;*/
-            setBlockToGoo(oldState, worldIn, checkPos, animate, direction, blockSave);
+            setBlockToGoo(oldState, worldIn, checkPos, direction, blockSave);
         } else {
             return BlockPos.ZERO;
         }
         return checkPos;
     }
 
-    public void setBlockToGoo(BlockState oldState, World worldIn, BlockPos checkPos, boolean animate, Direction direction, BlockSave blockSave) {
+    public void setBlockToGoo(BlockState oldState, World worldIn, BlockPos checkPos, Direction direction, BlockSave blockSave) {
         if (Config.BATCH_GOO_SPREAD.get()) {
-            ServerEvents.addToList(checkPos, direction, (ServerWorld) worldIn, this.getDefaultState(), animate);
+            ServerEvents.addToList(checkPos, direction, (ServerWorld) worldIn, this.getDefaultState());
         } else {
-            if (animate) {
+            if (shouldAnimateSpread(worldIn, checkPos)) {
                 worldIn.addEntity(new GooSpreadEntity(worldIn, checkPos, this.getDefaultState(), gooSpreadAnimationTime, direction.getOpposite().getIndex()));
             } else {
                 saveBlockData(worldIn, checkPos, oldState, blockSave);

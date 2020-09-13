@@ -54,7 +54,7 @@ public class ServerEvents {
     private static HashMultimap<ChunkPos, BlockPos> chunkMap = HashMultimap.create();
     private static final HashMap<BlockPos, Direction> todoList = new HashMap<>();
     private static final HashMap<BlockPos, BlockState> posState = new HashMap<>();
-    private static final HashMap<BlockPos, Boolean> posAnimate = new HashMap<>();
+    //private static final HashMap<BlockPos, Boolean> posAnimate = new HashMap<>();
     private static final HashMap<BlockPos, Boolean> posClearList = new HashMap<>();
     private static ServerWorld serverWorld;
 
@@ -76,8 +76,9 @@ public class ServerEvents {
                         BlockState oldState = serverWorld.getBlockState(checkPos); //note the blockstate of the block to be eaten
                         Direction direction = todoList.get(checkPos); //Get the position that this goo spread from
                         //Spread the goo, use an entity if animating. First check to make sure the goo block this spread from is still there...
+
                         if (serverWorld.getBlockState(checkPos.offset(direction.getOpposite())).equals(posState.get(checkPos))) {
-                            if (posAnimate.get(checkPos)) {
+                            if (GooBase.shouldAnimateSpread(serverWorld, checkPos)) {
                                 serverWorld.addEntity(new GooSpreadEntity(serverWorld, checkPos, posState.get(checkPos), 20, direction.getOpposite().getIndex()));
                             } else {
                                 GooBase.saveBlockData(serverWorld, checkPos, oldState, blockSave);
@@ -89,7 +90,7 @@ public class ServerEvents {
                         //Remove this blockpos from all the lists
                         todoList.remove(checkPos);
                         posState.remove(checkPos);
-                        posAnimate.remove(checkPos);
+                        //posAnimate.remove(checkPos);
                     }
                     chunkMap.removeAll(processChunk); //Remove the ChunkPos from the chunkMap
                 }
@@ -116,7 +117,7 @@ public class ServerEvents {
         }
     }
 
-    public static void addToList(BlockPos pos, Direction direction, ServerWorld world, BlockState gooState, boolean animate) {
+    public static void addToList(BlockPos pos, Direction direction, ServerWorld world, BlockState gooState) {
         //Used during gooSpread
         if (!todoList.containsKey(pos)) { //Make sure this position isn't already queue'd
             if (chunkQueue.size() < Config.MAX_CHUNK_QUEUE.get()) { //Make sure we haven't reached the max queue'd chunks via config
@@ -128,7 +129,7 @@ public class ServerEvents {
                 chunkMap.put(chunkPos, pos);  //Add to the chunkMap
                 todoList.put(pos, direction); //Add to the spreading list
                 posState.put(pos, gooState); //Note the blockstate of goo that caused this spread - Normal/Terrain/Burst/etc
-                posAnimate.put(pos, animate); //Gonna remove this soon
+                //posAnimate.put(pos, animate); //Gonna remove this soon
             }
         }
         serverWorld = world;
@@ -156,7 +157,7 @@ public class ServerEvents {
         chunkMap.clear();
         todoList.clear();
         posState.clear();
-        posAnimate.clear();
+        //posAnimate.clear();
         posClearList.clear();
     }
 }
