@@ -7,6 +7,7 @@ import com.direwolf20.diregoo.common.network.PacketHandler;
 import com.direwolf20.diregoo.common.network.packets.AntigooSync;
 import com.direwolf20.diregoo.common.worldsave.BlockSave;
 import com.google.common.collect.HashMultimap;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -76,16 +77,19 @@ public class ServerEvents {
                         BlockState oldState = serverWorld.getBlockState(checkPos); //note the blockstate of the block to be eaten
                         Direction direction = todoList.get(checkPos); //Get the position that this goo spread from
                         //Spread the goo, use an entity if animating. First check to make sure the goo block this spread from is still there...
-
-                        if (serverWorld.getBlockState(checkPos.offset(direction.getOpposite())).equals(posState.get(checkPos))) {
+                        BlockState sourceGoo = serverWorld.getBlockState(checkPos.offset(direction.getOpposite()));
+                        Block maybeGoo = sourceGoo.getBlock();
+                        boolean canSpreadHere = false;
+                        if (maybeGoo instanceof GooBase) {
+                            canSpreadHere = ((GooBase) maybeGoo).canSpreadHere(checkPos, oldState, serverWorld, blockSave);
+                        }
+                        if (sourceGoo.equals(posState.get(checkPos)) && canSpreadHere) {
                             if (GooBase.shouldAnimateSpread(serverWorld, checkPos)) {
                                 serverWorld.addEntity(new GooSpreadEntity(serverWorld, checkPos, posState.get(checkPos), 20, direction.getOpposite().getIndex()));
                             } else {
                                 GooBase.saveBlockData(serverWorld, checkPos, oldState, blockSave);
                                 serverWorld.setBlockState(checkPos, posState.get(checkPos));
                             }
-                        } else {
-                            System.out.println("Source Goo Removed at " + checkPos + ", skipping spread");
                         }
                         //Remove this blockpos from all the lists
                         todoList.remove(checkPos);
