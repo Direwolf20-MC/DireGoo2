@@ -10,13 +10,15 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.nbt.NBTUtil;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.storage.WorldSavedData;
 import net.minecraftforge.common.util.Constants;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 public class BlockSave extends WorldSavedData {
     private static final String NAME = DireGoo.MOD_ID + "_blocksave";
@@ -26,7 +28,7 @@ public class BlockSave extends WorldSavedData {
     private final ArrayList<BlockPos> antigooList = new ArrayList<>();
     private final SetMultimap<BlockPos, BlockPos> antigooFieldList = HashMultimap.create();
     private boolean gooDeathEvent = false;
-    private final LinkedHashMap<Long, Integer> blockChangeCounter = new LinkedHashMap<Long, Integer>() {
+    /*private final LinkedHashMap<Long, Integer> blockChangeCounter = new LinkedHashMap<Long, Integer>() {
         protected boolean removeEldestEntry(Map.Entry<Long, Integer> eldest) {
             return size() > 10;
         }
@@ -35,7 +37,7 @@ public class BlockSave extends WorldSavedData {
         protected boolean removeEldestEntry(Map.Entry<Long, Set<ChunkPos>> eldest) {
             return size() > 10;
         }
-    };
+    };*/
 
     public BlockSave() {
         super(NAME);
@@ -267,7 +269,7 @@ public class BlockSave extends WorldSavedData {
         this.markDirty();
     }
 
-    public void addBlockChange(long gametime) {
+    /*public void addBlockChange(long gametime) {
         blockChangeCounter.compute(gametime, (k, v) -> (v == null) ? 1 : v + 1);
     }
 
@@ -297,6 +299,6 @@ public class BlockSave extends WorldSavedData {
 
     public LinkedHashMap<Long, Set<ChunkPos>> getChunkChangeCounter() {
         return chunkChangeCounter;
-    }
+    }*/
 
 }

@@ -8,7 +8,9 @@ import com.direwolf20.diregoo.common.entities.GooSpreadEntity;
 import com.direwolf20.diregoo.common.events.ChunkSave;
 import com.direwolf20.diregoo.common.events.ServerEvents;
 import com.direwolf20.diregoo.common.worldsave.BlockSave;
-import net.minecraft.block.*;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.PushReaction;
 import net.minecraft.entity.player.PlayerEntity;
@@ -17,8 +19,6 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.StateContainer;
-import net.minecraft.state.properties.BedPart;
-import net.minecraft.state.properties.DoubleBlockHalf;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
@@ -47,8 +47,8 @@ public class GooBase extends Block {
 
     //Reset the block
     public static void resetBlock(ServerWorld world, BlockPos pos, boolean render, int gooRenderLife, boolean calcSideRender, BlockSave blockSave) {
-        blockSave.addBlockChange(world.getGameTime());
-        blockSave.addChunkChange(world.getGameTime(), world.getChunk(pos).getPos());
+        //blockSave.addBlockChange(world.getGameTime());
+        //blockSave.addChunkChange(world.getGameTime(), world.getChunk(pos).getPos());
         BlockState oldState = ChunkSave.getStateFromPos(pos, blockSave, world.getChunk(pos).getPos());
         if (render)
             world.addEntity(new GooEntity(world, pos, world.getBlockState(pos), gooRenderLife, calcSideRender));
@@ -56,10 +56,10 @@ public class GooBase extends Block {
             world.setBlockState(pos, Blocks.AIR.getDefaultState());
             return;
         }
-        if (!resetSpecialCase(oldState, world, pos, render, gooRenderLife, blockSave)) {
+        /*if (!resetSpecialCase(oldState, world, pos, render, gooRenderLife, blockSave)) {
             world.setBlockState(pos, oldState);
             ChunkSave.pop(pos, world.getChunk(pos).getPos());
-        }
+        }*/
         CompoundNBT oldNBT = blockSave.getTEFromPos(pos);
         if (oldNBT == null) return;
         TileEntity te = world.getTileEntity(pos);
@@ -159,12 +159,12 @@ public class GooBase extends Block {
     @Override
     public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
         BlockSave blockSave = BlockSave.get(worldIn);
-        if (blockSave.getBlockChangeThisTick(worldIn.getGameTime()) >= Config.MAX_BLOCK_CHANGES.get()) return;
-        if (blockSave.getChunkChangesThisTick(worldIn.getGameTime()) >= Config.MAX_CHUNK_CHANGES.get()) return;
+        /*if (blockSave.getBlockChangeThisTick(worldIn.getGameTime()) >= Config.MAX_BLOCK_CHANGES.get()) return;
+        if (blockSave.getChunkChangesThisTick(worldIn.getGameTime()) >= Config.MAX_CHUNK_CHANGES.get()) return;*/
 
         if (blockSave.getGooDeathEvent()) {
-            if (blockSave.getBlockChangeThisTick(worldIn.getGameTime()) >= Config.MAX_BLOCK_CHANGES.get() / 2) return;
-            if (blockSave.getChunkChangesThisTick(worldIn.getGameTime()) >= Config.MAX_CHUNK_CHANGES.get() / 2) return;
+            /*if (blockSave.getBlockChangeThisTick(worldIn.getGameTime()) >= Config.MAX_BLOCK_CHANGES.get() / 2) return;
+            if (blockSave.getChunkChangesThisTick(worldIn.getGameTime()) >= Config.MAX_CHUNK_CHANGES.get() / 2) return;*/
             boolean animate = worldIn.isPlayerWithin(pos.getX(), pos.getY(), pos.getZ(), 25);
             if (Config.BATCH_GOO_SPREAD.get()) {
                 ServerEvents.addToClearList(pos, worldIn, animate);
@@ -240,8 +240,8 @@ public class GooBase extends Block {
             worldIn.setBlockState(pos, ModBlocks.GOO_BLOCK_POISON.get().getDefaultState().with(GooBlockPoison.GENERATION, newGeneration));
             worldIn.getPendingBlockTicks().scheduleTick(pos, ModBlocks.GOO_BLOCK_POISON.get(), 5);
             resetBlock(worldIn, checkPos, true, 80, false, blockSave);
-            blockSave.addBlockChange(worldIn.getGameTime());
-            blockSave.addChunkChange(worldIn.getGameTime(), worldIn.getChunk(pos).getPos());
+            /*blockSave.addBlockChange(worldIn.getGameTime());
+            blockSave.addChunkChange(worldIn.getGameTime(), worldIn.getChunk(pos).getPos());*/
             return BlockPos.ZERO;
         }
 
@@ -251,8 +251,8 @@ public class GooBase extends Block {
                 if (!list.isEmpty())
                     return BlockPos.ZERO;
             }
-            if (handleSpecialCases(worldIn, oldState, checkPos, animate, direction, blockSave))
-                return BlockPos.ZERO;
+            /*if (handleSpecialCases(worldIn, oldState, checkPos, animate, direction, blockSave))
+                return BlockPos.ZERO;*/
             setBlockToGoo(oldState, worldIn, checkPos, animate, direction, blockSave);
         } else {
             return BlockPos.ZERO;
@@ -271,8 +271,8 @@ public class GooBase extends Block {
                 worldIn.setBlockState(checkPos, this.getDefaultState());
             }
         }
-        blockSave.addBlockChange(worldIn.getGameTime());
-        blockSave.addChunkChange(worldIn.getGameTime(), worldIn.getChunk(checkPos).getPos());
+        /*blockSave.addBlockChange(worldIn.getGameTime());
+        blockSave.addChunkChange(worldIn.getGameTime(), worldIn.getChunk(checkPos).getPos());*/
     }
 
     public static void saveBlockData(World worldIn, BlockPos checkPos, BlockState oldState, BlockSave blockSave) {
@@ -294,7 +294,7 @@ public class GooBase extends Block {
         builder.add(ACTIVE);
     }
 
-    public boolean handleSpecialCases(World world, BlockState blockState, BlockPos blockPos, boolean animate, Direction direction, BlockSave blockSave) {
+    /*public boolean handleSpecialCases(World world, BlockState blockState, BlockPos blockPos, boolean animate, Direction direction, BlockSave blockSave) {
         if (blockState.getBlock() == Blocks.PISTON || blockState.getBlock() == Blocks.STICKY_PISTON) {
             if (blockState.get(PistonBlock.EXTENDED)) {
                 BlockState newstate = blockState.with(PistonBlock.EXTENDED, false);
@@ -348,9 +348,9 @@ public class GooBase extends Block {
             return true;
         }
         return false;
-    }
+    }*/
 
-    public static boolean resetSpecialCase(BlockState oldState, ServerWorld world, BlockPos pos, boolean render, int gooRenderLife, BlockSave blockSave) {
+    /*public static boolean resetSpecialCase(BlockState oldState, ServerWorld world, BlockPos pos, boolean render, int gooRenderLife, BlockSave blockSave) {
         if (oldState.getBlock() instanceof DoorBlock) {
             if (oldState.get(DoorBlock.HALF).equals(DoubleBlockHalf.LOWER)) {
                 world.setBlockState(pos, oldState);
@@ -377,7 +377,7 @@ public class GooBase extends Block {
             }
         }
         return false;
-    }
+    }*/
 
     @Override
     public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
