@@ -2,8 +2,8 @@ package com.direwolf20.diregoo.common.entities;
 
 import com.direwolf20.diregoo.DireGoo;
 import com.direwolf20.diregoo.common.blocks.GooBase;
-import com.direwolf20.diregoo.common.blocks.GooBlockTerrain;
 import com.direwolf20.diregoo.common.worldsave.BlockSave;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.material.PushReaction;
@@ -75,7 +75,7 @@ public class GooSpreadEntity extends EntityBase {
     @Override
     protected void onSetDespawning() {
         if (!world.isRemote) {
-            BlockSave blockSave = BlockSave.get(world);
+            /*BlockSave blockSave = BlockSave.get(world);
             BlockState oldState = world.getBlockState(this.targetPos);
             BlockState gooState = getGooBlockState();
             boolean stillValid;
@@ -83,7 +83,18 @@ public class GooSpreadEntity extends EntityBase {
                 stillValid = ((GooBlockTerrain) gooState.getBlock()).isAdjacentValid((ServerWorld) world, this.targetPos, oldState); //In case the blockstate changes between the entity spawn and death
             else
                 stillValid = ((GooBase) gooState.getBlock()).isAdjacentValid((ServerWorld) world, this.targetPos, oldState); //In case the blockstate changes between the entity spawn and death
-            if (stillValid) {
+            if (stillValid) {*/
+            BlockSave blockSave = BlockSave.get(world);
+            BlockState oldState = world.getBlockState(targetPos); //note the blockstate of the block to be eaten
+            Direction direction = Direction.values()[dataManager.get(DIRECTION)].getOpposite(); //Get the position that this goo spread from
+            //Spread the goo, use an entity if animating. First check to make sure the goo block this spread from is still there...
+            BlockState sourceGoo = world.getBlockState(targetPos.offset(direction.getOpposite()));
+            Block maybeGoo = sourceGoo.getBlock();
+            boolean canSpreadHere = false;
+            if (maybeGoo instanceof GooBase) {
+                canSpreadHere = ((GooBase) maybeGoo).canSpreadHere(targetPos, oldState, (ServerWorld) world, blockSave);
+            }
+            if (sourceGoo.equals(dataManager.get(gooBlockState).get()) && canSpreadHere) {
                 GooBase.saveBlockData(world, this.targetPos, oldState, blockSave);
                 world.setBlockState(this.targetPos, dataManager.get(gooBlockState).get());
             }
