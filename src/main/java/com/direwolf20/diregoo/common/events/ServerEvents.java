@@ -68,11 +68,11 @@ public class ServerEvents {
                 BlockSave blockSave = BlockSave.get(serverWorld);
                 int maxRuns = Config.MAX_CHUNK_CHANGES.get(); //Get how many chunks to process via config
                 int iterations = Math.min(chunkQueue.size(), maxRuns); //If we have less than the max chunks to process
-                System.out.println("Processing Chunks: " + iterations + " out of " + chunkQueue.size());
+                //System.out.println("Processing Chunks: " + iterations + " out of " + chunkQueue.size());
                 for (int i = 0; i < iterations; i++) {
                     ChunkPos processChunk = chunkQueue.remove(); //Remove the oldest chunk from the queue
                     Set<BlockPos> posList = chunkMap.get(processChunk); //Get all the blocks in that chunk that are due to be processed
-                    System.out.println("Blocks in iteration " + i + ": " + posList.size());
+                    //System.out.println("Blocks in iteration " + i + ": " + posList.size());
                     for (BlockPos checkPos : posList) { //For each blockPos in the list
                         BlockState oldState = serverWorld.getBlockState(checkPos); //note the blockstate of the block to be eaten
                         Direction direction = todoList.get(checkPos); //Get the position that this goo spread from
@@ -105,11 +105,11 @@ public class ServerEvents {
                 BlockSave blockSave = BlockSave.get(serverWorld);
                 int maxRuns = Config.MAX_CHUNK_CHANGES.get();
                 int iterations = Math.min(chunkQueue.size(), maxRuns);
-                System.out.println("Processing Chunks: " + iterations + " out of " + chunkQueue.size());
+                //System.out.println("Processing Chunks: " + iterations + " out of " + chunkQueue.size());
                 for (int i = 0; i < iterations; i++) {
                     ChunkPos processChunk = chunkQueue.remove();
                     Set<BlockPos> posList = chunkMap.get(processChunk);
-                    System.out.println("Blocks in iteration " + i + ": " + posList.size());
+                    //System.out.println("Blocks in iteration " + i + ": " + posList.size());
                     for (BlockPos checkPos : posList) {
                         GooBase.resetBlock(serverWorld, checkPos, posClearList.get(checkPos), 20, false, blockSave);
                         posClearList.remove(checkPos);
