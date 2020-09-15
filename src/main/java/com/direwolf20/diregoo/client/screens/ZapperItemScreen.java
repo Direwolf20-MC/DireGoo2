@@ -50,7 +50,7 @@ public class ZapperItemScreen extends ContainerScreen<ZapperItemContainer> {
 
     @Override
     protected void drawGuiContainerForegroundLayer(MatrixStack stack, int mouseX, int mouseY) {
-        Minecraft.getInstance().fontRenderer.drawString(stack, I18n.format("block.diregoo.zapperitemscreen"), 55, 8, Color.DARK_GRAY.getRGB());
+        Minecraft.getInstance().fontRenderer.drawString(stack, I18n.format("block.diregoo.zapperitemscreen"), 65, 8, Color.DARK_GRAY.getRGB());
 
     }
 

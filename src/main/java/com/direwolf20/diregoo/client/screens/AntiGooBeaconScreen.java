@@ -61,7 +61,7 @@ public class AntiGooBeaconScreen extends ContainerScreen<AntiGooBeaconContainer>
 
     @Override
     protected void drawGuiContainerForegroundLayer(MatrixStack stack, int mouseX, int mouseY) {
-        Minecraft.getInstance().fontRenderer.drawString(stack, I18n.format("block.diregoo.antigoobeaconblock"), 55, 8, Color.DARK_GRAY.getRGB());
+        Minecraft.getInstance().fontRenderer.drawString(stack, I18n.format("block.diregoo.antigoobeaconscreen"), 55, 8, Color.DARK_GRAY.getRGB());
         if (container.getFuelRemaining() > 0) {
             Minecraft.getInstance().fontRenderer.drawString(stack, new TranslationTextComponent("screen.diregoo.antigoobeacon.fuel_remaining", MagicHelpers.ticksInSeconds(this.container.getFuelRemaining())).getString(), 45, 30, Color.DARK_GRAY.getRGB());
         }

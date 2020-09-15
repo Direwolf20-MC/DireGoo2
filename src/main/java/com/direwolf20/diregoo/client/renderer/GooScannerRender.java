@@ -74,7 +74,7 @@ public class GooScannerRender {
     public static void discoverGoo(PlayerEntity player) {
         //Find all the goo in an area around the player
         BlockPos playerPos = new BlockPos(player.getPosX(), player.getPosY(), player.getPosZ());
-        int radius = 200;
+        int radius = 100;
         if (!player.isSneaking())
             gooBlocksList = BlockPos.getAllInBox(playerPos.add(-radius, -radius, -radius), playerPos.add(radius, radius, radius))
                     .filter(blockPos -> player.world.getBlockState(blockPos).getBlock() instanceof GooBase)
@@ -88,8 +88,9 @@ public class GooScannerRender {
                     .sorted(Comparator.comparingDouble(blockPos -> playerPos.distanceSq(blockPos)))
                     .collect(Collectors.toList());
         if (gooBlocksList.size() > 100000) {
-            player.sendStatusMessage(new TranslationTextComponent("diregoo.message.toomuchgoo " + gooBlocksList.size()), true);
+            player.sendStatusMessage(new TranslationTextComponent("diregoo.message.toomuchgoo" + gooBlocksList.size()), true);
         } else {
+            player.sendStatusMessage(new TranslationTextComponent("diregoo.message.goocount" + gooBlocksList.size()), true);
             Collections.reverse(gooBlocksList);
             gooVisibleStartTime = System.currentTimeMillis();
             System.out.println(gooBlocksList.size());
