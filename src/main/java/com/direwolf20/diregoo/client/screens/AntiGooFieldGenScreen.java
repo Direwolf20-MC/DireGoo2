@@ -114,6 +114,16 @@ public class AntiGooFieldGenScreen extends FEScreenBase<AntiGooFieldGenContainer
         super.onClose();
     }
 
+    public boolean mouseReleased(double p_mouseReleased_1_, double p_mouseReleased_3_, int p_mouseReleased_5_) {
+        NSlider.dragging = false;
+        SSlider.dragging = false;
+        WSlider.dragging = false;
+        ESlider.dragging = false;
+        USlider.dragging = false;
+        DSlider.dragging = false;
+        return false;
+    }
+
     /*@Override
     public void removed() {
         PacketHandler.sendToServer(new PacketChangeAntiGooFieldRange(this.ranges, this.container.tile.getPos()));
