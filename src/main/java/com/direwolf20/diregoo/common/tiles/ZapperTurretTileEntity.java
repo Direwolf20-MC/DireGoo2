@@ -1,5 +1,6 @@
 package com.direwolf20.diregoo.common.tiles;
 
+import com.direwolf20.diregoo.Config;
 import com.direwolf20.diregoo.common.blocks.GooBase;
 import com.direwolf20.diregoo.common.blocks.ModBlocks;
 import com.direwolf20.diregoo.common.blocks.ZapperTurretBlock;
@@ -105,6 +106,15 @@ public class ZapperTurretTileEntity extends FETileBase implements ITickableTileE
         return 0;
     }
 
+    public int getRFCost() {
+        int cost = Config.ZAPPER_TILE_RFCOST.get();
+        if (isFreezing()) cost = cost / 2;
+        cost *= Math.pow(getRadius(), 2);
+        cost *= (getRange() / 8);
+        System.out.println(cost);
+        return cost;
+    }
+
     public void processGoo(ServerWorld world, BlockPos pos) {
         BlockSave blockSave = BlockSave.get(world);
         if (isMelting())
@@ -153,6 +163,9 @@ public class ZapperTurretTileEntity extends FETileBase implements ITickableTileE
 
     public void beginShooting() {
         if (isShooting() || !validateSlots()) return;
+        int cost = getRFCost();
+        if (energyStorage.getEnergyStored() < cost) return;
+        energyStorage.consumeEnergy(cost, false);
         isShooting = true;
         remainingShots = getRange();
         currentPos = this.pos.offset(getFacing());

@@ -68,11 +68,19 @@ public class ZapperTurretBlock extends Block {
         if (!(te instanceof ZapperTurretTileEntity))
             return ActionResultType.FAIL;
 
-        if (player.isSneaking()) {
-            ((ZapperTurretTileEntity) te).beginShooting();
-        } else {
-            NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider) te, pos);
-        }
+        NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider) te, pos);
         return ActionResultType.SUCCESS;
+    }
+
+    @Override
+    public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
+        if (!worldIn.isRemote) {
+            if (worldIn.isBlockPowered(fromPos)) {
+                TileEntity te = worldIn.getTileEntity(pos);
+                if (!(te instanceof ZapperTurretTileEntity))
+                    return;
+                ((ZapperTurretTileEntity) te).beginShooting();
+            }
+        }
     }
 }
