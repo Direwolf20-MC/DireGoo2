@@ -167,7 +167,7 @@ public class GooBase extends Block {
         if (!shouldGooSpread(state, worldIn, pos, rand))
             return;
         BlockPos gooPos = spreadGoo(state, worldIn, pos, rand, blockSave);
-        forceExtraTick(worldIn, gooPos);
+        //forceExtraTick(worldIn, gooPos);
     }
 
     public static boolean shouldAnimateSpread(World worldIn, BlockPos pos) {
@@ -177,13 +177,13 @@ public class GooBase extends Block {
         return animate;
     }
 
-    public void forceExtraTick(ServerWorld world, BlockPos pos) {
+    public static void forceExtraTick(ServerWorld world, BlockPos pos, boolean animate) {
         if (pos != BlockPos.ZERO)
             if (Config.SPREAD_TICK_DELAY.get() != -1) {
-                if (Config.ANIMATE_SPREAD.get())
-                    world.getPendingBlockTicks().scheduleTick(pos, this, gooSpreadAnimationTime + Config.SPREAD_TICK_DELAY.get());
+                if (animate)
+                    world.getPendingBlockTicks().scheduleTick(pos, ModBlocks.GOO_BLOCK.get(), gooSpreadAnimationTime + Config.SPREAD_TICK_DELAY.get());
                 else
-                    world.getPendingBlockTicks().scheduleTick(pos, this, Config.SPREAD_TICK_DELAY.get());
+                    world.getPendingBlockTicks().scheduleTick(pos, ModBlocks.GOO_BLOCK.get(), Config.SPREAD_TICK_DELAY.get());
             }
     }
 
