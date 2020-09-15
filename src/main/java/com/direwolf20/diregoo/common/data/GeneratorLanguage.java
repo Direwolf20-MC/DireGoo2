@@ -16,6 +16,8 @@ public class GeneratorLanguage extends LanguageProvider {
         add("screen.diregoo.energy", "Energy: %s/%s FE");
         add("screen.diregoo.antigoobeacon.fuel_remaining", "Fuel Time Remaining: %d");
         add("screen.diregoo.turret.shots_remaining", "Boost Shots Remaining: %d");
+        add("screen.diregoo.antigoofieldgen.active", "Active %1$d");
+        add("screen.diregoo.antigoofieldgen.renderarea", "Render %1$d");
         add("diregoo.tooltip.screen.xrange", "Range X");
         add("diregoo.tooltip.itemenergy", "Energy: %d/%d");
         add("block.diregoo.zapperitemscreen", "Goo Zapper");

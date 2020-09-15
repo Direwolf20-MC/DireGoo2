@@ -91,7 +91,7 @@ public class BlockSave extends WorldSavedData {
 
         gooDeathEvent = nbt.getBoolean("gooDeathEvent");
         long elapsedTime = System.nanoTime() - startTime;
-        System.out.println("Elapsed time for Read = " + elapsedTime / 1000000);
+        //System.out.println("Elapsed time for Read = " + elapsedTime / 1000000);
     }
 
     @Override
@@ -147,7 +147,7 @@ public class BlockSave extends WorldSavedData {
 
         compound.putBoolean("gooDeathEvent", gooDeathEvent);
         long elapsedTime = System.nanoTime() - startTime;
-        System.out.println("Elapsed time for Write = " + elapsedTime / 1000000);
+        //System.out.println("Elapsed time for Write = " + elapsedTime / 1000000);
         return compound;
 
     }

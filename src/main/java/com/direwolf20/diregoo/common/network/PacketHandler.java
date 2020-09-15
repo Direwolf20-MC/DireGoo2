@@ -2,7 +2,9 @@ package com.direwolf20.diregoo.common.network;
 
 import com.direwolf20.diregoo.DireGoo;
 import com.direwolf20.diregoo.common.network.packets.AntigooSync;
+import com.direwolf20.diregoo.common.network.packets.PacketChangeAntiGooFieldActive;
 import com.direwolf20.diregoo.common.network.packets.PacketChangeAntiGooFieldRange;
+import com.direwolf20.diregoo.common.network.packets.PacketChangeAntiGooFieldRender;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.PacketBuffer;
@@ -32,6 +34,8 @@ public class PacketHandler {
     public static void register() {
         //Going to Server side
         registerMessage(PacketChangeAntiGooFieldRange.class, PacketChangeAntiGooFieldRange::encode, PacketChangeAntiGooFieldRange::decode, PacketChangeAntiGooFieldRange.Handler::handle);
+        registerMessage(PacketChangeAntiGooFieldActive.class, PacketChangeAntiGooFieldActive::encode, PacketChangeAntiGooFieldActive::decode, PacketChangeAntiGooFieldActive.Handler::handle);
+        registerMessage(PacketChangeAntiGooFieldRender.class, PacketChangeAntiGooFieldRender::encode, PacketChangeAntiGooFieldRender::decode, PacketChangeAntiGooFieldRender.Handler::handle);
 
         //Going to Client Side
         registerMessage(AntigooSync.class, AntigooSync::encode, AntigooSync::decode, AntigooSync.Handler::handle);

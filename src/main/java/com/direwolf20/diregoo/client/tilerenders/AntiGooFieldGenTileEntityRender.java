@@ -19,7 +19,7 @@ public class AntiGooFieldGenTileEntityRender extends TileEntityRenderer<AntiGooF
 
     @Override
     public void render(AntiGooFieldGenTileEntity tile, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int combinedLightsIn, int combinedOverlayIn) {
-        if (tile.getProtectedBlocksList().isEmpty()) return;
+        if (!tile.isRenderArea()) return;
         IVertexBuilder builder;
         builder = bufferIn.getBuffer(OurRenderTypes.AntiGooLines);
         matrixStackIn.push();

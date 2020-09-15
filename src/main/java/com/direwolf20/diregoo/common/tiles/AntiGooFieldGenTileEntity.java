@@ -52,6 +52,15 @@ public class AntiGooFieldGenTileEntity extends FETileBase implements ITickableTi
         return protectedBlocksList;
     }
 
+    public boolean isRenderArea() {
+        return renderArea;
+    }
+
+    public void setRenderArea(boolean renderArea) {
+        this.renderArea = renderArea;
+        markDirtyClient();
+    }
+
     @Nullable
     @Override
     public Container createMenu(int i, PlayerInventory playerInventory, PlayerEntity playerEntity) {
@@ -123,6 +132,7 @@ public class AntiGooFieldGenTileEntity extends FETileBase implements ITickableTi
     public void read(BlockState state, CompoundNBT tag) {
         super.read(state, tag);
         isActive = tag.getBoolean("active");
+        renderArea = tag.getBoolean("renderArea");
         ranges = tag.getIntArray("ranges");
         protectedBlocksList = new HashSet<>();
         ListNBT antigoo = tag.getList("protectedblockslist", Constants.NBT.TAG_COMPOUND);
@@ -135,6 +145,7 @@ public class AntiGooFieldGenTileEntity extends FETileBase implements ITickableTi
     @Override
     public CompoundNBT write(CompoundNBT tag) {
         tag.putBoolean("active", isActive);
+        tag.putBoolean("renderArea", renderArea);
         tag.putIntArray("ranges", ranges);
         ListNBT anti = new ListNBT();
         for (BlockPos blockPos : protectedBlocksList) {

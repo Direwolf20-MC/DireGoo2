@@ -166,7 +166,7 @@ public class GooBase extends Block {
         if (handleFrozen(pos, state, worldIn, rand)) return;
         if (!shouldGooSpread(state, worldIn, pos, rand))
             return;
-        BlockPos gooPos = spreadGoo(state, worldIn, pos, rand, blockSave);
+        spreadGoo(state, worldIn, pos, rand, blockSave);
         //forceExtraTick(worldIn, gooPos);
     }
 

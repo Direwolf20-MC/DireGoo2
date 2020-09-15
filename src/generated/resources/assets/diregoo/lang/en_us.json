@@ -1,6 +1,6 @@
 {
   "block.diregoo.antigoobeacon": "Antigoo Beacon",
-  "block.diregoo.antigoobeaconscreen": "AntiGoo Beacon",
+  "block.diregoo.antigoobeaconscreen": "Antigoo Beacon",
   "block.diregoo.antigoofieldgen": "Antigoo Field Generator",
   "block.diregoo.gooblock": "Goo",
   "block.diregoo.gooblockburst": "Burst Goo",
@@ -34,6 +34,8 @@
   "item.diregoo.powerampt3": "Powerful Power Amplifier",
   "item.diregoo.powerampt4": "Extreme Power Amplifier",
   "screen.diregoo.antigoobeacon.fuel_remaining": "Fuel Time Remaining: %d",
+  "screen.diregoo.antigoofieldgen.active": "Active %1$d",
+  "screen.diregoo.antigoofieldgen.renderarea": "Render %1$d",
   "screen.diregoo.energy": "Energy: %s/%s FE",
   "screen.diregoo.turret.shots_remaining": "Boost Shots Remaining: %d"
 }

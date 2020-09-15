@@ -65,17 +65,9 @@ public class AntiGooFieldGen extends Block {
             TileEntity te = worldIn.getTileEntity(pos);
             if (!(te instanceof AntiGooFieldGenTileEntity))
                 return ActionResultType.FAIL;
-
-            if (player.isSneaking()) {
-                if (((AntiGooFieldGenTileEntity) te).isActive())
-                    ((AntiGooFieldGenTileEntity) te).removeField();
-                else
-                    ((AntiGooFieldGenTileEntity) te).addField();
-                return ActionResultType.SUCCESS;
-            } else {
-                NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider) te, pos);
-                return ActionResultType.SUCCESS;
-            }
+            NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider) te, pos);
+            return ActionResultType.SUCCESS;
+            
         }
         return ActionResultType.SUCCESS;
     }
