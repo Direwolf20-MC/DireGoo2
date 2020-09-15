@@ -43,7 +43,7 @@ public class CommandClearGoo {
         List<GooSpreadEntity> gooSpreadEntities = player.getEntityWorld().getEntitiesWithinAABB(GooSpreadEntity.class, new AxisAlignedBB(minPos, maxPos));
         for (GooSpreadEntity gooSpreadEntity : gooSpreadEntities)
             gooSpreadEntity.remove();
-        context.getSource().sendFeedback(new TranslationTextComponent("message.diregoo.command.cleargoo " + area.size()), false);
+        context.getSource().sendFeedback(new TranslationTextComponent("message.diregoo.command.cleargoo", area.size()), false);
         return 0;
     }
 }

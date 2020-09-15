@@ -20,7 +20,7 @@ public class CommandSpreadDelay {
     }
 
     public static int getRange(CommandContext<CommandSource> context) throws CommandSyntaxException {
-        context.getSource().sendFeedback(new TranslationTextComponent("message.diregoo.command.spreadrange " + Config.SPREAD_TICK_DELAY.get()), false);
+        context.getSource().sendFeedback(new TranslationTextComponent("message.diregoo.command.spreaddelay", Config.SPREAD_TICK_DELAY.get()), false);
         return 0;
     }
 

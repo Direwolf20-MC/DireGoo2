@@ -28,7 +28,7 @@ public class CommandCountSpreadEntities {
         int range = IntegerArgumentType.getInteger(context, "range");
         Vector3d playerPos = context.getSource().asPlayer().getPositionVec();
         List<GooSpreadEntity> list = world.getEntitiesWithinAABB(GooSpreadEntity.class, new AxisAlignedBB(playerPos.getX() - range, playerPos.getY() - range, playerPos.getZ() - range, playerPos.getX() + range, playerPos.getY() + range, playerPos.getZ() + range));
-        context.getSource().sendFeedback(new TranslationTextComponent("message.diregoo.command.entityCount " + list.size()), false);
+        context.getSource().sendFeedback(new TranslationTextComponent("message.diregoo.command.entityCount", list.size()), false);
         return 0;
     }
 

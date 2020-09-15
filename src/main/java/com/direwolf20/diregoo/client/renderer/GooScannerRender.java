@@ -88,9 +88,9 @@ public class GooScannerRender {
                     .sorted(Comparator.comparingDouble(blockPos -> playerPos.distanceSq(blockPos)))
                     .collect(Collectors.toList());
         if (gooBlocksList.size() > 100000) {
-            player.sendStatusMessage(new TranslationTextComponent("diregoo.message.toomuchgoo" + gooBlocksList.size()), true);
+            player.sendStatusMessage(new TranslationTextComponent("diregoo.message.toomuchgoo", gooBlocksList.size()), true);
         } else {
-            player.sendStatusMessage(new TranslationTextComponent("diregoo.message.goocount" + gooBlocksList.size()), true);
+            player.sendStatusMessage(new TranslationTextComponent("diregoo.message.goocount", gooBlocksList.size()), true);
             Collections.reverse(gooBlocksList);
             gooVisibleStartTime = System.currentTimeMillis();
             System.out.println(gooBlocksList.size());

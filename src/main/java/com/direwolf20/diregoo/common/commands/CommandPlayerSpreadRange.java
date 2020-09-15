@@ -20,7 +20,7 @@ public class CommandPlayerSpreadRange {
     }
 
     public static int getRange(CommandContext<CommandSource> context) throws CommandSyntaxException {
-        context.getSource().sendFeedback(new TranslationTextComponent("message.diregoo.command.spreadrange " + Config.PLAYER_SPREAD_RANGE.get()), false);
+        context.getSource().sendFeedback(new TranslationTextComponent("message.diregoo.command.spreadrange", Config.PLAYER_SPREAD_RANGE.get()), false);
         return 0;
     }
 

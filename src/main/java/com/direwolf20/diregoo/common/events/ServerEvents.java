@@ -59,6 +59,14 @@ public class ServerEvents {
     private static final HashMap<BlockPos, Boolean> posClearList = new HashMap<>();
     private static ServerWorld serverWorld;
 
+    public static int chunkQueueSize() {
+        return chunkQueue.size();
+    }
+
+    public static int blockChangeSize() {
+        return todoList.size();
+    }
+
     @SubscribeEvent
     public static void ServerTickHandler(TickEvent.ServerTickEvent event) {
         if (event.phase == TickEvent.Phase.END) {

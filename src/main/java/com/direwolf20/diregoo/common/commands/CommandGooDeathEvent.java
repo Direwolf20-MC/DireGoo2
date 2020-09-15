@@ -24,7 +24,7 @@ public class CommandGooDeathEvent {
     public static int getDeathEvent(CommandContext<CommandSource> context) throws CommandSyntaxException {
         ServerWorld world = context.getSource().getWorld();
         BlockSave blockSave = BlockSave.get(world);
-        context.getSource().sendFeedback(new TranslationTextComponent("message.diregoo.command.gooDeathEvent " + blockSave.getGooDeathEvent()), false);
+        context.getSource().sendFeedback(new TranslationTextComponent("message.diregoo.command.gooDeathEvent", blockSave.getGooDeathEvent()), false);
         return 0;
     }
 

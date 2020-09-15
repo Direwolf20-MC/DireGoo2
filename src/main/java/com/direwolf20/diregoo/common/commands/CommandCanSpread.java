@@ -21,7 +21,7 @@ public class CommandCanSpread {
     }
 
     public static int getCanSpread(CommandContext<CommandSource> context) throws CommandSyntaxException {
-        context.getSource().sendFeedback(new TranslationTextComponent("message.diregoo.command.canspread " + Config.CAN_SPREAD_ALL.get()), false);
+        context.getSource().sendFeedback(new TranslationTextComponent("message.diregoo.command.canspread", Config.CAN_SPREAD_ALL.get()), false);
         return 0;
     }
 

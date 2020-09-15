@@ -20,7 +20,7 @@ public class CommandAnimateSpread {
     }
 
     public static int getCanSpread(CommandContext<CommandSource> context) throws CommandSyntaxException {
-        context.getSource().sendFeedback(new TranslationTextComponent("message.diregoo.command.animatespread " + Config.ANIMATE_SPREAD.get()), false);
+        context.getSource().sendFeedback(new TranslationTextComponent("message.diregoo.command.animatespread", Config.ANIMATE_SPREAD.get()), false);
         return 0;
     }
 
