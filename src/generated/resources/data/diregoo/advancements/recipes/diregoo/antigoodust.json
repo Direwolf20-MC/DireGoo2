@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "diregoo:antigoodust"
+    ]
+  },
+  "criteria": {
+    "has_residue": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "diregoo:gooresidue"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "diregoo:antigoodust"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_residue",
+      "has_the_recipe"
+    ]
+  ]
+}

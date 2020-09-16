@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "diregoo:turretblock"
+    ]
+  },
+  "criteria": {
+    "has_core_melt": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "diregoo:coremelt"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "diregoo:turretblock"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_core_melt",
+      "has_the_recipe"
+    ]
+  ]
+}

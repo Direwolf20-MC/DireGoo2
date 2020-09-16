@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "diregoo:focust3"
+    ]
+  },
+  "criteria": {
+    "has_agd": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "diregoo:antigoodust"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "diregoo:focust3"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_agd",
+      "has_the_recipe"
+    ]
+  ]
+}

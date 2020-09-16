@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "diregoo:goonadefreeze"
+    ]
+  },
+  "criteria": {
+    "has_core_freeze": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "diregoo:corefreeze"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "diregoo:goonadefreeze"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_core_freeze",
+      "has_the_recipe"
+    ]
+  ]
+}

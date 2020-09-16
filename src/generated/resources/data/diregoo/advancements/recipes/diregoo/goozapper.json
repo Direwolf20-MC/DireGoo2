@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "diregoo:goozapper"
+    ]
+  },
+  "criteria": {
+    "has_scanner": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "diregoo:gooscanner"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "diregoo:goozapper"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_scanner",
+      "has_the_recipe"
+    ]
+  ]
+}
