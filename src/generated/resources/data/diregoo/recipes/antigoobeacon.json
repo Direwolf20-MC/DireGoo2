@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "iai",
+    "ada",
+    "iai"
+  ],
+  "key": {
+    "d": {
+      "tag": "forge:gems/diamond"
+    },
+    "i": {
+      "tag": "forge:ingots/iron"
+    },
+    "a": {
+      "item": "diregoo:antigoodust"
+    }
+  },
+  "result": {
+    "item": "diregoo:antigoobeacon"
+  }
+}

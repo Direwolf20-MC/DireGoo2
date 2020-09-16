@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "igi",
+    "gcg",
+    "igi"
+  ],
+  "key": {
+    "c": {
+      "item": "diregoo:corefreeze"
+    },
+    "g": {
+      "item": "minecraft:gunpowder"
+    },
+    "i": {
+      "tag": "forge:ingots/iron"
+    }
+  },
+  "result": {
+    "item": "diregoo:goonadefreeze",
+    "count": 4
+  }
+}

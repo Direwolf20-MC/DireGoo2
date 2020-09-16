@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "igi",
+    "gag",
+    "igi"
+  ],
+  "key": {
+    "a": {
+      "item": "diregoo:antigoodust"
+    },
+    "g": {
+      "item": "minecraft:glass"
+    },
+    "i": {
+      "tag": "forge:ingots/iron"
+    }
+  },
+  "result": {
+    "item": "diregoo:coremelt"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "aga",
+    "geg",
+    "aga"
+  ],
+  "key": {
+    "a": {
+      "item": "diregoo:antigoodust"
+    },
+    "e": {
+      "item": "minecraft:ender_eye"
+    },
+    "g": {
+      "item": "minecraft:glass"
+    }
+  },
+  "result": {
+    "item": "diregoo:gooscanner"
+  }
+}

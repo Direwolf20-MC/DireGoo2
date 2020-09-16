@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "pgp",
+    "gag",
+    "pgp"
+  ],
+  "key": {
+    "p": {
+      "item": "minecraft:glass_pane"
+    },
+    "a": {
+      "tag": "forge:gems/emerald"
+    },
+    "g": {
+      "item": "diregoo:antigoodust"
+    }
+  },
+  "result": {
+    "item": "diregoo:focust3"
+  }
+}

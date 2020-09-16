@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "nnn",
+    "nsg",
+    "r  "
+  ],
+  "key": {
+    "r": {
+      "tag": "forge:dusts/redstone"
+    },
+    "s": {
+      "item": "diregoo:gooscanner"
+    },
+    "g": {
+      "item": "minecraft:glass_pane"
+    },
+    "n": {
+      "tag": "forge:ingots/netherite"
+    }
+  },
+  "result": {
+    "item": "diregoo:goozapper"
+  }
+}

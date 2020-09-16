@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "pgp",
+    "rar",
+    "pgp"
+  ],
+  "key": {
+    "p": {
+      "tag": "forge:ingots/iron"
+    },
+    "r": {
+      "tag": "forge:storage_blocks/redstone"
+    },
+    "a": {
+      "tag": "forge:gems/diamond"
+    },
+    "g": {
+      "item": "diregoo:antigoodust"
+    }
+  },
+  "result": {
+    "item": "diregoo:powerampt2"
+  }
+}

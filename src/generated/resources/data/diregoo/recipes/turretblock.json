@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "idi",
+    "ici",
+    "iri"
+  ],
+  "key": {
+    "c": {
+      "item": "diregoo:coremelt"
+    },
+    "r": {
+      "tag": "forge:dusts/redstone"
+    },
+    "i": {
+      "tag": "forge:ingots/iron"
+    },
+    "d": {
+      "item": "diregoo:goodetector"
+    }
+  },
+  "result": {
+    "item": "diregoo:turretblock"
+  }
+}

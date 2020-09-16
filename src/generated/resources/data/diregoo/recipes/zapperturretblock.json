@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "nsn",
+    "ada",
+    "nrn"
+  ],
+  "key": {
+    "d": {
+      "tag": "forge:gems/diamond"
+    },
+    "r": {
+      "tag": "forge:dusts/redstone"
+    },
+    "n": {
+      "tag": "forge:ingots/netherite"
+    },
+    "a": {
+      "item": "diregoo:antigoodust"
+    },
+    "s": {
+      "item": "diregoo:gooscanner"
+    }
+  },
+  "result": {
+    "item": "diregoo:zapperturretblock"
+  }
+}

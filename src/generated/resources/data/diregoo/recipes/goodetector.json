@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " r ",
+    "rar",
+    "sss"
+  ],
+  "key": {
+    "s": {
+      "tag": "forge:stone"
+    },
+    "r": {
+      "item": "minecraft:redstone_torch"
+    },
+    "a": {
+      "item": "diregoo:antigoodust"
+    }
+  },
+  "result": {
+    "item": "diregoo:goodetector"
+  }
+}
