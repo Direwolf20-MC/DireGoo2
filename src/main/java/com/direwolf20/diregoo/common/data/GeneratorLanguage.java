@@ -37,7 +37,7 @@ public class GeneratorLanguage extends LanguageProvider {
         addBlock(ModBlocks.ANTI_GOO_BEACON, "Antigoo Beacon");
         addBlock(ModBlocks.ANTI_GOO_FIELD_GEN, "Antigoo Field Generator");
         addBlock(ModBlocks.GOO_BLOCK, "Goo");
-        addBlock(ModBlocks.GOO_BLOCK_BURST, "Burst Goo");
+        //addBlock(ModBlocks.GOO_BLOCK_BURST, "Burst Goo");
         addBlock(ModBlocks.GOO_BLOCK_POISON, "Poisoned Goo");
         addBlock(ModBlocks.GOO_BLOCK_TERRAIN, "Terrain Goo");
         addBlock(ModBlocks.GOO_DETECTOR, "Goo Detector");

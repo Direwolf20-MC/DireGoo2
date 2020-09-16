@@ -97,11 +97,11 @@ public class GooEntity extends EntityBase {
                 g = 0.1;
                 b = 0.75;
             }
-            if (dataManager.get(gooBlockState).get().getBlock().equals(ModBlocks.GOO_BLOCK_BURST.get())) {
+            /*if (dataManager.get(gooBlockState).get().getBlock().equals(ModBlocks.GOO_BLOCK_BURST.get())) {
                 r = 0.85;
                 g = 0.05;
                 b = 0.05;
-            }
+            }*/
             this.world.addParticle(ModParticles.GOO_DRIP_PARTICLE, d0, d1, d2, r, g, b);
         }
         super.baseTick();

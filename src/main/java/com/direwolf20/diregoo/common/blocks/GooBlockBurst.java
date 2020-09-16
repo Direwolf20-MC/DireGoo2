@@ -1,14 +1,6 @@
 package com.direwolf20.diregoo.common.blocks;
 
-import com.direwolf20.diregoo.Config;
-import com.direwolf20.diregoo.common.worldsave.BlockSave;
-import net.minecraft.block.BlockState;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.server.ServerWorld;
-
-import java.util.Random;
-
-public class GooBlockBurst extends GooBase {
+/*public class GooBlockBurst extends GooBase {
 
     @Override
     public boolean customPreChecks(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
@@ -38,4 +30,4 @@ public class GooBlockBurst extends GooBase {
                 gooPos = newGooPos;
         }
     }
-}
+}*/

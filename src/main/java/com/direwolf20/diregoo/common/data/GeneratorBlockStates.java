@@ -23,7 +23,7 @@ public class GeneratorBlockStates extends BlockStateProvider {
         // Goo block
         buildCubeGoo(ModBlocks.GOO_BLOCK.get());
         buildCubeGoo(ModBlocks.GOO_BLOCK_TERRAIN.get());
-        buildCubeGoo(ModBlocks.GOO_BLOCK_BURST.get());
+        //buildCubeGoo(ModBlocks.GOO_BLOCK_BURST.get());
 
         buildCubeAll(ModBlocks.GOO_BLOCK_POISON.get());
         buildCubeAll(ModBlocks.TURRET_BLOCK.get());
