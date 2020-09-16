@@ -56,7 +56,7 @@ public class GooBase extends Block {
         }
         if (oldState.isValidPosition(world, pos)) //Make sure the block can go there, example redstone repeaters need a solid block under them, snow, etc.
             world.setBlockState(pos, oldState);
-        else { //If not, drop that block as an item entity. 
+        else { //If not, drop that block as an item entity.
             List<ItemStack> drops = Block.getDrops(oldState, world, pos, null);
             for (ItemStack drop : drops) {
                 if (drop != null) {
