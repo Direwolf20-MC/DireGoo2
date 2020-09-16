@@ -54,7 +54,17 @@ public class GooBase extends Block {
             world.setBlockState(pos, Blocks.AIR.getDefaultState());
             return;
         }
-        world.setBlockState(pos, oldState);
+        if (oldState.isValidPosition(world, pos)) //Make sure the block can go there, example redstone repeaters need a solid block under them, snow, etc.
+            world.setBlockState(pos, oldState);
+        else { //If not, drop that block as an item entity. 
+            List<ItemStack> drops = Block.getDrops(oldState, world, pos, null);
+            for (ItemStack drop : drops) {
+                if (drop != null) {
+                    Block.spawnAsEntity(world, pos, drop);
+                }
+            }
+            world.setBlockState(pos, Blocks.AIR.getDefaultState());
+        }
         ChunkSave.pop(pos, world.getChunk(pos).getPos());
         CompoundNBT oldNBT = blockSave.getTEFromPos(pos);
         if (oldNBT == null) return;
@@ -65,6 +75,7 @@ public class GooBase extends Block {
             System.out.println("Failed to restore tile data for block: " + oldState + " with NBT: " + oldNBT + ". Consider adding it to the blacklist");
         }
         blockSave.popTE(pos);
+
     }
 
     @Override
