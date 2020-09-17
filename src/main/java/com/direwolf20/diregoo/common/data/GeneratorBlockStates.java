@@ -36,8 +36,26 @@ public class GeneratorBlockStates extends BlockStateProvider {
                 modLoc("block/zapperturretblock_front")
         ));
 
-        simpleBlock(ModBlocks.GNT_BLOCK.get(), models().cubeBottomTop(
-                Objects.requireNonNull(ModBlocks.GNT_BLOCK.get().getRegistryName()).getPath(),
+        simpleBlock(ModBlocks.GNT_BLOCK_T1.get(), models().cubeBottomTop(
+                Objects.requireNonNull(ModBlocks.GNT_BLOCK_T1.get().getRegistryName()).getPath(),
+                modLoc("block/gnt_side"),
+                modLoc("block/gnt_bottom"),
+                modLoc("block/gnt_top")
+        ));
+        simpleBlock(ModBlocks.GNT_BLOCK_T2.get(), models().cubeBottomTop(
+                Objects.requireNonNull(ModBlocks.GNT_BLOCK_T2.get().getRegistryName()).getPath(),
+                modLoc("block/gnt_side"),
+                modLoc("block/gnt_bottom"),
+                modLoc("block/gnt_top")
+        ));
+        simpleBlock(ModBlocks.GNT_BLOCK_T3.get(), models().cubeBottomTop(
+                Objects.requireNonNull(ModBlocks.GNT_BLOCK_T3.get().getRegistryName()).getPath(),
+                modLoc("block/gnt_side"),
+                modLoc("block/gnt_bottom"),
+                modLoc("block/gnt_top")
+        ));
+        simpleBlock(ModBlocks.GNT_BLOCK_T4.get(), models().cubeBottomTop(
+                Objects.requireNonNull(ModBlocks.GNT_BLOCK_T4.get().getRegistryName()).getPath(),
                 modLoc("block/gnt_side"),
                 modLoc("block/gnt_bottom"),
                 modLoc("block/gnt_top")

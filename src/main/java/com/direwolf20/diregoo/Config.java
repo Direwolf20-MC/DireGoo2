@@ -40,6 +40,11 @@ public class Config {
     public static ForgeConfigSpec.IntValue MINBURST;
     public static ForgeConfigSpec.IntValue MAXBURST;
 
+    public static final String SUBCATEGORY_GNT = "gnt";
+    public static ForgeConfigSpec.IntValue GNT_TIER1_RADIUS;
+    public static ForgeConfigSpec.IntValue GNT_TIER2_RADIUS;
+    public static ForgeConfigSpec.IntValue GNT_TIER3_RADIUS;
+    public static ForgeConfigSpec.IntValue GNT_TIER4_RADIUS;
 
     public static final String CATEGORY_RFCOSTS = "rfcosts";
     public static ForgeConfigSpec.IntValue TILEMAXENERGY;
@@ -192,6 +197,17 @@ public class Config {
                 .defineInRange("minBurst", 5, 1, 25);
         MAXBURST = COMMON_BUILDER.comment("The maximum number of blocks BurstGoo can do at once - it will randomly pick a number between Min and Max")
                 .defineInRange("maxBurst", 15, 1, 25);
+        COMMON_BUILDER.pop();
+
+        COMMON_BUILDER.comment("GNT Settings").push(SUBCATEGORY_GNT);
+        GNT_TIER1_RADIUS = COMMON_BUILDER.comment("The radius of Tier 1 GNT")
+                .defineInRange("gntTier1Radius", 10, 1, 200);
+        GNT_TIER2_RADIUS = COMMON_BUILDER.comment("The radius of Tier 2 GNT")
+                .defineInRange("gntTier2Radius", 15, 1, 200);
+        GNT_TIER3_RADIUS = COMMON_BUILDER.comment("The radius of Tier 3 GNT")
+                .defineInRange("gntTier3Radius", 20, 1, 200);
+        GNT_TIER4_RADIUS = COMMON_BUILDER.comment("The radius of Tier 4 GNT")
+                .defineInRange("gntTier4Radius", 30, 1, 200);
         COMMON_BUILDER.pop();
     }
 }

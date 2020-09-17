@@ -37,7 +37,7 @@ public class GNTEntityRender extends EntityRenderer<GNTEntity> {
         matrixStackIn.rotate(Vector3f.YP.rotationDegrees(-90.0F));
         matrixStackIn.translate(-0.5D, -0.5D, 0.5D);
         matrixStackIn.rotate(Vector3f.YP.rotationDegrees(90.0F));
-        renderFlash(ModBlocks.GNT_BLOCK.get().getDefaultState(), matrixStackIn, bufferIn, packedLightIn, entityIn.getFuse() / 5 % 2 == 0);
+        renderFlash(ModBlocks.GNT_BLOCK_T1.get().getDefaultState(), matrixStackIn, bufferIn, packedLightIn, entityIn.getFuse() / 5 % 2 == 0);
         matrixStackIn.pop();
         super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
     }

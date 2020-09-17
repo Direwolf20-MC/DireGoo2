@@ -40,7 +40,10 @@ public class GeneratorLanguage extends LanguageProvider {
         //addBlock(ModBlocks.GOO_BLOCK_BURST, "Burst Goo");
         addBlock(ModBlocks.GOO_BLOCK_POISON, "Poisoned Goo");
         addBlock(ModBlocks.GOO_BLOCK_TERRAIN, "Terrain Goo");
-        addBlock(ModBlocks.GNT_BLOCK, "GNT");
+        addBlock(ModBlocks.GNT_BLOCK_T1, "Basic GNT");
+        addBlock(ModBlocks.GNT_BLOCK_T2, "Improved GNT");
+        addBlock(ModBlocks.GNT_BLOCK_T3, "Powerful GNT");
+        addBlock(ModBlocks.GNT_BLOCK_T4, "Extreme GNT");
         addBlock(ModBlocks.GOO_DETECTOR, "Goo Detector");
         addBlock(ModBlocks.TURRET_BLOCK, "Goo Turret");
         addBlock(ModBlocks.ZAPPER_TURRET_BLOCK, "Goo Zapper Turret");

@@ -22,7 +22,10 @@ public class GeneratorItemModels extends ItemModelProvider {
         // Our block items
         registerBlockModel(ModBlocks.GOO_BLOCK.get());
         registerBlockModel(ModBlocks.GOO_BLOCK_TERRAIN.get());
-        registerBlockModel(ModBlocks.GNT_BLOCK.get());
+        registerBlockModel(ModBlocks.GNT_BLOCK_T1.get());
+        registerBlockModel(ModBlocks.GNT_BLOCK_T2.get());
+        registerBlockModel(ModBlocks.GNT_BLOCK_T3.get());
+        registerBlockModel(ModBlocks.GNT_BLOCK_T4.get());
         //registerBlockModel(ModBlocks.GOO_BLOCK_BURST.get());
         registerBlockModel(ModBlocks.GOO_BLOCK_POISON.get());
         registerBlockModel(ModBlocks.TURRET_BLOCK.get());

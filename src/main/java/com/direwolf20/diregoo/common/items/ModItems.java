@@ -20,7 +20,10 @@ public class ModItems {
     public static final RegistryObject<Item> GOO_BLOCK_ITEM = ITEMS.register("gooblock", () -> new BlockItem(ModBlocks.GOO_BLOCK.get(), ITEM_GROUP));
     public static final RegistryObject<Item> GOO_BLOCK_TERRAIN_ITEM = ITEMS.register("gooblockterrain", () -> new BlockItem(ModBlocks.GOO_BLOCK_TERRAIN.get(), ITEM_GROUP));
     //public static final RegistryObject<Item> GOO_BLOCK_BURST_ITEM = ITEMS.register("gooblockburst", () -> new BlockItem(ModBlocks.GOO_BLOCK_BURST.get(), ITEM_GROUP));
-    public static final RegistryObject<Item> GNT_BLOCK_ITEM = ITEMS.register("gntblock", () -> new BlockItem(ModBlocks.GNT_BLOCK.get(), ITEM_GROUP));
+    public static final RegistryObject<Item> GNT_BLOCK_T1_ITEM = ITEMS.register("gntblockt1", () -> new BlockItem(ModBlocks.GNT_BLOCK_T1.get(), ITEM_GROUP));
+    public static final RegistryObject<Item> GNT_BLOCK_T2_ITEM = ITEMS.register("gntblockt2", () -> new BlockItem(ModBlocks.GNT_BLOCK_T2.get(), ITEM_GROUP));
+    public static final RegistryObject<Item> GNT_BLOCK_T3_ITEM = ITEMS.register("gntblockt3", () -> new BlockItem(ModBlocks.GNT_BLOCK_T3.get(), ITEM_GROUP));
+    public static final RegistryObject<Item> GNT_BLOCK_T4_ITEM = ITEMS.register("gntblockt4", () -> new BlockItem(ModBlocks.GNT_BLOCK_T4.get(), ITEM_GROUP));
     public static final RegistryObject<Item> GOO_BLOCK_POISON_ITEM = ITEMS.register("gooblockpoison", () -> new BlockItem(ModBlocks.GOO_BLOCK_POISON.get(), ITEM_GROUP));
     public static final RegistryObject<Item> TURRET_BLOCK_ITEM = ITEMS.register("turretblock", () -> new BlockItem(ModBlocks.TURRET_BLOCK.get(), ITEM_GROUP));
     public static final RegistryObject<Item> ZAPPER_TURRET_ITEM = ITEMS.register("zapperturretblock", () -> new BlockItem(ModBlocks.ZAPPER_TURRET_BLOCK.get(), ITEM_GROUP));
