@@ -1,6 +1,7 @@
 package com.direwolf20.diregoo.common.entities;
 
 import com.direwolf20.diregoo.DireGoo;
+import com.direwolf20.diregoo.client.entityrenders.GNTEntityRender;
 import com.direwolf20.diregoo.client.entityrenders.GooEntityRender;
 import com.direwolf20.diregoo.client.entityrenders.GooSpreadEntityRender;
 import com.direwolf20.diregoo.client.entityrenders.LaserGunParticleEntityRender;
@@ -68,6 +69,15 @@ public class ModEntities {
                         .build("")
                         .setRegistryName(DireGoo.MOD_ID + ":goonadefreezeentity")
         );
+        event.getRegistry().register(
+                EntityType.Builder.<GNTEntity>create(GNTEntity::new, EntityClassification.MISC)
+                        .setTrackingRange(64)
+                        .setUpdateInterval(1)
+                        .setShouldReceiveVelocityUpdates(false)
+                        .setCustomClientFactory(((spawnEntity, world) -> new GNTEntity(GNTEntity.TYPE, world)))
+                        .build("")
+                        .setRegistryName(DireGoo.MOD_ID + ":gntentity")
+        );
     }
 
     @SubscribeEvent
@@ -77,5 +87,6 @@ public class ModEntities {
         RenderingRegistry.registerEntityRenderingHandler(LaserGunParticleEntity.TYPE, LaserGunParticleEntityRender::new);
         RenderingRegistry.registerEntityRenderingHandler(GoonadeEntity.TYPE, SpriteRendererGoo::new);
         RenderingRegistry.registerEntityRenderingHandler(GoonadeFreezeEntity.TYPE, SpriteRendererGoo::new);
+        RenderingRegistry.registerEntityRenderingHandler(GNTEntity.TYPE, GNTEntityRender::new);
     }
 }

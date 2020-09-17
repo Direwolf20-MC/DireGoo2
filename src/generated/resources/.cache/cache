@@ -1,5 +1,6 @@
 377886e4b35f703c4e7c957946dc4c4c773b1f9f assets/diregoo/blockstates/antigoobeacon.json
 4d8e96f5e5e2d2ad3464a1e402af6a37877ca6cf assets/diregoo/blockstates/antigoofieldgen.json
+73085396c995e36b66ecbf5e6a1b4f4e0bee9a22 assets/diregoo/blockstates/gntblock.json
 a494681d4657f14837bd357053770cc6407e5755 assets/diregoo/blockstates/gooblock.json
 05d7d37373f3af956e4d53a11acc3c85f427058d assets/diregoo/blockstates/gooblockpoison.json
 9b9f7c32730f1d7cebc22cd7bcb9a25440a73dcc assets/diregoo/blockstates/gooblockterrain.json
@@ -8,9 +9,10 @@ fb23baa694c14b58b09cf71ef309e925f8fbda37 assets/diregoo/blockstates/goorenderbur
 d5dbdecc8aa2f12044bed2a6f22b5190e1313bcd assets/diregoo/blockstates/goorenderterrain.json
 32d4d79130faf1f0ef5d8a67fd3040944bb46c0e assets/diregoo/blockstates/turretblock.json
 a9db38cdb80eb757509918a3473b3717373b44b4 assets/diregoo/blockstates/zapperturretblock.json
-dc0b5871b107daf207ab37e1d379794c9de1bbb9 assets/diregoo/lang/en_us.json
+a2b07993a672a9ceac4d2914e2459e634b568205 assets/diregoo/lang/en_us.json
 4112510722b9274ff96d970d66e3ed9d1a793439 assets/diregoo/models/block/antigoobeacon.json
 dc0f2cf452506952a26ffa6314e2765365653f3b assets/diregoo/models/block/antigoofieldgen.json
+af0f6078157d53c94c793473883b4600ab85d961 assets/diregoo/models/block/gntblock.json
 eabaf964c46976fcf81eca53b6111376574a2473 assets/diregoo/models/block/gooblock.json
 b378bae49de8f89cc50c942b07eade6956e986ed assets/diregoo/models/block/gooblockfrozen.json
 06130e32ba9cc3cbbe4b4bc639cfcb6bef16bf1c assets/diregoo/models/block/gooblockpoison.json
@@ -54,6 +56,7 @@ c274d921bc00169b218e15cee4dca4395366b10d assets/diregoo/models/block/zapperturre
 46142fd63923f76ec61a6eb72180031af351cd5c assets/diregoo/models/item/focust2.json
 ae4fe64b1b2c5ea7a7056f8ee25b1473c3c638ce assets/diregoo/models/item/focust3.json
 24219d950dd9ca5084d4749935c569bb6f70453a assets/diregoo/models/item/focust4.json
+52d735961ee94e97f153d23e1cd5006ac0964870 assets/diregoo/models/item/gntblock.json
 4821a2d79206256ff0dc37c84e52315a9d0aeb01 assets/diregoo/models/item/gooblock.json
 ad163ea28747d2aa131e745203f4dede6000ce66 assets/diregoo/models/item/gooblockpoison.json
 0fb12f7a8af2186925d12af3671749cf84bb097f assets/diregoo/models/item/gooblockterrain.json

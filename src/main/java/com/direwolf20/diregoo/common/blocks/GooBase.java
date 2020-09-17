@@ -63,6 +63,7 @@ public class GooBase extends Block {
                     Block.spawnAsEntity(world, pos, drop);
                 }
             }
+            System.out.println("Invalid Position for " + oldState + " Dropping Items: " + drops);
             world.setBlockState(pos, Blocks.AIR.getDefaultState());
         }
         ChunkSave.pop(pos, world.getChunk(pos).getPos());
@@ -184,7 +185,7 @@ public class GooBase extends Block {
     public static boolean shouldAnimateSpread(World worldIn, BlockPos pos) {
         boolean animate = false;
         if (Config.ANIMATE_SPREAD.get())
-            animate = worldIn.isPlayerWithin(pos.getX(), pos.getY(), pos.getZ(), 20);
+            animate = worldIn.isPlayerWithin(pos.getX(), pos.getY(), pos.getZ(), 40);
         return animate;
     }
 

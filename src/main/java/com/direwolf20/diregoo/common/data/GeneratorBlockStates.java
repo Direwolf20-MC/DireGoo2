@@ -36,6 +36,13 @@ public class GeneratorBlockStates extends BlockStateProvider {
                 modLoc("block/zapperturretblock_front")
         ));
 
+        simpleBlock(ModBlocks.GNT_BLOCK.get(), models().cubeBottomTop(
+                Objects.requireNonNull(ModBlocks.GNT_BLOCK.get().getRegistryName()).getPath(),
+                modLoc("block/gnt_side"),
+                modLoc("block/gnt_bottom"),
+                modLoc("block/gnt_top")
+        ));
+
         Block gooRender = ModBlocks.GOO_RENDER.get();
         String gooRenderPath = Objects.requireNonNull(gooRender.getRegistryName()).getPath();
         VariantBlockStateBuilder gooRenderBuilder = getVariantBuilder(ModBlocks.GOO_RENDER.get());
