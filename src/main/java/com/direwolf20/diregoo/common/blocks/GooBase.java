@@ -115,7 +115,8 @@ public class GooBase extends Block {
             if (frozenState > 0)
                 worldIn.setBlockState(pos, state.with(FROZEN, frozenState), 1);
             else
-                worldIn.setBlockState(pos, state.with(FROZEN, frozenState));
+                ServerEvents.addToList(pos, Direction.UP, (ServerWorld) worldIn, state);
+            //worldIn.setBlockState(pos, state.with(FROZEN, frozenState));
             return true;
         }
         return false;

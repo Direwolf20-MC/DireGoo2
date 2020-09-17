@@ -83,22 +83,30 @@ public class ServerEvents {
                     //System.out.println("Blocks in iteration " + i + ": " + posList.size());
                     for (BlockPos checkPos : posList) { //For each blockPos in the list
                         BlockState oldState = serverWorld.getBlockState(checkPos); //note the blockstate of the block to be eaten
-                        Direction direction = todoList.get(checkPos); //Get the position that this goo spread from
-                        //Spread the goo, use an entity if animating. First check to make sure the goo block this spread from is still there...
-                        BlockState sourceGoo = serverWorld.getBlockState(checkPos.offset(direction.getOpposite()));
-                        Block maybeGoo = sourceGoo.getBlock();
-                        boolean canSpreadHere = false;
-                        if (maybeGoo instanceof GooBase) {
-                            canSpreadHere = ((GooBase) maybeGoo).canSpreadHere(checkPos, oldState, serverWorld, blockSave);
-                        }
-                        if (sourceGoo.equals(posState.get(checkPos)) && canSpreadHere) {
-                            if (GooBase.shouldAnimateSpread(serverWorld, checkPos)) {
-                                serverWorld.addEntity(new GooSpreadEntity(serverWorld, checkPos, posState.get(checkPos), GooBase.gooSpreadAnimationTime, direction.getOpposite().getIndex()));
-                                GooBase.forceExtraTick(serverWorld, checkPos, true);
-                            } else {
-                                GooBase.saveBlockData(serverWorld, checkPos, oldState, blockSave);
-                                serverWorld.setBlockState(checkPos, posState.get(checkPos));
-                                GooBase.forceExtraTick(serverWorld, checkPos, false);
+                        if (oldState.getBlock() instanceof GooBase) {
+                            int frozenState = oldState.get(GooBase.FROZEN);
+                            if (frozenState > 0) {
+                                frozenState--;
+                                serverWorld.setBlockState(checkPos, oldState.with(GooBase.FROZEN, frozenState));
+                            }
+                        } else {
+                            Direction direction = todoList.get(checkPos); //Get the position that this goo spread from
+                            //Spread the goo, use an entity if animating. First check to make sure the goo block this spread from is still there...
+                            BlockState sourceGoo = serverWorld.getBlockState(checkPos.offset(direction.getOpposite()));
+                            Block maybeGoo = sourceGoo.getBlock();
+                            boolean canSpreadHere = false;
+                            if (maybeGoo instanceof GooBase) {
+                                canSpreadHere = ((GooBase) maybeGoo).canSpreadHere(checkPos, oldState, serverWorld, blockSave);
+                            }
+                            if (sourceGoo.equals(posState.get(checkPos)) && canSpreadHere) {
+                                if (GooBase.shouldAnimateSpread(serverWorld, checkPos)) {
+                                    serverWorld.addEntity(new GooSpreadEntity(serverWorld, checkPos, posState.get(checkPos), GooBase.gooSpreadAnimationTime, direction.getOpposite().getIndex()));
+                                    GooBase.forceExtraTick(serverWorld, checkPos, true);
+                                } else {
+                                    GooBase.saveBlockData(serverWorld, checkPos, oldState, blockSave);
+                                    serverWorld.setBlockState(checkPos, posState.get(checkPos));
+                                    GooBase.forceExtraTick(serverWorld, checkPos, false);
+                                }
                             }
                         }
                         //Remove this blockpos from all the lists
