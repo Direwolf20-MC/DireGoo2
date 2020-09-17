@@ -110,7 +110,7 @@ public class ServerEvents {
                 }
             }
             if (!posClearList.isEmpty() && serverWorld != null) {
-                if (serverWorld.getGameTime() % (Config.GOO_SPREAD_FREQUENCY.get() / 4) != 0)
+                if (serverWorld.getGameTime() % (Config.GOO_SPREAD_FREQUENCY.get()) != 0)
                     return; //Only run every X ticks
                 BlockSave blockSave = BlockSave.get(serverWorld);
                 int maxRuns = Config.MAX_CHUNK_CHANGES.get();

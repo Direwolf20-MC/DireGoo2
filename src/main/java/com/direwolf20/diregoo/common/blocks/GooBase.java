@@ -112,7 +112,10 @@ public class GooBase extends Block {
         int frozenState = state.get(FROZEN);
         if (frozenState > 0) {
             frozenState--;
-            worldIn.setBlockState(pos, state.with(FROZEN, frozenState));
+            if (frozenState > 0)
+                worldIn.setBlockState(pos, state.with(FROZEN, frozenState), 1);
+            else
+                worldIn.setBlockState(pos, state.with(FROZEN, frozenState));
             return true;
         }
         return false;
@@ -223,12 +226,12 @@ public class GooBase extends Block {
             BlockState testState = worldIn.getBlockState(testPos);
             if (isAdjacentValid(worldIn, testPos, testState)) {
                 if (!state.get(ACTIVE))
-                    worldIn.setBlockState(pos, state.with(ACTIVE, true), 7);
+                    worldIn.setBlockState(pos, state.with(ACTIVE, true), 1);
                 return false; //If the adjacent block is anything other than goo its not surrounded
             }
         }
         if (state.get(ACTIVE) && state.get(FROZEN) == 0)
-            worldIn.setBlockState(pos, state.with(ACTIVE, false), 7);
+            worldIn.setBlockState(pos, state.with(ACTIVE, false), 1);
         return true;
     }
 
