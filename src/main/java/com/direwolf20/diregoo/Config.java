@@ -201,13 +201,13 @@ public class Config {
 
         COMMON_BUILDER.comment("GNT Settings").push(SUBCATEGORY_GNT);
         GNT_TIER1_RADIUS = COMMON_BUILDER.comment("The radius of Tier 1 GNT")
-                .defineInRange("gntTier1Radius", 5, 1, 200);
+                .defineInRange("gntTier1Radius", 5, 1, 100);
         GNT_TIER2_RADIUS = COMMON_BUILDER.comment("The radius of Tier 2 GNT")
-                .defineInRange("gntTier2Radius", 10, 1, 200);
+                .defineInRange("gntTier2Radius", 10, 1, 100);
         GNT_TIER3_RADIUS = COMMON_BUILDER.comment("The radius of Tier 3 GNT")
-                .defineInRange("gntTier3Radius", 15, 1, 200);
+                .defineInRange("gntTier3Radius", 15, 1, 100);
         GNT_TIER4_RADIUS = COMMON_BUILDER.comment("The radius of Tier 4 GNT")
-                .defineInRange("gntTier4Radius", 25, 1, 200);
+                .defineInRange("gntTier4Radius", 25, 1, 100);
         COMMON_BUILDER.pop();
     }
 }
