@@ -227,7 +227,7 @@ public class GooBase extends Block {
             BlockState testState = worldIn.getBlockState(testPos);
             if (isAdjacentValid(worldIn, testPos, testState)) {
                 if (!state.get(ACTIVE))
-                    worldIn.setBlockState(pos, state.with(ACTIVE, true), 1);
+                    worldIn.setBlockState(pos, state.with(ACTIVE, true), 1); //Using flag 1 here prevents the client from doing any re-rendering, HUGE FPS gains.
                 return false; //If the adjacent block is anything other than goo its not surrounded
             }
         }
