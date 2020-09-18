@@ -100,7 +100,7 @@ public abstract class FETileBase extends TileEntity implements ITickableTileEnti
             SUpdateTileEntityPacket supdatetileentitypacket = this.getUpdatePacket();
             BlockState state = world.getBlockState(this.pos);
             if (state.isAir(world, this.pos))
-                return; //If the block is being broken, the TE stick around a bit longer and this might fire. 
+                return; //If the block is being broken, the TE stick around a bit longer and this might fire
             if (supdatetileentitypacket == null) return;
             Chunk chunk = world.getChunkAt(this.pos);
             ((ServerChunkProvider) chunk.getWorld().getChunkProvider()).chunkManager.getTrackingPlayers(chunk.getPos(), false).forEach((player) -> {
