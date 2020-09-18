@@ -47,7 +47,7 @@ public class AntiGooFieldGenScreen extends FEScreenBase<AntiGooFieldGenContainer
     public void init() {
         List<Widget> Lwidgets = new ArrayList<>();
         List<Widget> Rwidgets = new ArrayList<>();
-        int baseX = width / 3 + width / 20, baseY = (height / 2) - (height / 40);
+        int baseX = width / 3 + width / 10, baseY = (height / 2) - (height / 40);
         int top = baseY - (80);
 
         Lwidgets.add(NSlider = new Slider(baseX, 0, 50, 10, new TranslationTextComponent("N:"), StringTextComponent.EMPTY, 0, 25, this.ranges[0], false, true, s -> {
