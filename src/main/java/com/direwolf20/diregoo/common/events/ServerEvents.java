@@ -55,7 +55,7 @@ public class ServerEvents {
     private static HashMultimap<ChunkPos, BlockPos> chunkMap = HashMultimap.create();
     private static final HashMap<BlockPos, Direction> todoList = new HashMap<>();
     private static final HashMap<BlockPos, BlockState> posState = new HashMap<>();
-    //private static final HashMap<BlockPos, Boolean> posAnimate = new HashMap<>();
+
     private static final HashMap<BlockPos, Boolean> posClearList = new HashMap<>();
     private static ServerWorld serverWorld;
 
@@ -65,6 +65,10 @@ public class ServerEvents {
 
     public static int blockChangeSize() {
         return todoList.size();
+    }
+
+    public static int clearChangeSize() {
+        return posClearList.size();
     }
 
     @SubscribeEvent
