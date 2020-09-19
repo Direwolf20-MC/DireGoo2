@@ -5,10 +5,7 @@ import com.direwolf20.diregoo.common.blocks.goospreadblocks.GooRender;
 import com.direwolf20.diregoo.common.blocks.goospreadblocks.GooRenderBurst;
 import com.direwolf20.diregoo.common.blocks.goospreadblocks.GooRenderTerrain;
 import com.direwolf20.diregoo.common.container.*;
-import com.direwolf20.diregoo.common.tiles.AntiGooBeaconTileEntity;
-import com.direwolf20.diregoo.common.tiles.AntiGooFieldGenTileEntity;
-import com.direwolf20.diregoo.common.tiles.TurretBlockTileEntity;
-import com.direwolf20.diregoo.common.tiles.ZapperTurretTileEntity;
+import com.direwolf20.diregoo.common.tiles.*;
 import net.minecraft.block.Block;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.tileentity.TileEntityType;
@@ -40,6 +37,7 @@ public class ModBlocks {
     public static final RegistryObject<Block> ZAPPER_TURRET_BLOCK = BLOCKS.register("zapperturretblock", ZapperTurretBlock::new);
     public static final RegistryObject<Block> ANTI_GOO_FIELD_GEN = BLOCKS.register("antigoofieldgen", AntiGooFieldGen::new);
     public static final RegistryObject<Block> ANTI_GOO_BEACON = BLOCKS.register("antigoobeacon", AntiGooBeacon::new);
+    public static final RegistryObject<Block> GOOLIMINATIONFIELDGEN = BLOCKS.register("gooliminationfieldgen", GooliminationFieldGen::new);
     public static final RegistryObject<Block> GOO_DETECTOR = BLOCKS.register("goodetector", GooDetector::new);
     public static final RegistryObject<Block> GOO_RENDER = BLOCKS.register("goorender", GooRender::new);
     public static final RegistryObject<Block> GOO_RENDER_TERRAIN = BLOCKS.register("goorenderterrain", GooRenderTerrain::new);
@@ -56,6 +54,8 @@ public class ModBlocks {
             TILES_ENTITIES.register("antigoobeacon", () -> TileEntityType.Builder.create(AntiGooBeaconTileEntity::new, ModBlocks.ANTI_GOO_BEACON.get()).build(null));
     public static final RegistryObject<TileEntityType<ZapperTurretTileEntity>> ZAPPERTURRET_TILE =
             TILES_ENTITIES.register("zapperturretblock", () -> TileEntityType.Builder.create(ZapperTurretTileEntity::new, ModBlocks.ZAPPER_TURRET_BLOCK.get()).build(null));
+    public static final RegistryObject<TileEntityType<GooliminationFieldGenTile>> GOOLIMINATION_TILE =
+            TILES_ENTITIES.register("gooliminationfieldgen", () -> TileEntityType.Builder.create(GooliminationFieldGenTile::new, ModBlocks.GOOLIMINATIONFIELDGEN.get()).build(null));
 
     /**
      * Containers
@@ -65,6 +65,7 @@ public class ModBlocks {
     public static final RegistryObject<ContainerType<TurretContainer>> TURRET_CONTAINER = CONTAINERS.register("turret_container", () -> IForgeContainerType.create(TurretContainer::new));
     public static final RegistryObject<ContainerType<ZapperTurretContainer>> ZAPPER_TURRET_CONTAINER = CONTAINERS.register("zapper_turret_container", () -> IForgeContainerType.create(ZapperTurretContainer::new));
     public static final RegistryObject<ContainerType<ZapperItemContainer>> ZAPPER_ITEM_CONTAINER = CONTAINERS.register("zapper_item_container", () -> IForgeContainerType.create(ZapperItemContainer::new));
+    public static final RegistryObject<ContainerType<GooliminationFieldGenContainer>> GOOLIMINATION_CONTAINER = CONTAINERS.register("goolimination_container", () -> IForgeContainerType.create(GooliminationFieldGenContainer::new));
 
 
 }

@@ -34,6 +34,7 @@ public class GeneratorLanguage extends LanguageProvider {
         add("message.diregoo.command.gooDeathEvent", "Goo Death Event Active:  %1$d");
         add("message.diregoo.command.spreadrange", "Goo Spread range from any player: %d");
         add("message.diregoo.command.spreaddelay", "Number of ticks after goo spread to force an extra tick: %d");
+        add("block.diregoo.gooliminationscreen", "Goolimination Field Generator");
         addBlock(ModBlocks.ANTI_GOO_BEACON, "Antigoo Beacon");
         addBlock(ModBlocks.ANTI_GOO_FIELD_GEN, "Antigoo Field Generator");
         addBlock(ModBlocks.GOO_BLOCK, "Goo");
@@ -47,6 +48,7 @@ public class GeneratorLanguage extends LanguageProvider {
         addBlock(ModBlocks.GOO_DETECTOR, "Goo Detector");
         addBlock(ModBlocks.TURRET_BLOCK, "Goo Turret");
         addBlock(ModBlocks.ZAPPER_TURRET_BLOCK, "Goo Zapper Turret");
+        addBlock(ModBlocks.GOOLIMINATIONFIELDGEN, "Goolimination Field Generator");
         addItem(ModItems.FOCUS_T1, "Basic Focus Crystal");
         addItem(ModItems.FOCUS_T2, "Improved Focus Crystal");
         addItem(ModItems.FOCUS_T3, "Powerful Focus Crystal");

@@ -61,6 +61,12 @@ public abstract class FETileBase extends TileEntity implements ITickableTileEnti
         this.energy = LazyOptional.of(() -> this.energyStorage);
     }
 
+    public FETileBase(TileEntityType<?> type, int maxPower) {
+        super(type);
+        this.energyStorage = new FEEnergyStorage(this, 0, maxPower);
+        this.energy = LazyOptional.of(() -> this.energyStorage);
+    }
+
     @Override
     public void tick() {
     }

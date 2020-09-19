@@ -272,5 +272,16 @@ public class GeneratorRecipes extends RecipeProvider {
                 .patternLine("apa")
                 .addCriterion("has_agd", hasItem(ANTI_GOO_DUST.get()))
                 .build(consumer);
+        ShapedRecipeBuilder.shapedRecipe(GOOLIMINATION_FIELD_GEN_ITEM.get())
+                .key('c', CORE_MELT.get())
+                .key('i', Tags.Items.INGOTS_IRON)
+                .key('s', Items.NETHER_STAR)
+                .key('p', POWERAMP_T4.get())
+                .patternLine("isi")
+                .patternLine("csc")
+                .patternLine("ipi")
+                .addCriterion("has_agd", hasItem(ANTI_GOO_DUST.get()))
+                .build(consumer);
+
     }
 }
