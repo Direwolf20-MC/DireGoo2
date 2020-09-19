@@ -1,6 +1,5 @@
 package com.direwolf20.diregoo.common.commands;
 
-import com.direwolf20.diregoo.common.events.ServerEvents;
 import com.direwolf20.diregoo.common.worldsave.BlockSave;
 import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.builder.ArgumentBuilder;
@@ -32,7 +31,7 @@ public class CommandGooDeathEvent {
         ServerWorld world = context.getSource().getWorld();
         BlockSave blockSave = BlockSave.get(world);
         blockSave.setGooDeathEvent(gooDeath);
-        ServerEvents.clearAllLists();
+        //ServerEvents.clearAllLists();
         getDeathEvent(context);
         return 0;
     }

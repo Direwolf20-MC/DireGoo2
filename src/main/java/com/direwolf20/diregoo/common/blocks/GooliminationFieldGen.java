@@ -14,6 +14,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 import javax.annotation.Nullable;
@@ -49,7 +50,14 @@ public class GooliminationFieldGen extends Block {
         if (!(te instanceof GooliminationFieldGenTile))
             return ActionResultType.FAIL;
 
-        NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider) te, pos);
+        if (player.isSneaking()) {
+            if (((GooliminationFieldGenTile) te).isActive())
+                ((GooliminationFieldGenTile) te).deactivate((ServerWorld) worldIn);
+            else
+                ((GooliminationFieldGenTile) te).activate((ServerWorld) worldIn);
+        } else {
+            NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider) te, pos);
+        }
         return ActionResultType.SUCCESS;
     }
 }

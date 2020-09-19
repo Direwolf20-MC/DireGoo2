@@ -2,6 +2,7 @@ package com.direwolf20.diregoo.common.tiles;
 
 import com.direwolf20.diregoo.common.blocks.ModBlocks;
 import com.direwolf20.diregoo.common.container.GooliminationFieldGenContainer;
+import com.direwolf20.diregoo.common.worldsave.BlockSave;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -12,6 +13,7 @@ import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.world.server.ServerWorld;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -28,11 +30,16 @@ public class GooliminationFieldGenTile extends FETileBase implements ITickableTi
         return isActive;
     }
 
-    @Nullable
-    @Override
-    public Container createMenu(int i, PlayerInventory playerInventory, PlayerEntity playerEntity) {
-        assert world != null;
-        return new GooliminationFieldGenContainer(this, this.FETileData, i, playerInventory);
+    public void activate(ServerWorld world) {
+        BlockSave blockSave = BlockSave.get(world);
+        blockSave.setGooDeathEvent(true);
+        this.isActive = true;
+    }
+
+    public void deactivate(ServerWorld world) {
+        BlockSave blockSave = BlockSave.get(world);
+        blockSave.setGooDeathEvent(false);
+        this.isActive = false;
     }
 
     @Override
@@ -70,5 +77,12 @@ public class GooliminationFieldGenTile extends FETileBase implements ITickableTi
     @Override
     public ITextComponent getDisplayName() {
         return new StringTextComponent("Goolimination Field Generator");
+    }
+
+    @Nullable
+    @Override
+    public Container createMenu(int i, PlayerInventory playerInventory, PlayerEntity playerEntity) {
+        assert world != null;
+        return new GooliminationFieldGenContainer(this, this.FETileData, i, playerInventory);
     }
 }

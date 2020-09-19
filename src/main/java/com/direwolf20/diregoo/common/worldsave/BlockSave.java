@@ -1,6 +1,7 @@
 package com.direwolf20.diregoo.common.worldsave;
 
 import com.direwolf20.diregoo.DireGoo;
+import com.direwolf20.diregoo.common.events.ServerEvents;
 import com.direwolf20.diregoo.common.network.PacketHandler;
 import com.direwolf20.diregoo.common.network.packets.AntigooSync;
 import com.google.common.collect.HashMultimap;
@@ -266,6 +267,7 @@ public class BlockSave extends WorldSavedData {
 
     public void setGooDeathEvent(boolean gooDeathEvent) {
         this.gooDeathEvent = gooDeathEvent;
+        ServerEvents.clearAllLists();
         this.markDirty();
     }
 
