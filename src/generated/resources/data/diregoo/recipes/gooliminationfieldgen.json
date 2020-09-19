@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "isi",
+    "csc",
+    "ipi"
+  ],
+  "key": {
+    "c": {
+      "item": "diregoo:coremelt"
+    },
+    "i": {
+      "tag": "forge:ingots/iron"
+    },
+    "s": {
+      "item": "minecraft:nether_star"
+    },
+    "p": {
+      "item": "diregoo:powerampt4"
+    }
+  },
+  "result": {
+    "item": "diregoo:gooliminationfieldgen"
+  }
+}
