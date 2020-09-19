@@ -2,11 +2,16 @@ package com.direwolf20.diregoo.client.screens;
 
 import com.direwolf20.diregoo.DireGoo;
 import com.direwolf20.diregoo.common.container.GooliminationFieldGenContainer;
+import com.direwolf20.diregoo.common.network.PacketHandler;
+import com.direwolf20.diregoo.common.network.packets.PacketChangeGooliminationFieldActive;
+import com.direwolf20.diregoo.common.tiles.GooliminationFieldGenTile;
 import com.direwolf20.diregoo.common.util.MagicHelpers;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
+import net.minecraft.client.gui.widget.Widget;
+import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
@@ -15,16 +20,21 @@ import net.minecraft.util.text.LanguageMap;
 import net.minecraft.util.text.TranslationTextComponent;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class GooliminationFieldGenScreen extends ContainerScreen<GooliminationFieldGenContainer> {
     private static final ResourceLocation background = new ResourceLocation(DireGoo.MOD_ID, "textures/gui/gooliminiationfieldgen.png");
 
     protected final GooliminationFieldGenContainer container;
+    private boolean isActive;
 
     public GooliminationFieldGenScreen(GooliminationFieldGenContainer container, PlayerInventory playerInventory, ITextComponent title) {
         super(container, playerInventory, title);
         this.container = container;
+        GooliminationFieldGenTile te = (GooliminationFieldGenTile) container.tile;
+        isActive = te.isActive(te.getWorld());
     }
 
     public ResourceLocation getBackground() {
@@ -45,6 +55,21 @@ public class GooliminationFieldGenScreen extends ContainerScreen<GooliminationFi
 
     @Override
     public void init() {
+        List<Widget> Rwidgets = new ArrayList<>();
+        int baseX = width / 3 + width / 10, baseY = (height / 2) - (height / 40);
+        int top = baseY - (80);
+
+        Rwidgets.add(new Button(baseX + 15, 0, 50, 20, new TranslationTextComponent("screen.diregoo.antigoofieldgen.active", isActive), (button) -> {
+            isActive = !isActive;
+            button.setMessage(new TranslationTextComponent("screen.diregoo.goolimination.active", isActive));
+            PacketHandler.sendToServer(new PacketChangeGooliminationFieldActive(isActive, this.container.tile.getPos()));
+        }));
+
+        for (int i = 0; i < Rwidgets.size(); i++) {
+            Rwidgets.get(i).y = (top + 20) + (i * 15);
+            addButton(Rwidgets.get(i));
+        }
+
         super.init();
     }
 
@@ -56,7 +81,7 @@ public class GooliminationFieldGenScreen extends ContainerScreen<GooliminationFi
 
         int maxEnergy = this.container.getMaxPower(), height = 70;
         if (maxEnergy > 0) {
-            int remaining = (this.container.getEnergy() * height) / maxEnergy;
+            int remaining = (int) Math.floor(((double) this.container.getEnergy() * height) / maxEnergy);
             this.blit(stack, guiLeft + 8, guiTop + 78 - remaining, 176, 84 - remaining, 16, remaining + 1);
         }
     }

@@ -13,6 +13,7 @@ import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
 import javax.annotation.Nonnull;
@@ -26,7 +27,14 @@ public class GooliminationFieldGenTile extends FETileBase implements ITickableTi
         super(ModBlocks.GOOLIMINATION_TILE.get(), 1000000000);
     }
 
-    public boolean isActive() {
+    public boolean isActive(World world) {
+        if (!world.isRemote()) {
+            BlockSave blockSave = BlockSave.get(world);
+            if (isActive != blockSave.getGooDeathEvent()) {
+                isActive = blockSave.getGooDeathEvent();
+                markDirtyClient();
+            }
+        }
         return isActive;
     }
 
@@ -34,12 +42,14 @@ public class GooliminationFieldGenTile extends FETileBase implements ITickableTi
         BlockSave blockSave = BlockSave.get(world);
         blockSave.setGooDeathEvent(true);
         this.isActive = true;
+        markDirtyClient();
     }
 
     public void deactivate(ServerWorld world) {
         BlockSave blockSave = BlockSave.get(world);
         blockSave.setGooDeathEvent(false);
         this.isActive = false;
+        markDirtyClient();
     }
 
     @Override
@@ -51,8 +61,15 @@ public class GooliminationFieldGenTile extends FETileBase implements ITickableTi
 
         //Server Only
         if (!world.isRemote) {
-            energyStorage.receiveEnergy(625, false); //Testing
-            //System.out.println("I'm here!");
+            energyStorage.receiveEnergy(100000, false); //Testing
+            if (isActive(world)) {
+                int rfCost = 1000000;
+                if (energyStorage.getEnergyStored() >= rfCost)
+                    energyStorage.consumeEnergy(rfCost, false);
+                else {
+                    deactivate((ServerWorld) world);
+                }
+            }
         }
     }
 

@@ -18,8 +18,10 @@ public class GeneratorLanguage extends LanguageProvider {
         add("screen.diregoo.turret.shots_remaining", "Boost Shots Remaining: %d");
         add("screen.diregoo.antigoofieldgen.active", "Active %1$d");
         add("screen.diregoo.antigoofieldgen.renderarea", "Render %1$d");
+        add("screen.diregoo.goolimination.active", "Active %1$d");
         add("diregoo.tooltip.screen.xrange", "Range X");
         add("diregoo.tooltip.itemenergy", "Energy: %d/%d");
+        add("tooltip.diregoo.gooliminationblock", "Recommended to only have one per world.");
         add("block.diregoo.zapperitemscreen", "Goo Zapper");
         add("block.diregoo.turretscreen", "Goo Turret");
         add("block.diregoo.antigoobeaconscreen", "Antigoo Beacon");

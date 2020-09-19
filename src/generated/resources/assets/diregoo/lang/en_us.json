@@ -51,5 +51,7 @@
   "screen.diregoo.antigoofieldgen.active": "Active %1$d",
   "screen.diregoo.antigoofieldgen.renderarea": "Render %1$d",
   "screen.diregoo.energy": "Energy: %s/%s FE",
-  "screen.diregoo.turret.shots_remaining": "Boost Shots Remaining: %d"
+  "screen.diregoo.goolimination.active": "Active %1$d",
+  "screen.diregoo.turret.shots_remaining": "Boost Shots Remaining: %d",
+  "tooltip.diregoo.gooliminationblock": "Recommended to only have one per world."
 }

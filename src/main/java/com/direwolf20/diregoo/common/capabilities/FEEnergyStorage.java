@@ -9,7 +9,7 @@ public class FEEnergyStorage implements IEnergyStorage, INBTSerializable<Compoun
     private static final String KEY = "energy";
     private int energy;
     private int capacity;
-    private int maxInOut = 1000000;
+    private int maxInOut = 100000000;
     private FETileBase tile;
 
     public FEEnergyStorage(FETileBase tile, int energy, int capacity) {
