@@ -19,6 +19,7 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.NetworkHooks;
@@ -69,8 +70,24 @@ public class GooliminationFieldGen extends Block {
             else
                 ((GooliminationFieldGenTile) te).activate((ServerWorld) worldIn);
         } else {*/
-            NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider) te, pos);
+        NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider) te, pos);
         //}
         return ActionResultType.SUCCESS;
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
+        if (!worldIn.isRemote) {
+            if (newState.getBlock() != this) {
+                TileEntity tileEntity = worldIn.getTileEntity(pos);
+                if (tileEntity != null) {
+                    if (tileEntity instanceof GooliminationFieldGenTile) {
+                        ((GooliminationFieldGenTile) tileEntity).deactivate((ServerWorld) worldIn);
+                    }
+                }
+                super.onReplaced(state, worldIn, pos, newState, isMoving);
+            }
+        }
     }
 }

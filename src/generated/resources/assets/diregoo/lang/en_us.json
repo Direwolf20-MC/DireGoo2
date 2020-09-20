@@ -16,8 +16,6 @@
   "block.diregoo.turretscreen": "Goo Turret",
   "block.diregoo.zapperitemscreen": "Goo Zapper",
   "block.diregoo.zapperturretblock": "Goo Zapper Turret",
-  "diregoo.tooltip.itemenergy": "Energy: %d/%d",
-  "diregoo.tooltip.screen.xrange": "Range X",
   "item.diregoo.antigoodust": "AntiGoo Dust",
   "item.diregoo.antigoopaste": "AntiGoo Paste",
   "item.diregoo.corefreeze": "Freezing Core",
@@ -36,6 +34,7 @@
   "item.diregoo.powerampt2": "Improved Power Amplifier",
   "item.diregoo.powerampt3": "Powerful Power Amplifier",
   "item.diregoo.powerampt4": "Extreme Power Amplifier",
+  "itemGroup.diregoo": "DireGoo",
   "message.diregoo.command.animatespread": "DireGoo Animating Spread:  %1$d",
   "message.diregoo.command.blockChangeSize": "Block changes queued: %d",
   "message.diregoo.command.canspread": "DireGoo Can Spread:  %1$d",
@@ -53,5 +52,6 @@
   "screen.diregoo.energy": "Energy: %s/%s FE",
   "screen.diregoo.goolimination.active": "Active %1$d",
   "screen.diregoo.turret.shots_remaining": "Boost Shots Remaining: %d",
-  "tooltip.diregoo.gooliminationblock": "Recommended to only have one per world."
+  "tooltip.diregoo.gooliminationblock": "Recommended to only have one per world.",
+  "tooltip.diregoo.itemenergy": "Energy: %d/%d"
 }

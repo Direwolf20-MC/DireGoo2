@@ -41,7 +41,7 @@ public class FEItemBase extends Item {
         super.addInformation(stack, world, tooltip, flag);
         stack.getCapability(CapabilityEnergy.ENERGY, null)
                 .ifPresent(energy -> tooltip.add(
-                        new TranslationTextComponent("diregoo.tooltip.itemenergy",
+                        new TranslationTextComponent("tooltip.diregoo.itemenergy",
                                 MagicHelpers.tidyValue(energy.getEnergyStored()),
                                 MagicHelpers.tidyValue(energy.getMaxEnergyStored())).mergeStyle(TextFormatting.GREEN)));
     }

@@ -19,8 +19,7 @@ public class GeneratorLanguage extends LanguageProvider {
         add("screen.diregoo.antigoofieldgen.active", "Active %1$d");
         add("screen.diregoo.antigoofieldgen.renderarea", "Render %1$d");
         add("screen.diregoo.goolimination.active", "Active %1$d");
-        add("diregoo.tooltip.screen.xrange", "Range X");
-        add("diregoo.tooltip.itemenergy", "Energy: %d/%d");
+        add("tooltip.diregoo.itemenergy", "Energy: %d/%d");
         add("tooltip.diregoo.gooliminationblock", "Recommended to only have one per world.");
         add("block.diregoo.zapperitemscreen", "Goo Zapper");
         add("block.diregoo.turretscreen", "Goo Turret");
@@ -37,6 +36,7 @@ public class GeneratorLanguage extends LanguageProvider {
         add("message.diregoo.command.spreadrange", "Goo Spread range from any player: %d");
         add("message.diregoo.command.spreaddelay", "Number of ticks after goo spread to force an extra tick: %d");
         add("block.diregoo.gooliminationscreen", "Goolimination Field Generator");
+        add("itemGroup.diregoo", "DireGoo");
         addBlock(ModBlocks.ANTI_GOO_BEACON, "Antigoo Beacon");
         addBlock(ModBlocks.ANTI_GOO_FIELD_GEN, "Antigoo Field Generator");
         addBlock(ModBlocks.GOO_BLOCK, "Goo");
