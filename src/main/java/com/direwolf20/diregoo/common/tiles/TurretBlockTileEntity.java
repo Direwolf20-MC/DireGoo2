@@ -142,7 +142,7 @@ public class TurretBlockTileEntity extends FETileBase implements ITickableTileEn
                     .collect(Collectors.toCollection(LinkedList::new));
         } else
             clearBlocksQueue = BlockPos.getAllInBox(this.pos.add(range, range, range), this.pos.add(-range, -range, -range))
-                    .filter(blockPos -> (world.getBlockState(blockPos).getBlock() instanceof GooBase) && (world.getBlockState(blockPos).get(GooBase.FROZEN) < 3))
+                    .filter(blockPos -> (world.getBlockState(blockPos).getBlock() instanceof GooBase) && (world.getBlockState(blockPos).get(GooBase.FROZEN) < 2))
                     .map(BlockPos::toImmutable)
                     .sorted(Comparator.comparingDouble(blockPos -> this.getPos().distanceSq(blockPos)))
                     .collect(Collectors.toCollection(LinkedList::new));
