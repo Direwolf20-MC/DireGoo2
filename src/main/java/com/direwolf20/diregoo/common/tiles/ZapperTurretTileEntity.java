@@ -46,6 +46,7 @@ public class ZapperTurretTileEntity extends FETileBase implements ITickableTileE
     private boolean isShooting;
     private Set<BlockPos> clearBlocksQueue = new HashSet<>();
     private BlockPos currentPos = BlockPos.ZERO;
+
     private ItemStackHandler inventoryStacks = new ItemStackHandler(ZapperTurretContainer.SLOTS);
     private LazyOptional<ItemStackHandler> inventory = LazyOptional.of(() -> new ItemStackHandler(ZapperTurretContainer.SLOTS));
 
@@ -67,6 +68,10 @@ public class ZapperTurretTileEntity extends FETileBase implements ITickableTileE
 
     public Set<BlockPos> getClearBlocksQueue() {
         return clearBlocksQueue;
+    }
+
+    public ItemStackHandler getInventoryStacks() {
+        return inventoryStacks;
     }
 
     @Nullable
