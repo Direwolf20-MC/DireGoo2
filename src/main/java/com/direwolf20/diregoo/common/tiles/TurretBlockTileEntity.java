@@ -5,6 +5,9 @@ import com.direwolf20.diregoo.common.blocks.GooBase;
 import com.direwolf20.diregoo.common.blocks.ModBlocks;
 import com.direwolf20.diregoo.common.container.TurretContainer;
 import com.direwolf20.diregoo.common.items.AntiGooDust;
+import com.direwolf20.diregoo.common.items.CoreFreeze;
+import com.direwolf20.diregoo.common.items.CoreMelt;
+import com.direwolf20.diregoo.common.items.zapperupgrades.*;
 import com.direwolf20.diregoo.common.worldsave.BlockSave;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
@@ -82,6 +85,18 @@ public class TurretBlockTileEntity extends FETileBase implements ITickableTileEn
         return handler;
     }
 
+    public boolean validateSlots() {
+        ItemStackHandler inventoryStacks = getInventoryStacks();
+        ItemStack core = inventoryStacks.getStackInSlot(0);
+        if (!(core.getItem() instanceof CoreMelt) && !(core.getItem() instanceof CoreFreeze))
+            return false;
+
+        if (!(inventoryStacks.getStackInSlot(2).getItem() instanceof BasePowerAmp))
+            return false;
+
+        return true;
+    }
+
     @Nullable
     @Override
     public Container createMenu(int i, PlayerInventory playerInventory, PlayerEntity playerEntity) {
@@ -97,9 +112,9 @@ public class TurretBlockTileEntity extends FETileBase implements ITickableTileEn
         }
         if (fuelShotsRemaining <= 0) {
             ItemStackHandler handler = inventory.orElseThrow(RuntimeException::new);
-            ItemStack stack = handler.getStackInSlot(0);
+            ItemStack stack = handler.getStackInSlot(1);
             if (stack.getItem() instanceof AntiGooDust) {
-                handler.extractItem(0, 1, false);
+                handler.extractItem(1, 1, false);
                 fuelShotsRemaining = Config.TURRET_BOOST_COUNT.get();
                 markDirty();
                 return;
@@ -107,14 +122,39 @@ public class TurretBlockTileEntity extends FETileBase implements ITickableTileEn
         }
     }
 
-    public void generateTurretQueue() {
-        int range = Config.TURRET_RANGE.get();
-        clearBlocksQueue = BlockPos.getAllInBox(this.pos.add(range, range, range), this.pos.add(-range, -range, -range))
-                .filter(blockPos -> world.getBlockState(blockPos).getBlock() instanceof GooBase)
-                .map(BlockPos::toImmutable)
-                .sorted(Comparator.comparingDouble(blockPos -> this.getPos().distanceSq(blockPos)))
-                .collect(Collectors.toCollection(LinkedList::new));
+    public boolean isFreezing() {
+        ItemStackHandler inventoryStacks = getInventoryStacks();
+        return inventoryStacks.getStackInSlot(0).getItem() instanceof CoreFreeze;
+    }
 
+    public boolean isMelting() {
+        ItemStackHandler inventoryStacks = getInventoryStacks();
+        return inventoryStacks.getStackInSlot(0).getItem() instanceof CoreMelt;
+    }
+
+    public void generateTurretQueue() {
+        int range = getRange();
+        if (isMelting()) {
+            clearBlocksQueue = BlockPos.getAllInBox(this.pos.add(range, range, range), this.pos.add(-range, -range, -range))
+                    .filter(blockPos -> world.getBlockState(blockPos).getBlock() instanceof GooBase)
+                    .map(BlockPos::toImmutable)
+                    .sorted(Comparator.comparingDouble(blockPos -> this.getPos().distanceSq(blockPos)))
+                    .collect(Collectors.toCollection(LinkedList::new));
+        } else
+            clearBlocksQueue = BlockPos.getAllInBox(this.pos.add(range, range, range), this.pos.add(-range, -range, -range))
+                    .filter(blockPos -> (world.getBlockState(blockPos).getBlock() instanceof GooBase) && (world.getBlockState(blockPos).get(GooBase.FROZEN) < 3))
+                    .map(BlockPos::toImmutable)
+                    .sorted(Comparator.comparingDouble(blockPos -> this.getPos().distanceSq(blockPos)))
+                    .collect(Collectors.toCollection(LinkedList::new));
+    }
+
+    public int getRange() {
+        ItemStackHandler inventoryStacks = getInventoryStacks();
+        if (inventoryStacks.getStackInSlot(2).getItem() instanceof PowerAmpT1) return 3;
+        if (inventoryStacks.getStackInSlot(2).getItem() instanceof PowerAmpT2) return 5;
+        if (inventoryStacks.getStackInSlot(2).getItem() instanceof PowerAmpT3) return 7;
+        if (inventoryStacks.getStackInSlot(2).getItem() instanceof PowerAmpT4) return 11;
+        return 0;
     }
 
     public int getFiringCooldown() {
@@ -139,18 +179,23 @@ public class TurretBlockTileEntity extends FETileBase implements ITickableTileEn
     }
 
     public void shoot() {
-        if (energyStorage.getEnergyStored() < Config.TURRET_RFCOST.get())
+        if ((energyStorage.getEnergyStored() < Config.TURRET_RFCOST.get()) || !validateSlots())
             return;
         BlockPos shootPos = clearBlocksQueue.remove();
         int shootDuration = fuelShotsRemaining > 0 ? 2 : 10;
         checkFuel();
         if (world.getBlockState(shootPos).getBlock() instanceof GooBase) {
             BlockSave blockSave = BlockSave.get(world);
-            GooBase.resetBlock((ServerWorld) world, shootPos, true, shootDuration, true, blockSave);
+            if (isMelting())
+                GooBase.resetBlock((ServerWorld) world, shootPos, true, shootDuration, true, blockSave);
+            else
+                GooBase.freezeGoo((ServerWorld) world, shootPos);
             firingCooldown = shootDuration;
             shootCooldown = fuelShotsRemaining > 0 ? 0 : 5; //Ticks before the turret can shoot again after finishing firing
             currentTarget = shootPos;
             energyStorage.consumeEnergy(Config.TURRET_RFCOST.get(), false);
+            if (clearBlocksQueue.size() == 0)
+                searchCooldown = 0;
             markDirtyClient();
         }
     }
@@ -169,7 +214,7 @@ public class TurretBlockTileEntity extends FETileBase implements ITickableTileEn
                 decrementFiring();
             else {
                 decrementCooldowns();
-                if (searchCooldown == 0) {
+                if (searchCooldown <= 0) {
                     generateTurretQueue(); //Scan around the turret for blocks to shoot - add to a queue
                     searchCooldown = 200; //Ticks before we can search for goo again
                 }
