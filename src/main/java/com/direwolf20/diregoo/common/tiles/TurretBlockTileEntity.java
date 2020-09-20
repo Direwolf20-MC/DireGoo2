@@ -77,6 +77,11 @@ public class TurretBlockTileEntity extends FETileBase implements ITickableTileEn
         super(ModBlocks.TURRETBLOCK_TILE.get());
     }
 
+    public ItemStackHandler getInventoryStacks() {
+        ItemStackHandler handler = inventory.orElse(new ItemStackHandler(TurretContainer.SLOTS));
+        return handler;
+    }
+
     @Nullable
     @Override
     public Container createMenu(int i, PlayerInventory playerInventory, PlayerEntity playerEntity) {

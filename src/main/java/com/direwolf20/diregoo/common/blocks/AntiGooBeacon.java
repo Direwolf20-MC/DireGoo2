@@ -6,7 +6,9 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.inventory.container.INamedContainerProvider;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
@@ -15,6 +17,7 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraftforge.items.IItemHandler;
 
 import javax.annotation.Nullable;
 
@@ -46,6 +49,8 @@ public class AntiGooBeacon extends Block {
             if (tileEntity != null) {
                 if (tileEntity instanceof AntiGooBeaconTileEntity) {
                     ((AntiGooBeaconTileEntity) tileEntity).removeField();
+                    dropInventoryItems(worldIn, pos, ((AntiGooBeaconTileEntity) tileEntity).getInventoryStacks());
+                    worldIn.updateComparatorOutputLevel(pos, this);
                 }
             }
             super.onReplaced(state, worldIn, pos, newState, isMoving);
@@ -78,5 +83,15 @@ public class AntiGooBeacon extends Block {
             }
         }
         return ActionResultType.SUCCESS;
+    }
+
+    private static void dropInventoryItems(World worldIn, BlockPos pos, IItemHandler inventory) {
+        for (int i = 0; i < inventory.getSlots(); ++i) {
+            ItemStack itemstack = inventory.getStackInSlot(i);
+
+            if (itemstack.getCount() > 0) {
+                InventoryHelper.spawnItemStack(worldIn, (double) pos.getX(), (double) pos.getY(), (double) pos.getZ(), itemstack);
+            }
+        }
     }
 }

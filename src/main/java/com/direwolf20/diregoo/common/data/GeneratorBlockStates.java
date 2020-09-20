@@ -78,13 +78,13 @@ public class GeneratorBlockStates extends BlockStateProvider {
             gooTerrainRenderBuilder.partialState().with(GooRender.GROWTH, i).setModels(new ConfiguredModel(models().cubeAll(gooTerrainRenderPath + i, modLoc("block/goorenderterrain" + i))));
         }
 
-        Block gooBurstRender = ModBlocks.GOO_RENDER_BURST.get();
+        /*Block gooBurstRender = ModBlocks.GOO_RENDER_BURST.get();
         String gooBurstRenderPath = Objects.requireNonNull(gooBurstRender.getRegistryName()).getPath();
         VariantBlockStateBuilder gooBurstRenderBuilder = getVariantBuilder(ModBlocks.GOO_RENDER_BURST.get());
 
         for (int i = 1; i <= 9; i++) {
             gooBurstRenderBuilder.partialState().with(GooRender.GROWTH, i).setModels(new ConfiguredModel(models().cubeAll(gooBurstRenderPath + i, modLoc("block/goorenderburst" + i))));
-        }
+        }*/
     }
 
     private void buildCubeAll(Block block) {

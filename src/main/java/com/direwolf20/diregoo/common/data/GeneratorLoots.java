@@ -1,5 +1,6 @@
 package com.direwolf20.diregoo.common.data;
 
+import com.direwolf20.diregoo.DireGoo;
 import com.direwolf20.diregoo.common.blocks.ModBlocks;
 import com.direwolf20.diregoo.common.items.ModItems;
 import com.google.common.collect.ImmutableList;
@@ -8,15 +9,18 @@ import net.minecraft.block.Block;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.LootTableProvider;
 import net.minecraft.data.loot.BlockLootTables;
+import net.minecraft.item.ItemStack;
 import net.minecraft.loot.*;
 import net.minecraft.loot.conditions.SurvivesExplosion;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 public class GeneratorLoots extends LootTableProvider {
     public GeneratorLoots(DataGenerator dataGeneratorIn) {
@@ -47,12 +51,27 @@ public class GeneratorLoots extends LootTableProvider {
                     );
             this.registerLootTable(ModBlocks.GOO_BLOCK_TERRAIN.get(), LootTable.builder().addLootPool(builder2));
 
-            this.registerLootTable(ModBlocks.ZAPPER_TURRET_BLOCK.get(), dropping(ModItems.ZAPPER_TURRET_ITEM.get()));
+            this.registerDropSelfLootTable(ModBlocks.GOO_BLOCK_POISON.get());
+            this.registerDropSelfLootTable(ModBlocks.GNT_BLOCK_T1.get());
+            this.registerDropSelfLootTable(ModBlocks.GNT_BLOCK_T2.get());
+            this.registerDropSelfLootTable(ModBlocks.GNT_BLOCK_T3.get());
+            this.registerDropSelfLootTable(ModBlocks.GNT_BLOCK_T4.get());
+            this.registerDropSelfLootTable(ModBlocks.TURRET_BLOCK.get());
+            this.registerDropSelfLootTable(ModBlocks.ZAPPER_TURRET_BLOCK.get());
+            this.registerDropSelfLootTable(ModBlocks.ANTI_GOO_BEACON.get());
+            this.registerDropSelfLootTable(ModBlocks.ANTI_GOO_FIELD_GEN.get());
+            this.registerDropSelfLootTable(ModBlocks.GOOLIMINATIONFIELDGEN.get());
+            this.registerDropSelfLootTable(ModBlocks.GOO_DETECTOR.get());
+            this.registerDropping(ModBlocks.GOO_RENDER.get(), ItemStack.EMPTY.getItem());
+            //this.registerDropping(ModBlocks.GOO_RENDER_BURST.get(), ItemStack.EMPTY.getItem());
+            this.registerDropping(ModBlocks.GOO_RENDER_TERRAIN.get(), ItemStack.EMPTY.getItem());
         }
 
         @Override
         protected Iterable<Block> getKnownBlocks() {
-            return ImmutableList.of(ModBlocks.GOO_BLOCK.get(), ModBlocks.GOO_BLOCK_TERRAIN.get(), ModBlocks.ZAPPER_TURRET_BLOCK.get());
+            return ForgeRegistries.BLOCKS.getValues().stream()
+                    .filter(b -> b.getRegistryName().getNamespace().equals(DireGoo.MOD_ID))
+                    .collect(Collectors.toList());
         }
     }
 

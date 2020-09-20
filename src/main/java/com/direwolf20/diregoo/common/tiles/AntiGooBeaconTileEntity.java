@@ -2,6 +2,7 @@ package com.direwolf20.diregoo.common.tiles;
 
 import com.direwolf20.diregoo.common.blocks.ModBlocks;
 import com.direwolf20.diregoo.common.container.AntiGooBeaconContainer;
+import com.direwolf20.diregoo.common.container.TurretContainer;
 import com.direwolf20.diregoo.common.container.ZapperTurretContainer;
 import com.direwolf20.diregoo.common.items.AntiGooDust;
 import com.direwolf20.diregoo.common.worldsave.BlockSave;
@@ -77,6 +78,11 @@ public class AntiGooBeaconTileEntity extends TileEntity implements ITickableTile
             return 1;
         }
     };
+
+    public ItemStackHandler getInventoryStacks() {
+        ItemStackHandler handler = inventory.orElse(new ItemStackHandler(TurretContainer.SLOTS));
+        return handler;
+    }
 
     @Nullable
     @Override
