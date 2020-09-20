@@ -104,7 +104,7 @@ public class Config {
         TURRET_RFCOST = COMMON_BUILDER.comment("The RF cost per shot (Per block removed)")
                 .defineInRange("turretRFCost", 10000, 0, Integer.MAX_VALUE);
         TURRET_BOOST_COUNT = COMMON_BUILDER.comment("The number of boosted (Faster) shots per AntiGooDust")
-                .defineInRange("turretBoostCount", 5, 0, Integer.MAX_VALUE);
+                .defineInRange("turretBoostCount", 10, 0, Integer.MAX_VALUE);
         COMMON_BUILDER.pop();
 
         COMMON_BUILDER.comment("Goo Zapper Turret Settings").push(SUBCATEGORY_TILE_ZAPPER);
