@@ -162,7 +162,7 @@ public class Config {
         ANIMATE_SPREAD = COMMON_BUILDER.comment("Does the goo use entities to animate spread, or do simple setblocks?")
                 .define("animateSpread", true);
         FREEZE_MELT_CHANCE = COMMON_BUILDER.comment("The chance for Frozen Goo to melt on block tick. The lower this number, the longer it stays frozen.")
-                .defineInRange("freezeMeltChance", 100, 0, 100);
+                .defineInRange("freezeMeltChance", 50, 0, 100);
         MAX_BLOCK_CHANGES = COMMON_BUILDER.comment("The maximum number of goo blocks that can cause a blockchange per chunk in a single tick. Lowering this number will slow the spread of goo and may improve performance.")
                 .defineInRange("maxBlockChanges", 200, 1, 10000);
         MAX_CHUNK_CHANGES = COMMON_BUILDER.comment("The maximum number of chunks that can change per spreadEvent as a result of goospread. Lowering this number will slow the spread of goo and may improve performance.")
