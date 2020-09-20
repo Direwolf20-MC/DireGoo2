@@ -122,9 +122,10 @@ public class ServerEvents {
                 }
             }
             if (!posClearList.isEmpty() && serverWorld != null) {
-                if (serverWorld.getGameTime() % (Config.GOO_SPREAD_FREQUENCY.get()) != 0)
-                    return; //Only run every X ticks
                 BlockSave blockSave = BlockSave.get(serverWorld);
+                int multiplier = blockSave.countGooDeathMarkers() > 0 ? blockSave.countGooDeathMarkers() : 1;
+                if (serverWorld.getGameTime() % (Config.GOO_SPREAD_FREQUENCY.get() / multiplier) != 0)
+                    return; //Only run every X ticks
                 int maxRuns = Config.MAX_CHUNK_CHANGES.get();
                 int iterations = Math.min(chunkQueue.size(), maxRuns);
                 //System.out.println("Processing Chunks: " + iterations + " out of " + chunkQueue.size());

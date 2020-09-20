@@ -28,26 +28,19 @@ public class GooliminationFieldGenTile extends FETileBase implements ITickableTi
     }
 
     public boolean isActive(World world) {
-        if (!world.isRemote()) {
-            BlockSave blockSave = BlockSave.get(world);
-            if (isActive != blockSave.getGooDeathEvent()) {
-                isActive = blockSave.getGooDeathEvent();
-                markDirtyClient();
-            }
-        }
         return isActive;
     }
 
     public void activate(ServerWorld world) {
         BlockSave blockSave = BlockSave.get(world);
-        blockSave.setGooDeathEvent(true);
+        blockSave.addGooDeathEvent(this.pos);
         this.isActive = true;
         markDirtyClient();
     }
 
     public void deactivate(ServerWorld world) {
         BlockSave blockSave = BlockSave.get(world);
-        blockSave.setGooDeathEvent(false);
+        blockSave.removeGooDeathEvent(this.pos);
         this.isActive = false;
         markDirtyClient();
     }
@@ -61,7 +54,7 @@ public class GooliminationFieldGenTile extends FETileBase implements ITickableTi
 
         //Server Only
         if (!world.isRemote) {
-            energyStorage.receiveEnergy(100000, false); //Testing
+            energyStorage.receiveEnergy(1000000, false); //Testing
             if (isActive(world)) {
                 int rfCost = 1000000;
                 if (energyStorage.getEnergyStored() >= rfCost)

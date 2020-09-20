@@ -16,10 +16,7 @@ import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.storage.WorldSavedData;
 import net.minecraftforge.common.util.Constants;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class BlockSave extends WorldSavedData {
     private static final String NAME = DireGoo.MOD_ID + "_blocksave";
@@ -28,7 +25,8 @@ public class BlockSave extends WorldSavedData {
     private final HashMap<BlockPos, CompoundNBT> teMap = new HashMap<>();
     private final ArrayList<BlockPos> antigooList = new ArrayList<>();
     private final SetMultimap<BlockPos, BlockPos> antigooFieldList = HashMultimap.create();
-    private boolean gooDeathEvent = false;
+    //private boolean gooDeathEvent = false;
+    private final Set<BlockPos> gooDeathMarkers = new HashSet();
     /*private final LinkedHashMap<Long, Integer> blockChangeCounter = new LinkedHashMap<Long, Integer>() {
         protected boolean removeEldestEntry(Map.Entry<Long, Integer> eldest) {
             return size() > 10;
@@ -90,7 +88,13 @@ public class BlockSave extends WorldSavedData {
             antigooFieldList.put(sourcePos, protectedPos);
         }
 
-        gooDeathEvent = nbt.getBoolean("gooDeathEvent");
+        ListNBT gooDeathMarkers = nbt.getList("gooDeathMarkers", Constants.NBT.TAG_COMPOUND);
+        for (int i = 0; i < gooDeathMarkers.size(); i++) {
+            BlockPos sourcePos = NBTUtil.readBlockPos(gooDeathMarkers.getCompound(i).getCompound("sourcePos"));
+            this.gooDeathMarkers.add(sourcePos);
+        }
+
+        //gooDeathEvent = nbt.getBoolean("gooDeathEvent");
         long elapsedTime = System.nanoTime() - startTime;
         //System.out.println("Elapsed time for Read = " + elapsedTime / 1000000);
     }
@@ -146,7 +150,15 @@ public class BlockSave extends WorldSavedData {
         }
         compound.put("antigoofield", antiField);
 
-        compound.putBoolean("gooDeathEvent", gooDeathEvent);
+        ListNBT gooDeathMarkers = new ListNBT();
+        for (BlockPos blockPos : this.gooDeathMarkers) {
+            CompoundNBT comp = new CompoundNBT();
+            comp.put("sourcePos", NBTUtil.writeBlockPos(blockPos));
+            gooDeathMarkers.add(comp);
+        }
+        compound.put("gooDeathMarkers", gooDeathMarkers);
+
+        //compound.putBoolean("gooDeathEvent", gooDeathEvent);
         long elapsedTime = System.nanoTime() - startTime;
         //System.out.println("Elapsed time for Write = " + elapsedTime / 1000000);
         return compound;
@@ -262,14 +274,37 @@ public class BlockSave extends WorldSavedData {
     }
 
     public boolean getGooDeathEvent() {
-        return gooDeathEvent;
+        return (gooDeathMarkers.size() > 0);
     }
 
-    public void setGooDeathEvent(boolean gooDeathEvent) {
+    public boolean addGooDeathEvent(BlockPos pos) {
+        boolean success = gooDeathMarkers.add(pos);
+        if (success) {
+            ServerEvents.clearAllLists();
+            this.markDirty();
+        }
+        return success;
+    }
+
+    public boolean removeGooDeathEvent(BlockPos pos) {
+        boolean success = gooDeathMarkers.remove(pos);
+        if (success) {
+            ServerEvents.clearAllLists();
+            this.markDirty();
+        }
+        return success;
+    }
+
+    public int countGooDeathMarkers() {
+        return gooDeathMarkers.size();
+    }
+
+    /*public void setGooDeathEvent(boolean gooDeathEvent) {
         this.gooDeathEvent = gooDeathEvent;
         ServerEvents.clearAllLists();
         this.markDirty();
-    }
+    }*/
+
 
     /*public void addBlockChange(long gametime) {
         blockChangeCounter.compute(gametime, (k, v) -> (v == null) ? 1 : v + 1);

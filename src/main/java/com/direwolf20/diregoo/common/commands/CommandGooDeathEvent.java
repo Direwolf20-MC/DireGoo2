@@ -7,6 +7,7 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.server.ServerWorld;
 
@@ -30,7 +31,10 @@ public class CommandGooDeathEvent {
     public static int setDeathEvent(CommandContext<CommandSource> context, boolean gooDeath) throws CommandSyntaxException {
         ServerWorld world = context.getSource().getWorld();
         BlockSave blockSave = BlockSave.get(world);
-        blockSave.setGooDeathEvent(gooDeath);
+        if (gooDeath)
+            blockSave.addGooDeathEvent(BlockPos.ZERO);
+        else
+            blockSave.removeGooDeathEvent(BlockPos.ZERO);
         //ServerEvents.clearAllLists();
         getDeathEvent(context);
         return 0;
