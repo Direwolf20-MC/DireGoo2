@@ -37,7 +37,6 @@ public class GeneratorLoots extends LootTableProvider {
                     .acceptCondition(SurvivesExplosion.builder())
                     .addEntry(ItemLootEntry.builder(ModItems.GOO_RESIDUE.get())
                     );
-
             this.registerLootTable(ModBlocks.GOO_BLOCK.get(), LootTable.builder().addLootPool(builder));
 
             LootPool.Builder builder2 = LootPool.builder()
@@ -46,24 +45,14 @@ public class GeneratorLoots extends LootTableProvider {
                     .acceptCondition(SurvivesExplosion.builder())
                     .addEntry(ItemLootEntry.builder(ModItems.GOO_RESIDUE.get())
                     );
-
-            //this.registerLootTable(ModBlocks.GOO_BLOCK_BURST.get(), LootTable.builder().addLootPool(builder));
-
-            /*LootPool.Builder builder3 = LootPool.builder()
-                    .name(ModBlocks.GOO_BLOCK_BURST.get().getRegistryName().toString())
-                    .rolls(ConstantRange.of(1))
-                    .acceptCondition(SurvivesExplosion.builder())
-                    .addEntry(ItemLootEntry.builder(ModItems.GOO_RESIDUE.get())
-                    );*/
-
-            this.registerLootTable(ModBlocks.GOO_BLOCK.get(), LootTable.builder().addLootPool(builder));
             this.registerLootTable(ModBlocks.GOO_BLOCK_TERRAIN.get(), LootTable.builder().addLootPool(builder2));
-            //this.registerLootTable(ModBlocks.GOO_BLOCK_BURST.get(), LootTable.builder().addLootPool(builder3));
+
+            this.registerLootTable(ModBlocks.ZAPPER_TURRET_BLOCK.get(), dropping(ModItems.ZAPPER_TURRET_ITEM.get()));
         }
 
         @Override
         protected Iterable<Block> getKnownBlocks() {
-            return ImmutableList.of(ModBlocks.GOO_BLOCK.get(), /*ModBlocks.GOO_BLOCK_BURST.get(),*/ ModBlocks.GOO_BLOCK_TERRAIN.get());
+            return ImmutableList.of(ModBlocks.GOO_BLOCK.get(), ModBlocks.GOO_BLOCK_TERRAIN.get(), ModBlocks.ZAPPER_TURRET_BLOCK.get());
         }
     }
 
