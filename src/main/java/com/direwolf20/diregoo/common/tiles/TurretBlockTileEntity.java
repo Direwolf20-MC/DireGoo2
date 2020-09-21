@@ -209,7 +209,7 @@ public class TurretBlockTileEntity extends FETileBase implements ITickableTileEn
 
         //Server Only
         if (!world.isRemote) {
-            energyStorage.receiveEnergy(625, false); //Testing
+            //energyStorage.receiveEnergy(625, false); //Testing
             if (firingCooldown > 0)
                 decrementFiring();
             else {

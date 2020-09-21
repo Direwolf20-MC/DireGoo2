@@ -55,7 +55,7 @@ public class GooliminationFieldGenTile extends FETileBase implements ITickableTi
 
         //Server Only
         if (!world.isRemote) {
-            energyStorage.receiveEnergy(1000000, false); //Testing
+            //energyStorage.receiveEnergy(1000000, false); //Testing
             if (isActive(world)) {
                 int rfCost = Config.GOOLIMINATION_RF_PER_TICK.get();
                 if (energyStorage.getEnergyStored() >= rfCost)

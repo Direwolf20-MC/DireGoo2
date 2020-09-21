@@ -119,7 +119,7 @@ public class GooZapper extends FELaserBase {
         if (world.isRemote) return new ActionResult<>(ActionResultType.PASS, itemstack);
         if (player.isSneaking()) {
             ZapperSlotHandler handler = getInventory(itemstack);
-            itemstack.getCapability(CapabilityEnergy.ENERGY).ifPresent(e -> e.receiveEnergy(1000000, false));
+            //itemstack.getCapability(CapabilityEnergy.ENERGY).ifPresent(e -> e.receiveEnergy(1000000, false));
             NetworkHooks.openGui((ServerPlayerEntity) player, new SimpleNamedContainerProvider(
                     (windowId, playerInventory, playerEntity) -> new ZapperItemContainer(windowId, playerInventory, handler, itemstack), new StringTextComponent("")));
             return new ActionResult<>(ActionResultType.PASS, itemstack);

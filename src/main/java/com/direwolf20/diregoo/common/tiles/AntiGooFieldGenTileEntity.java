@@ -81,7 +81,7 @@ public class AntiGooFieldGenTileEntity extends FETileBase implements ITickableTi
 
         //Server Only
         if (!world.isRemote) {
-            energyStorage.receiveEnergy(1000, false); //Test
+            //energyStorage.receiveEnergy(1000, false); //Test
             if (isActive) {
                 double rfCost = getNumBlocks() * Config.ANTIGOOFIELDGENRF.get();
                 if (energyStorage.getEnergyStored() >= rfCost)

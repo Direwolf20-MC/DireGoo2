@@ -222,7 +222,7 @@ public class ZapperTurretTileEntity extends FETileBase implements ITickableTileE
 
         //Server Only
         if (!world.isRemote) {
-            energyStorage.receiveEnergy(625, false); //Testing
+            //energyStorage.receiveEnergy(625, false); //Testing
             if (!isShooting()) return;
             if (shootCooldown > 0) {
                 shootCooldown--;

@@ -37,7 +37,7 @@ public class GooRemover extends FEItemBase {
         //Server Side Only
         if (player.isSneaking()) {
             // Debug code for free energy
-            itemstack.getCapability(CapabilityEnergy.ENERGY).ifPresent(e -> e.receiveEnergy(10000, false));
+            //itemstack.getCapability(CapabilityEnergy.ENERGY).ifPresent(e -> e.receiveEnergy(10000, false));
         } else {
             if (canUseItem(itemstack, Config.ITEM_REMOVER_RFCOST.get())) {
                 spawnLaserGunParticle(player, world, itemstack);
