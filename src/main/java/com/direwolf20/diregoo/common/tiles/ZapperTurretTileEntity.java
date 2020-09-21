@@ -115,7 +115,7 @@ public class ZapperTurretTileEntity extends FETileBase implements ITickableTileE
         int cost = Config.ZAPPER_TILE_RFCOST.get();
         if (isFreezing()) cost = cost / 2;
         cost *= Math.pow(getRadius(), 2);
-        cost *= (getRange() / 8);
+        //cost *= (getRange() / 8);
         System.out.println(cost);
         return cost;
     }

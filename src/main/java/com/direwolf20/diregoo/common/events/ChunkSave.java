@@ -76,7 +76,7 @@ public class ChunkSave {
         if (palettePosition == -1) {
             blockSave.blockMapPalette.put((short) blockSave.blockMapPalette.values().size(), state);
             palettePosition = (short) (blockSave.blockMapPalette.values().size() - 1);
-            System.out.println("Adding " + state + " to position " + palettePosition);
+            //System.out.println("Adding " + state + " to position " + palettePosition);
         }
         getBlockMap(chunkPos).put(pos.toLong(), palettePosition);
         blockSave.markDirty();

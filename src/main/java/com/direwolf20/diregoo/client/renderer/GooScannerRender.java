@@ -93,7 +93,7 @@ public class GooScannerRender {
             player.sendStatusMessage(new TranslationTextComponent("message.diregoo.goocount", gooBlocksList.size()), true);
             Collections.reverse(gooBlocksList);
             gooVisibleStartTime = System.currentTimeMillis();
-            System.out.println(gooBlocksList.size());
+            //System.out.println(gooBlocksList.size());
             renderVBO();
         }
     }

@@ -63,7 +63,7 @@ public class GooBase extends Block {
                     Block.spawnAsEntity(world, pos, drop);
                 }
             }
-            System.out.println("Invalid Position for " + oldState + " Dropping Items: " + drops);
+            //System.out.println("Invalid Position for " + oldState + " Dropping Items: " + drops);
             world.setBlockState(pos, Blocks.AIR.getDefaultState());
         }
         ChunkSave.pop(pos, world.getChunk(pos).getPos());
