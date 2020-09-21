@@ -15,7 +15,7 @@ public class CommandGooDeathEvent {
 
     public static ArgumentBuilder<CommandSource, ?> register() {
         return Commands.literal("gooDeathEvent")
-                .requires(cs -> cs.hasPermissionLevel(0))
+                .requires(cs -> cs.hasPermissionLevel(2))
                 .executes(ctx -> getDeathEvent(ctx))
                 .then(Commands.argument("gooDeathEvent", BoolArgumentType.bool())
                         .executes(ctx -> setDeathEvent(ctx, BoolArgumentType.getBool(ctx, "gooDeathEvent"))));

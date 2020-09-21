@@ -22,7 +22,7 @@ public class CommandClearGoo {
 
     public static ArgumentBuilder<CommandSource, ?> register() {
         return Commands.literal("ClearGoo")
-                .requires(cs -> cs.hasPermissionLevel(0))
+                .requires(cs -> cs.hasPermissionLevel(2))
                 .then(Commands.argument("range", IntegerArgumentType.integer(1, Integer.MAX_VALUE))
                         .executes(ctx -> clearGoo(ctx)));
     }

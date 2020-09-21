@@ -14,7 +14,7 @@ public class CommandCanSpread {
 
     public static ArgumentBuilder<CommandSource, ?> register() {
         return Commands.literal("canSpread")
-                .requires(cs -> cs.hasPermissionLevel(0))
+                .requires(cs -> cs.hasPermissionLevel(2))
                 .executes(ctx -> getCanSpread(ctx))
                 .then(Commands.argument("canspread", BoolArgumentType.bool())
                         .executes(ctx -> setCanSpread(ctx, BoolArgumentType.getBool(ctx, "canspread"))));

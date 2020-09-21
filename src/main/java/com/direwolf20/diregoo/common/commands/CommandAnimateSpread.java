@@ -13,7 +13,7 @@ public class CommandAnimateSpread {
 
     public static ArgumentBuilder<CommandSource, ?> register() {
         return Commands.literal("animateSpread")
-                .requires(cs -> cs.hasPermissionLevel(0))
+                .requires(cs -> cs.hasPermissionLevel(2))
                 .executes(ctx -> getCanSpread(ctx))
                 .then(Commands.argument("animateSpread", BoolArgumentType.bool())
                         .executes(ctx -> setCanSpread(ctx, BoolArgumentType.getBool(ctx, "animateSpread"))));

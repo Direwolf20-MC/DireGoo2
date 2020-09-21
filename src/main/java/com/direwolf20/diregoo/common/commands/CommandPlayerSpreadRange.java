@@ -13,7 +13,7 @@ public class CommandPlayerSpreadRange {
 
     public static ArgumentBuilder<CommandSource, ?> register() {
         return Commands.literal("spreadRange")
-                .requires(cs -> cs.hasPermissionLevel(0))
+                .requires(cs -> cs.hasPermissionLevel(2))
                 .executes(ctx -> getRange(ctx))
                 .then(Commands.argument("spreadrange", IntegerArgumentType.integer(0, Integer.MAX_VALUE))
                         .executes(ctx -> setRange(ctx, IntegerArgumentType.getInteger(ctx, "spreadrange"))));

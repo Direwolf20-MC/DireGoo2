@@ -13,7 +13,7 @@ public class CommandSpreadDelay {
 
     public static ArgumentBuilder<CommandSource, ?> register() {
         return Commands.literal("spreadDelay")
-                .requires(cs -> cs.hasPermissionLevel(0))
+                .requires(cs -> cs.hasPermissionLevel(2))
                 .executes(ctx -> getRange(ctx))
                 .then(Commands.argument("spreaddelay", IntegerArgumentType.integer(-1, Integer.MAX_VALUE))
                         .executes(ctx -> setRange(ctx, IntegerArgumentType.getInteger(ctx, "spreaddelay"))));
