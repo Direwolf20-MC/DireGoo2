@@ -51,7 +51,7 @@ public class ZapperTurretTileEntity extends FETileBase implements ITickableTileE
     private LazyOptional<ItemStackHandler> inventory = LazyOptional.of(() -> new ItemStackHandler(ZapperTurretContainer.SLOTS));
 
     public ZapperTurretTileEntity() {
-        super(ModBlocks.ZAPPERTURRET_TILE.get());
+        super(ModBlocks.ZAPPERTURRET_TILE.get(), Config.ZAPPER_TILE_MAXRF.get());
     }
 
     public boolean isShooting() {

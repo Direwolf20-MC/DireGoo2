@@ -33,7 +33,7 @@ public class AntiGooFieldGenTileEntity extends FETileBase implements ITickableTi
     private int[] ranges = {0, 0, 0, 0, 0, 0}; //N,S,W,E,U,D
 
     public AntiGooFieldGenTileEntity() {
-        super(ModBlocks.ANTI_GOO_FIELD_GEN_TILE.get());
+        super(ModBlocks.ANTI_GOO_FIELD_GEN_TILE.get(), Config.ANTIGOOFIELDGENRF_MAXRF.get());
     }
 
     public int[] getRanges() {

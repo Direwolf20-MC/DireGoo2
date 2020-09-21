@@ -1,6 +1,5 @@
 package com.direwolf20.diregoo.common.tiles;
 
-import com.direwolf20.diregoo.Config;
 import com.direwolf20.diregoo.common.capabilities.FEEnergyStorage;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
@@ -57,7 +56,7 @@ public abstract class FETileBase extends TileEntity implements ITickableTileEnti
 
     public FETileBase(TileEntityType<?> type) {
         super(type);
-        this.energyStorage = new FEEnergyStorage(this, 0, Config.TILEMAXENERGY.get());
+        this.energyStorage = new FEEnergyStorage(this, 0, 1000000);
         this.energy = LazyOptional.of(() -> this.energyStorage);
     }
 

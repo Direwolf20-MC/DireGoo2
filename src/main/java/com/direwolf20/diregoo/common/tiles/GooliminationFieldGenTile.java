@@ -1,5 +1,6 @@
 package com.direwolf20.diregoo.common.tiles;
 
+import com.direwolf20.diregoo.Config;
 import com.direwolf20.diregoo.common.blocks.ModBlocks;
 import com.direwolf20.diregoo.common.container.GooliminationFieldGenContainer;
 import com.direwolf20.diregoo.common.worldsave.BlockSave;
@@ -24,7 +25,7 @@ public class GooliminationFieldGenTile extends FETileBase implements ITickableTi
     private boolean isActive = false;
 
     public GooliminationFieldGenTile() {
-        super(ModBlocks.GOOLIMINATION_TILE.get(), 1000000000);
+        super(ModBlocks.GOOLIMINATION_TILE.get(), Config.GOOLIMINATION_MAXRF.get());
     }
 
     public boolean isActive(World world) {
@@ -56,7 +57,7 @@ public class GooliminationFieldGenTile extends FETileBase implements ITickableTi
         if (!world.isRemote) {
             energyStorage.receiveEnergy(1000000, false); //Testing
             if (isActive(world)) {
-                int rfCost = 1000000;
+                int rfCost = Config.GOOLIMINATION_RF_PER_TICK.get();
                 if (energyStorage.getEnergyStored() >= rfCost)
                     energyStorage.consumeEnergy(rfCost, false);
                 else {

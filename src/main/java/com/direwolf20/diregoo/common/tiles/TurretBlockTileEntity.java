@@ -77,7 +77,7 @@ public class TurretBlockTileEntity extends FETileBase implements ITickableTileEn
     };
 
     public TurretBlockTileEntity() {
-        super(ModBlocks.TURRETBLOCK_TILE.get());
+        super(ModBlocks.TURRETBLOCK_TILE.get(), Config.TURRET_MAX_RF.get());
     }
 
     public ItemStackHandler getInventoryStacks() {

@@ -34,11 +34,11 @@ public class Config {
     public static ForgeConfigSpec.BooleanValue CAN_SPREAD_TERRAIN;
     public static ForgeConfigSpec.IntValue SPREADCHANCETERRAIN;
 
-    public static final String SUBCATEGORY_GOO_BURST = "burst_goo";
+    /*public static final String SUBCATEGORY_GOO_BURST = "burst_goo";
     public static ForgeConfigSpec.BooleanValue CAN_SPREAD_BURST;
     public static ForgeConfigSpec.IntValue SPREADCHANCEBURST;
     public static ForgeConfigSpec.IntValue MINBURST;
-    public static ForgeConfigSpec.IntValue MAXBURST;
+    public static ForgeConfigSpec.IntValue MAXBURST;*/
 
     public static final String SUBCATEGORY_GNT = "gnt";
     public static ForgeConfigSpec.IntValue GNT_TIER1_RADIUS;
@@ -47,12 +47,13 @@ public class Config {
     public static ForgeConfigSpec.IntValue GNT_TIER4_RADIUS;
 
     public static final String CATEGORY_RFCOSTS = "rfcosts";
-    public static ForgeConfigSpec.IntValue TILEMAXENERGY;
+    //public static ForgeConfigSpec.IntValue TILEMAXENERGY;
 
     public static final String SUBCATEGORY_TILE_TURRET = "tile_turret";
-    public static ForgeConfigSpec.IntValue TURRET_RANGE;
+    //public static ForgeConfigSpec.IntValue TURRET_RANGE;
     public static ForgeConfigSpec.IntValue TURRET_RFCOST;
     public static ForgeConfigSpec.IntValue TURRET_BOOST_COUNT;
+    public static ForgeConfigSpec.IntValue TURRET_MAX_RF;
 
     public static final String SUBCATEGORY_TILE_ZAPPER = "tile_zapper_turret";
     public static ForgeConfigSpec.IntValue ZAPPER_TILE_RFCOST;
@@ -60,6 +61,11 @@ public class Config {
 
     public static final String SUBCATEGORY_TILE_ANTIGOOFIELD = "tile_antigoofield";
     public static ForgeConfigSpec.DoubleValue ANTIGOOFIELDGENRF;
+    public static ForgeConfigSpec.IntValue ANTIGOOFIELDGENRF_MAXRF;
+
+    public static final String SUBCATEGORY_TILE_GOOLIMINATION = "tile_goolimination";
+    public static ForgeConfigSpec.IntValue GOOLIMINATION_RF_PER_TICK;
+    public static ForgeConfigSpec.IntValue GOOLIMINATION_MAXRF;
 
     public static final String SUBCATEGORY_ITEM_REMOVER = "item_remover";
     public static ForgeConfigSpec.IntValue ITEM_REMOVER_RFCOST;
@@ -95,26 +101,36 @@ public class Config {
     }
 
     private static void setupRFCostConfig() {
-        TILEMAXENERGY = COMMON_BUILDER.comment("The max amount of RF in the Tile Entities")
-                .defineInRange("tileMaxEnergy", 1000000, 0, Integer.MAX_VALUE);
-
         COMMON_BUILDER.comment("Goo Removal Turret Settings").push(SUBCATEGORY_TILE_TURRET);
-        TURRET_RANGE = COMMON_BUILDER.comment("The range of the turret block (AKA Radius)")
-                .defineInRange("turretRange", 5, 0, 25);
+        /*TURRET_RANGE = COMMON_BUILDER.comment("The range of the turret block (AKA Radius)")
+                .defineInRange("turretRange", 5, 0, 25);*/
         TURRET_RFCOST = COMMON_BUILDER.comment("The RF cost per shot (Per block removed)")
                 .defineInRange("turretRFCost", 10000, 0, Integer.MAX_VALUE);
         TURRET_BOOST_COUNT = COMMON_BUILDER.comment("The number of boosted (Faster) shots per AntiGooDust")
                 .defineInRange("turretBoostCount", 10, 0, Integer.MAX_VALUE);
+        TURRET_MAX_RF = COMMON_BUILDER.comment("The max amount of RF in the Goo Removal Turret")
+                .defineInRange("turretMaxEnergy", 1000000, 0, Integer.MAX_VALUE);
         COMMON_BUILDER.pop();
 
         COMMON_BUILDER.comment("Goo Zapper Turret Settings").push(SUBCATEGORY_TILE_ZAPPER);
         ZAPPER_TILE_RFCOST = COMMON_BUILDER.comment("The base RF cost per shot (Per block activation). This increases based on installed upgrades")
                 .defineInRange("zapperTileRFCost", 10000, 0, Integer.MAX_VALUE);
+        ZAPPER_TILE_MAXRF = COMMON_BUILDER.comment("The max amount of RF in the Zapper Turret")
+                .defineInRange("zapperMaxEnergy", 1000000, 0, Integer.MAX_VALUE);
         COMMON_BUILDER.pop();
 
         COMMON_BUILDER.comment("AntiGoo field Generator Settings").push(SUBCATEGORY_TILE_ANTIGOOFIELD);
         ANTIGOOFIELDGENRF = COMMON_BUILDER.comment("The RF cost per block protected by the Anti Goo Field Generator")
                 .defineInRange("antiGooFieldCost", 1, 0, Double.MAX_VALUE);
+        ANTIGOOFIELDGENRF_MAXRF = COMMON_BUILDER.comment("The max amount of RF in the Antigoo Field Generator")
+                .defineInRange("antigooMaxEnergy", 10000000, 0, Integer.MAX_VALUE);
+        COMMON_BUILDER.pop();
+
+        COMMON_BUILDER.comment("Goolimination Field Gen Settings").push(SUBCATEGORY_TILE_GOOLIMINATION);
+        GOOLIMINATION_RF_PER_TICK = COMMON_BUILDER.comment("The RF cost per tick to run the Goolimination Field Generator")
+                .defineInRange("gooliminationCost", 1000000, 0, Integer.MAX_VALUE);
+        GOOLIMINATION_MAXRF = COMMON_BUILDER.comment("The max amount of RF in the Goolimination Field Generator")
+                .defineInRange("gooliminationMaxEnergy", 1000000000, 0, Integer.MAX_VALUE);
         COMMON_BUILDER.pop();
 
         COMMON_BUILDER.comment("Goo Remover (Item) Settings").push(SUBCATEGORY_ITEM_REMOVER);
@@ -188,7 +204,7 @@ public class Config {
                 .defineInRange("spreadChanceTerrain", 100, 1, 100);
         COMMON_BUILDER.pop();
 
-        COMMON_BUILDER.comment("Burst Goo Specific Settings").push(SUBCATEGORY_GOO_BURST);
+        /*COMMON_BUILDER.comment("Burst Goo Specific Settings").push(SUBCATEGORY_GOO_BURST);
         CAN_SPREAD_BURST = COMMON_BUILDER.comment("Can the burst goo spread. Set the false to disable only burst goo spreading.")
                 .define("canSpreadBurst", true);
         SPREADCHANCEBURST = COMMON_BUILDER.comment("The chance that burst goo will spread when it randomly ticks. The lower this is, the slower goo spreads.")
@@ -197,7 +213,7 @@ public class Config {
                 .defineInRange("minBurst", 5, 1, 25);
         MAXBURST = COMMON_BUILDER.comment("The maximum number of blocks BurstGoo can do at once - it will randomly pick a number between Min and Max")
                 .defineInRange("maxBurst", 15, 1, 25);
-        COMMON_BUILDER.pop();
+        COMMON_BUILDER.pop();*/
 
         COMMON_BUILDER.comment("GNT Settings").push(SUBCATEGORY_GNT);
         GNT_TIER1_RADIUS = COMMON_BUILDER.comment("The radius of Tier 1 GNT")
@@ -207,7 +223,7 @@ public class Config {
         GNT_TIER3_RADIUS = COMMON_BUILDER.comment("The radius of Tier 3 GNT")
                 .defineInRange("gntTier3Radius", 15, 1, 100);
         GNT_TIER4_RADIUS = COMMON_BUILDER.comment("The radius of Tier 4 GNT")
-                .defineInRange("gntTier4Radius", 25, 1, 100);
+                .defineInRange("gntTier4Radius", 20, 1, 100);
         COMMON_BUILDER.pop();
     }
 }
