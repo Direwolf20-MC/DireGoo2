@@ -19,7 +19,7 @@ license="MIT (https://github.com/Direwolf20-MC/DireGoo2/blob/master/LICENSE.txt)
 [[dependencies.diregoo]]
     modId="forge"
     mandatory=true
-    versionRange="[33,)"
+    versionRange="[34,)"
     ordering="NONE"
     side="BOTH"
 
@@ -27,6 +27,6 @@ license="MIT (https://github.com/Direwolf20-MC/DireGoo2/blob/master/LICENSE.txt)
 [[dependencies.diregoo]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.16.2]"
+    versionRange="[1.16.3]"
     ordering="NONE"
     side="BOTH"

@@ -105,6 +105,9 @@ repositories {
     maven {
         url 'https://www.dogforce-games.com/maven/'
     }
+    maven {
+        url 'https://maven.latmod.com'
+    }
 }
 
 dependencies {
@@ -116,6 +119,7 @@ dependencies {
     //JEI
     compileOnly fg.deobf("mezz.jei:jei-${jei_version}:api")
     runtimeOnly fg.deobf("mezz.jei:jei-${jei_version}")
+    runtimeOnly fg.deobf("com.feed_the_beast.mods:ftb-gui-library:1.0.0.18")
 
     //runtimeOnly fg.deobf("ignored:Powah:1.16.1-2.1.3")
     //runtimeOnly fg.deobf("ignored:Lollipop:1.16.1-2.1.3")
