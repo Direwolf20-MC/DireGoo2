@@ -7,6 +7,7 @@ import com.direwolf20.diregoo.common.network.packets.PacketChangeAntiGooFieldAct
 import com.direwolf20.diregoo.common.network.packets.PacketChangeAntiGooFieldRange;
 import com.direwolf20.diregoo.common.network.packets.PacketChangeAntiGooFieldRender;
 import com.direwolf20.diregoo.common.tiles.AntiGooFieldGenTileEntity;
+import com.direwolf20.diregoo.common.util.MagicHelpers;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.widget.Widget;
@@ -15,12 +16,14 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.LanguageMap;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.fml.client.gui.widget.Slider;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class AntiGooFieldGenScreen extends FEScreenBase<AntiGooFieldGenContainer> implements Slider.ISlider {
@@ -85,6 +88,20 @@ public class AntiGooFieldGenScreen extends FEScreenBase<AntiGooFieldGenContainer
             addButton(Rwidgets.get(i));
         }
         super.init();
+    }
+
+    @Override
+    public void render(MatrixStack stack, int mouseX, int mouseY, float partialTicks) {
+        super.render(stack, mouseX, mouseY, partialTicks);
+
+        if (mouseX > (guiLeft + 7) && mouseX < (guiLeft + 7) + 18 && mouseY > (guiTop + 7) && mouseY < (guiTop + 7) + 73) {
+            /*this.renderTooltip(stack, LanguageMap.getInstance().func_244260_a(Arrays.asList(
+                    new TranslationTextComponent("screen.diregoo.energy", MagicHelpers.withSuffix(this.container.getEnergy()), MagicHelpers.withSuffix(this.container.getMaxPower())))
+            ), mouseX, mouseY);*/
+            this.renderTooltip(stack, LanguageMap.getInstance().func_244260_a(Arrays.asList(
+                    new TranslationTextComponent("screen.diregoo.antigoofieldgenenergy", MagicHelpers.withSuffix(this.container.getRFPerTick())))
+            ), mouseX, mouseY + 10);
+        }
     }
 
     @Override

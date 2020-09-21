@@ -14,6 +14,7 @@ public class GeneratorLanguage extends LanguageProvider {
     @Override
     protected void addTranslations() {
         add("screen.diregoo.energy", "Energy: %s/%s FE");
+        add("screen.diregoo.antigoofieldgenenergy", "RF/Tick Cost: %s FE");
         add("screen.diregoo.antigoobeacon.fuel_remaining", "Fuel Time Remaining: %d");
         add("screen.diregoo.turret.shots_remaining", "Boost Shots Remaining: %d");
         add("screen.diregoo.antigoofieldgen.active", "Active %1$d");

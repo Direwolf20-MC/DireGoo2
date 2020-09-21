@@ -13,6 +13,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.nbt.NBTUtil;
 import net.minecraft.tileentity.ITickableTileEntity;
+import net.minecraft.util.IIntArray;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
@@ -31,6 +32,34 @@ public class AntiGooFieldGenTileEntity extends FETileBase implements ITickableTi
     private boolean renderArea = false;
     private Set<BlockPos> protectedBlocksList = new HashSet<>();
     private int[] ranges = {0, 0, 0, 0, 0, 0}; //N,S,W,E,U,D
+
+    public final IIntArray FETileData = new IIntArray() {
+        @Override
+        public int get(int index) {
+            switch (index) {
+                case 0:
+                    return energyStorage.getEnergyStored() / 32;
+                case 1:
+                    return energyStorage.getMaxEnergyStored() / 32;
+                case 2:
+                    return getRFCost();
+                /*case 3:
+                    return AntiGooFieldGenTileEntity.this.maxBurn;*/
+                default:
+                    throw new IllegalArgumentException("Invalid index: " + index);
+            }
+        }
+
+        @Override
+        public void set(int index, int value) {
+            throw new IllegalStateException("Cannot set values through IIntArray");
+        }
+
+        @Override
+        public int size() {
+            return 3;
+        }
+    };
 
     public AntiGooFieldGenTileEntity() {
         super(ModBlocks.ANTI_GOO_FIELD_GEN_TILE.get(), Config.ANTIGOOFIELDGENRF_MAXRF.get());
@@ -65,11 +94,15 @@ public class AntiGooFieldGenTileEntity extends FETileBase implements ITickableTi
     @Override
     public Container createMenu(int i, PlayerInventory playerInventory, PlayerEntity playerEntity) {
         assert world != null;
-        return new AntiGooFieldGenContainer(this, this.FETileData, i, playerInventory);
+        return new AntiGooFieldGenContainer(this, FETileData, i, playerInventory);
     }
 
     public double getNumBlocks() {
         return (ranges[0] + ranges[1] + 1) * (ranges[2] + ranges[3] + 1) * (ranges[4] + ranges[5] + 1);
+    }
+
+    public int getRFCost() {
+        return (int) Math.floor(getNumBlocks() * Config.ANTIGOOFIELDGENRF.get());
     }
 
     @Override
@@ -83,9 +116,8 @@ public class AntiGooFieldGenTileEntity extends FETileBase implements ITickableTi
         if (!world.isRemote) {
             //energyStorage.receiveEnergy(1000, false); //Test
             if (isActive) {
-                double rfCost = getNumBlocks() * Config.ANTIGOOFIELDGENRF.get();
-                if (energyStorage.getEnergyStored() >= rfCost)
-                    energyStorage.consumeEnergy((int) Math.floor(rfCost), false);
+                if (energyStorage.getEnergyStored() >= getRFCost())
+                    energyStorage.consumeEnergy(getRFCost(), false);
                 else {
                     removeField();
                 }

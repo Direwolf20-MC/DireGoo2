@@ -49,6 +49,7 @@
   "screen.diregoo.antigoobeacon.fuel_remaining": "Fuel Time Remaining: %d",
   "screen.diregoo.antigoofieldgen.active": "Active %1$d",
   "screen.diregoo.antigoofieldgen.renderarea": "Render %1$d",
+  "screen.diregoo.antigoofieldgenenergy": "RF/Tick Cost: %s FE",
   "screen.diregoo.energy": "Energy: %s/%s FE",
   "screen.diregoo.goolimination.active": "Active %1$d",
   "screen.diregoo.turret.shots_remaining": "Boost Shots Remaining: %d",

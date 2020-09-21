@@ -16,7 +16,7 @@ public class AntiGooFieldGenContainer extends FEContainerBase {
     //private static final int SLOTS = 0;
 
     public AntiGooFieldGenContainer(int windowId, PlayerInventory playerInventory, PacketBuffer extraData) {
-        this((AntiGooFieldGenTileEntity) playerInventory.player.world.getTileEntity(extraData.readBlockPos()), new IntArray(4), windowId, playerInventory);
+        this((AntiGooFieldGenTileEntity) playerInventory.player.world.getTileEntity(extraData.readBlockPos()), new IntArray(3), windowId, playerInventory);
     }
 
     public AntiGooFieldGenContainer(@Nullable AntiGooFieldGenTileEntity tile, IIntArray antiGooFieldGenData, int windowId, PlayerInventory playerInventory) {
@@ -38,6 +38,18 @@ public class AntiGooFieldGenContainer extends FEContainerBase {
     public boolean canInteractWith(PlayerEntity playerIn) {
         BlockPos pos = this.tile.getPos();
         return this.tile != null && !this.tile.isRemoved() && playerIn.getDistanceSq(new Vector3d(pos.getX(), pos.getY(), pos.getZ()).add(0.5D, 0.5D, 0.5D)) <= 64D;
+    }
+
+    public int getRFPerTick() {
+        return this.data.get(2);
+    }
+
+    public int getMaxPower() {
+        return this.data.get(1) * 32;
+    }
+
+    public int getEnergy() {
+        return this.data.get(0) * 32;
     }
 
 }
