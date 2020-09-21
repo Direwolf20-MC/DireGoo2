@@ -95,9 +95,6 @@ public class AntiGooFieldGenScreen extends FEScreenBase<AntiGooFieldGenContainer
         super.render(stack, mouseX, mouseY, partialTicks);
 
         if (mouseX > (guiLeft + 7) && mouseX < (guiLeft + 7) + 18 && mouseY > (guiTop + 7) && mouseY < (guiTop + 7) + 73) {
-            /*this.renderTooltip(stack, LanguageMap.getInstance().func_244260_a(Arrays.asList(
-                    new TranslationTextComponent("screen.diregoo.energy", MagicHelpers.withSuffix(this.container.getEnergy()), MagicHelpers.withSuffix(this.container.getMaxPower())))
-            ), mouseX, mouseY);*/
             this.renderTooltip(stack, LanguageMap.getInstance().func_244260_a(Arrays.asList(
                     new TranslationTextComponent("screen.diregoo.antigoofieldgenenergy", MagicHelpers.withSuffix(this.container.getRFPerTick())))
             ), mouseX, mouseY + 10);
@@ -138,7 +135,7 @@ public class AntiGooFieldGenScreen extends FEScreenBase<AntiGooFieldGenContainer
         ESlider.dragging = false;
         USlider.dragging = false;
         DSlider.dragging = false;
-        return false;
+        return super.mouseReleased(p_mouseReleased_1_, p_mouseReleased_3_, p_mouseReleased_5_);
     }
 
     /*@Override

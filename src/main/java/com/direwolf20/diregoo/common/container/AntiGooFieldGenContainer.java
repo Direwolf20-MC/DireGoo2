@@ -29,8 +29,6 @@ public class AntiGooFieldGenContainer extends FEContainerBase {
 
     @Override
     public void setup(PlayerInventory inventory) {
-        //addSlot(new RestrictedSlot(handler, 0, 65, 43));
-        //addSlot(new RestrictedSlot(handler, 1, 119, 43));
         super.setup(inventory);
     }
 
@@ -40,14 +38,17 @@ public class AntiGooFieldGenContainer extends FEContainerBase {
         return this.tile != null && !this.tile.isRemoved() && playerIn.getDistanceSq(new Vector3d(pos.getX(), pos.getY(), pos.getZ()).add(0.5D, 0.5D, 0.5D)) <= 64D;
     }
 
+
     public int getRFPerTick() {
         return this.data.get(2);
     }
 
+    @Override
     public int getMaxPower() {
         return this.data.get(1) * 32;
     }
 
+    @Override
     public int getEnergy() {
         return this.data.get(0) * 32;
     }
