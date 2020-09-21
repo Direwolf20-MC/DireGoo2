@@ -105,7 +105,7 @@ public class Config {
         /*TURRET_RANGE = COMMON_BUILDER.comment("The range of the turret block (AKA Radius)")
                 .defineInRange("turretRange", 5, 0, 25);*/
         TURRET_RFCOST = COMMON_BUILDER.comment("The RF cost per shot (Per block removed)")
-                .defineInRange("turretRFCost", 10000, 0, Integer.MAX_VALUE);
+                .defineInRange("turretRFCost", 1000, 0, Integer.MAX_VALUE);
         TURRET_BOOST_COUNT = COMMON_BUILDER.comment("The number of boosted (Faster) shots per AntiGooDust")
                 .defineInRange("turretBoostCount", 10, 0, Integer.MAX_VALUE);
         TURRET_MAX_RF = COMMON_BUILDER.comment("The max amount of RF in the Goo Removal Turret")
