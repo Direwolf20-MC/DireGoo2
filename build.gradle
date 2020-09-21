@@ -13,7 +13,7 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = '${mod_version}'
+version = "${mod_version}"
 group = 'com.direwolf20.diregoo' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'diregoo'
 
