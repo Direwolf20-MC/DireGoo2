@@ -13,19 +13,15 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.PushReaction;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
@@ -84,14 +80,14 @@ public class GooBase extends Block {
         return state.get(ACTIVE);
     }
 
-    @Override
+    /*@Override
     public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult result) {
         ItemStack stack = player.getHeldItemMainhand();
         if (!stack.isEmpty()) return ActionResultType.PASS;
         if (world.isRemote) return ActionResultType.SUCCESS; //Server Side Only
         world.getPendingBlockTicks().scheduleTick(pos, this, 0);
         return ActionResultType.SUCCESS;
-    }
+    }*/
 
     public boolean isPlayerInRange(ServerWorld world, BlockPos pos) {
         return world.isPlayerWithin(pos.getX(), pos.getY(), pos.getZ(), Config.PLAYER_SPREAD_RANGE.get());

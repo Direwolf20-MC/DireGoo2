@@ -97,11 +97,11 @@ repositories {
     flatDir {
         dirs 'includedMods/'
     }
-    maven {
+    //maven {
         //JEI fallback
-        name = "ModMaven"
-        url = "https://modmaven.k-4u.nl"
-    }
+    //    name = "ModMaven"
+    //    url = "https://modmaven.k-4u.nl"
+    //}
     maven {
         url 'https://www.dogforce-games.com/maven/'
     }
