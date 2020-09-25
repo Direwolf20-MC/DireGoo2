@@ -60,13 +60,13 @@ public class GooRemover extends FEItemBase {
         Vector3d down = right.crossProduct(forward);
 
         //Take the player's eye position, and shift it to where the end of the laser is (Roughly)
-        right = right.scale(MathHelper.lerp((look.z + 1) / 2, 0.55f, 0.80f));
+        right = right.scale(0.25f); //right.scale(MathHelper.lerp((look.z + 1) / 2, 0.55f, 0.80f));
         forward = forward.scale(1.25f);
         down = down.scale(MathHelper.lerp((look.x + 1) / 2, -0.35, -0.45));
         backward = backward.scale(0.05);
         Vector3d laserPos = playerPos.add(right);
-        laserPos = laserPos.add(forward);
-        laserPos = laserPos.add(down);
+        //laserPos = laserPos.add(forward);
+        //laserPos = laserPos.add(down);
         lookingAt = lookingAt.add(backward);
 
         Vector3d pathVec = lookingAt.add(-0.125, -0.125, -0.125).subtract(laserPos).normalize(); //Half of the particle size, so it adjusts to the actual center of the block

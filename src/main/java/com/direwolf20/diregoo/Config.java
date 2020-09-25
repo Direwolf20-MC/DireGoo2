@@ -135,7 +135,7 @@ public class Config {
 
         COMMON_BUILDER.comment("Goo Remover (Item) Settings").push(SUBCATEGORY_ITEM_REMOVER);
         ITEM_REMOVER_RFCOST = COMMON_BUILDER.comment("The RF cost per shot (Per block removed)")
-                .defineInRange("removerRFCost", 10000, 0, Integer.MAX_VALUE);
+                .defineInRange("removerRFCost", 1000, 0, Integer.MAX_VALUE);
         ITEM_REMOVER_RFMAX = COMMON_BUILDER.comment("The max RF the Goo Remover can hold")
                 .defineInRange("removerRFMax", 1000000, 0, Integer.MAX_VALUE);
         COMMON_BUILDER.pop();
