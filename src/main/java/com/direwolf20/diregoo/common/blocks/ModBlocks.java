@@ -5,9 +5,12 @@ import com.direwolf20.diregoo.common.blocks.goospreadblocks.GooRender;
 import com.direwolf20.diregoo.common.blocks.goospreadblocks.GooRenderTerrain;
 import com.direwolf20.diregoo.common.container.*;
 import com.direwolf20.diregoo.common.tiles.*;
+import com.direwolf20.diregoo.common.world.GooFeature;
 import net.minecraft.block.Block;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.OreFeatureConfig;
 import net.minecraftforge.common.extensions.IForgeContainerType;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
@@ -20,6 +23,7 @@ public class ModBlocks {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, DireGoo.MOD_ID);
     public static final DeferredRegister<TileEntityType<?>> TILES_ENTITIES = DeferredRegister.create(ForgeRegistries.TILE_ENTITIES, DireGoo.MOD_ID);
     public static final DeferredRegister<ContainerType<?>> CONTAINERS = DeferredRegister.create(ForgeRegistries.CONTAINERS, DireGoo.MOD_ID);
+    public static final DeferredRegister<Feature<?>> FEATURES = DeferredRegister.create(ForgeRegistries.FEATURES, DireGoo.MOD_ID);
 
     /**
      * Register our blocks to the above registers to be loaded when the mod is initialized
@@ -67,4 +71,8 @@ public class ModBlocks {
     public static final RegistryObject<ContainerType<GooliminationFieldGenContainer>> GOOLIMINATION_CONTAINER = CONTAINERS.register("goolimination_container", () -> IForgeContainerType.create(GooliminationFieldGenContainer::new));
 
 
+    /**
+     * Features
+     */
+    public static final RegistryObject<Feature<OreFeatureConfig>> GOOFEATURE = FEATURES.register("goofeature", () -> new GooFeature(OreFeatureConfig.field_236566_a_));
 }

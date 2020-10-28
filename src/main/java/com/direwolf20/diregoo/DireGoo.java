@@ -10,6 +10,7 @@ import com.direwolf20.diregoo.common.events.ChunkSave;
 import com.direwolf20.diregoo.common.events.ServerEvents;
 import com.direwolf20.diregoo.common.items.ModItems;
 import com.direwolf20.diregoo.common.network.PacketHandler;
+import com.direwolf20.diregoo.common.world.GenHandler;
 import net.minecraft.block.Block;
 import net.minecraft.block.DispenserBlock;
 import net.minecraft.dispenser.DefaultDispenseItemBehavior;
@@ -22,6 +23,7 @@ import net.minecraft.util.Util;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -61,6 +63,7 @@ public class DireGoo
         ModItems.BASICITEMS.register(event);
         ModBlocks.TILES_ENTITIES.register(event);
         ModBlocks.CONTAINERS.register(event);
+        ModBlocks.FEATURES.register(event);
 
         //This does stuff with the Config somehow?
         //ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, Config.CLIENT_CONFIG);
@@ -84,7 +87,7 @@ public class DireGoo
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
 
-
+        MinecraftForge.EVENT_BUS.addListener(EventPriority.HIGH, GenHandler::addStuffToBiomes);
 
     }
 
@@ -111,6 +114,9 @@ public class DireGoo
             }
         };
         DispenserBlock.registerDispenseBehavior(ModItems.GOONADE.get(), goonadeBehavior);
+        event.enqueueWork(() -> {
+            GenHandler.registerConfiguredFeatures();
+        });
     }
 
     private void doClientStuff(final FMLClientSetupEvent event) {
