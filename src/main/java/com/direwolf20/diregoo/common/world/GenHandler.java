@@ -11,6 +11,7 @@ import net.minecraft.util.registry.WorldGenRegistries;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
+import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.OreFeatureConfig;
 import net.minecraft.world.gen.feature.template.BlockMatchRuleTest;
 import net.minecraft.world.gen.placement.Placement;
@@ -32,6 +33,18 @@ public class GenHandler {
                 .withPlacement(Placement.field_242907_l.configure(new TopSolidRangeConfig(Config.GEN_NORMAL_ABOVEGROUND_YMIN.get(), Config.GEN_NORMAL_ABOVEGROUND_YMIN.get(), Config.GEN_NORMAL_ABOVEGROUND_YMAX.get()))) //Bottom Offset, Top Offset, Maximum
                 .func_242729_a(Config.GEN_NORMAL_ABOVEGROUND_CHANCE.get()); //% Chance to spawn - Bigger Number == More Rare
         Registry.register(registry, new ResourceLocation(DireGoo.MOD_ID, "gooblock_gen_air"), GooBlocksAir);
+
+        GooBlocksUnderground = Feature.ORE
+                .withConfiguration(new OreFeatureConfig(OreFeatureConfig.FillerBlockType.field_241882_a, ModBlocks.GOO_BLOCK.get().getDefaultState(), 4))
+                .withPlacement(Placement.field_242907_l.configure(new TopSolidRangeConfig(Config.GEN_NORMAL_UNDERGROUND_YMIN.get(), Config.GEN_NORMAL_UNDERGROUND_YMIN.get(), Config.GEN_NORMAL_UNDERGROUND_YMAX.get())))
+                .func_242729_a(Config.GEN_NORMAL_UNDERGROUND_CHANCE.get());
+        Registry.register(registry, new ResourceLocation(DireGoo.MOD_ID, "gooblock_gen_underground"), GooBlocksUnderground);
+
+        GooBlocksTerrainUnderground = Feature.ORE
+                .withConfiguration(new OreFeatureConfig(OreFeatureConfig.FillerBlockType.field_241882_a, ModBlocks.GOO_BLOCK_TERRAIN.get().getDefaultState(), 4))
+                .withPlacement(Placement.field_242907_l.configure(new TopSolidRangeConfig(Config.GEN_TERRAIN_UNDERGROUND_YMIN.get(), Config.GEN_TERRAIN_UNDERGROUND_YMIN.get(), Config.GEN_TERRAIN_UNDERGROUND_YMAX.get())))
+                .func_242729_a(Config.GEN_TERRAIN_UNDERGROUND_CHANCE.get());
+        Registry.register(registry, new ResourceLocation(DireGoo.MOD_ID, "gooblock_terrain_gen_underground"), GooBlocksTerrainUnderground);
     }
 
     public static void addStuffToBiomes(BiomeLoadingEvent event) {
@@ -39,6 +52,16 @@ public class GenHandler {
         if (Config.CAN_GEN_NORMAL_ABOVEGROUND.get()) {
             if (!BiomeDictionary.hasType(biome, BiomeDictionary.Type.VOID) && isValidBiome(event.getCategory())) {
                 event.getGeneration().withFeature(GenerationStage.Decoration.UNDERGROUND_ORES, GooBlocksAir);
+            }
+        }
+        if (Config.CAN_GEN_NORMAL_UNDERGROUND.get()) {
+            if (!BiomeDictionary.hasType(biome, BiomeDictionary.Type.VOID) && isValidBiome(event.getCategory())) {
+                event.getGeneration().withFeature(GenerationStage.Decoration.UNDERGROUND_ORES, GooBlocksUnderground);
+            }
+        }
+        if (Config.CAN_GEN_TERRAIN_UNDERGROUND.get()) {
+            if (!BiomeDictionary.hasType(biome, BiomeDictionary.Type.VOID) && isValidBiome(event.getCategory())) {
+                event.getGeneration().withFeature(GenerationStage.Decoration.UNDERGROUND_ORES, GooBlocksTerrainUnderground);
             }
         }
     }
