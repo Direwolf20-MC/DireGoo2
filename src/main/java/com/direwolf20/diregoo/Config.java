@@ -77,6 +77,25 @@ public class Config {
     public static ForgeConfigSpec.IntValue ITEM_ZAPPER_RFCOST_TIER_MULTIPLIER;
     public static ForgeConfigSpec.IntValue ITEM_ZAPPER_RFMAX;
 
+
+    public static final String CATEGORY_WORLDGEN = "worldgen";
+
+    public static final String SUBCATEGORY_WORLDGEN_NORMAL_GOO = "worldgen_normalgoo";
+    public static ForgeConfigSpec.BooleanValue CAN_GEN_NORMAL_UNDERGROUND;
+    public static ForgeConfigSpec.IntValue GEN_NORMAL_UNDERGROUND_CHANCE;
+    public static ForgeConfigSpec.IntValue GEN_NORMAL_UNDERGROUND_YMIN;
+    public static ForgeConfigSpec.IntValue GEN_NORMAL_UNDERGROUND_YMAX;
+    public static ForgeConfigSpec.BooleanValue CAN_GEN_NORMAL_ABOVEGROUND;
+    public static ForgeConfigSpec.IntValue GEN_NORMAL_ABOVEGROUND_CHANCE;
+    public static ForgeConfigSpec.IntValue GEN_NORMAL_ABOVEGROUND_YMIN;
+    public static ForgeConfigSpec.IntValue GEN_NORMAL_ABOVEGROUND_YMAX;
+
+    public static final String SUBCATEGORY_WORLDGEN_TERRAIN_GOO = "worldgen_terraingoo";
+    public static ForgeConfigSpec.BooleanValue CAN_GEN_TERRAIN_UNDERGROUND;
+    public static ForgeConfigSpec.IntValue GEN_TERRAIN_UNDERGROUND_CHANCE;
+    public static ForgeConfigSpec.IntValue GEN_TERRAIN_UNDERGROUND_YMIN;
+    public static ForgeConfigSpec.IntValue GEN_TERRAIN_UNDERGROUND_YMAX;
+
     static {
 
         COMMON_BUILDER.comment("General settings").push(CATEGORY_GENERAL);
@@ -91,12 +110,49 @@ public class Config {
         setupRFCostConfig();
         COMMON_BUILDER.pop();
 
+        COMMON_BUILDER.comment("WORLDGEN").push(CATEGORY_WORLDGEN);
+        setupWorldGenConfig();
+        COMMON_BUILDER.pop();
+
         COMMON_CONFIG = COMMON_BUILDER.build();
         CLIENT_CONFIG = CLIENT_BUILDER.build();
     }
 
     private static void setupGeneralConfig() {
 
+
+    }
+
+    private static void setupWorldGenConfig() {
+        COMMON_BUILDER.comment("Normal Goo Worldgen Settings").push(SUBCATEGORY_WORLDGEN_NORMAL_GOO);
+        CAN_GEN_NORMAL_UNDERGROUND = COMMON_BUILDER.comment("Can normal goo generate underground like ores")
+                .define("can_gen_normal_underground", false);
+        GEN_NORMAL_UNDERGROUND_CHANCE = COMMON_BUILDER.comment("The chance for goo to generate underground, 1 in X chunks. Bigger number means more rare")
+                .defineInRange("gen_normal_underground_chance", 25, 1, 10000);
+        GEN_NORMAL_UNDERGROUND_YMIN = COMMON_BUILDER.comment("The minimum Y level that normal goo can spawn underground")
+                .defineInRange("gen_normal_underground_ymin", 0, 0, 255);
+        GEN_NORMAL_UNDERGROUND_YMAX = COMMON_BUILDER.comment("The maximum Y level that normal goo can spawn underground")
+                .defineInRange("gen_normal_underground_ymax", 16, 0, 255);
+        CAN_GEN_NORMAL_ABOVEGROUND = COMMON_BUILDER.comment("Can normal goo generate above ground (in the air)")
+                .define("can_gen_normal_aboveground", false);
+        GEN_NORMAL_ABOVEGROUND_CHANCE = COMMON_BUILDER.comment("The chance for goo to generate aboveground, 1 in X chunks. Bigger number means more rare")
+                .defineInRange("gen_normal_aboveground_chance", 25, 1, 10000);
+        GEN_NORMAL_ABOVEGROUND_YMIN = COMMON_BUILDER.comment("The minimum Y level that normal goo can spawn aboveground")
+                .defineInRange("gen_normal_aboveground_ymin", 70, 0, 255);
+        GEN_NORMAL_ABOVEGROUND_YMAX = COMMON_BUILDER.comment("The maximum Y level that normal goo can spawn aboveground")
+                .defineInRange("gen_normal_aboveground_ymax", 125, 0, 255);
+        COMMON_BUILDER.pop();
+
+        COMMON_BUILDER.comment("Terrain Goo Worldgen Settings").push(SUBCATEGORY_WORLDGEN_TERRAIN_GOO);
+        CAN_GEN_TERRAIN_UNDERGROUND = COMMON_BUILDER.comment("Can terrain goo generate underground like ores")
+                .define("can_gen_terrain_underground", false);
+        GEN_TERRAIN_UNDERGROUND_CHANCE = COMMON_BUILDER.comment("The chance for terrain goo to generate underground, 1 in X chunks. Bigger number means more rare")
+                .defineInRange("gen_terrain_underground_chance", 25, 1, 10000);
+        GEN_TERRAIN_UNDERGROUND_YMIN = COMMON_BUILDER.comment("The minimum Y level that terrain goo can spawn underground")
+                .defineInRange("gen_terrain_underground_ymin", 0, 0, 255);
+        GEN_TERRAIN_UNDERGROUND_YMAX = COMMON_BUILDER.comment("The maximum Y level that terrain goo can spawn underground")
+                .defineInRange("gen_terrain_underground_ymax", 16, 0, 255);
+        COMMON_BUILDER.pop();
 
     }
 

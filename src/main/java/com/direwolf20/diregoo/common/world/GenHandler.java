@@ -1,5 +1,6 @@
 package com.direwolf20.diregoo.common.world;
 
+import com.direwolf20.diregoo.Config;
 import com.direwolf20.diregoo.DireGoo;
 import com.direwolf20.diregoo.common.blocks.ModBlocks;
 import net.minecraft.block.Blocks;
@@ -19,25 +20,26 @@ import net.minecraftforge.event.world.BiomeLoadingEvent;
 
 public class GenHandler {
 
-    public static ConfiguredFeature<?, ?> GooBlocks;
+    public static ConfiguredFeature<?, ?> GooBlocksAir;
+    public static ConfiguredFeature<?, ?> GooBlocksUnderground;
+    public static ConfiguredFeature<?, ?> GooBlocksTerrainUnderground;
 
     public static void registerConfiguredFeatures() {
         Registry<ConfiguredFeature<?, ?>> registry = WorldGenRegistries.CONFIGURED_FEATURE;
 
-        GooBlocks = ModBlocks.GOOFEATURE.get() //Feature.ORE
+        GooBlocksAir = ModBlocks.GOOFEATURE.get()
                 .withConfiguration(new OreFeatureConfig(new BlockMatchRuleTest(Blocks.AIR), ModBlocks.GOO_BLOCK.get().getDefaultState(), 4))
-                .withPlacement(Placement.field_242907_l.configure(new TopSolidRangeConfig(0, 0, 100))) //Bottom Offset, Top Offset, Maximum
-                .func_242729_a(30); //% Chance to spawn - Bigger Number == More Rare
-        Registry.register(registry, new ResourceLocation(DireGoo.MOD_ID, "gooblock_gen"), GooBlocks);
+                .withPlacement(Placement.field_242907_l.configure(new TopSolidRangeConfig(Config.GEN_NORMAL_ABOVEGROUND_YMIN.get(), Config.GEN_NORMAL_ABOVEGROUND_YMIN.get(), Config.GEN_NORMAL_ABOVEGROUND_YMAX.get()))) //Bottom Offset, Top Offset, Maximum
+                .func_242729_a(Config.GEN_NORMAL_ABOVEGROUND_CHANCE.get()); //% Chance to spawn - Bigger Number == More Rare
+        Registry.register(registry, new ResourceLocation(DireGoo.MOD_ID, "gooblock_gen_air"), GooBlocksAir);
     }
 
     public static void addStuffToBiomes(BiomeLoadingEvent event) {
         RegistryKey<Biome> biome = RegistryKey.getOrCreateKey(Registry.BIOME_KEY, event.getName());
-        if (!BiomeDictionary.hasType(biome, BiomeDictionary.Type.VOID) && isValidBiome(event.getCategory())) {
-            event.getGeneration().withFeature(GenerationStage.Decoration.UNDERGROUND_ORES, GooBlocks); /*Feature.ORE
-                    .withConfiguration(new OreFeatureConfig(new BlockMatchRuleTest(Blocks.AIR), ModBlocks.GOO_BLOCK.get().getDefaultState(), 8))
-                    .withPlacement()
-                    .func_242733_d(16).func_242728_a());*/
+        if (Config.CAN_GEN_NORMAL_ABOVEGROUND.get()) {
+            if (!BiomeDictionary.hasType(biome, BiomeDictionary.Type.VOID) && isValidBiome(event.getCategory())) {
+                event.getGeneration().withFeature(GenerationStage.Decoration.UNDERGROUND_ORES, GooBlocksAir);
+            }
         }
     }
 
