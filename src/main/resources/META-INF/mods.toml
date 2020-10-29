@@ -5,7 +5,7 @@ license="MIT (https://github.com/Direwolf20-MC/DireGoo2/blob/master/LICENSE.md)"
 
 [[mods]]
 modId="diregoo"
-version="${version}"
+version="${file.jarVersion}"
 displayName="Dire Goo"
 updateJSONURL="https://raw.githubusercontent.com/Direwolf20-MC/DireGoo2/master/update.json"
 displayURL="https://github.com/Direwolf20-MC/DireGoo2/"
