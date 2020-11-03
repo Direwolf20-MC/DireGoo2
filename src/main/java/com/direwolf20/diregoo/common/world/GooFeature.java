@@ -19,7 +19,7 @@ public class GooFeature extends OreFeature {
      * Matches the vanilla version, but can place blocks in the sky rather than only at the top of solid blocks.
      */
     @Override
-    public boolean func_241855_a(ISeedReader p_241855_1_, ChunkGenerator p_241855_2_, Random p_241855_3_, BlockPos p_241855_4_, OreFeatureConfig p_241855_5_) {
+    public boolean generate(ISeedReader p_241855_1_, ChunkGenerator p_241855_2_, Random p_241855_3_, BlockPos p_241855_4_, OreFeatureConfig p_241855_5_) {
         float f = p_241855_3_.nextFloat() * (float) Math.PI;
         float f1 = (float) p_241855_5_.size / 8.0F;
         int i = MathHelper.ceil(((float) p_241855_5_.size / 16.0F * 2.0F + 1.0F) / 2.0F);

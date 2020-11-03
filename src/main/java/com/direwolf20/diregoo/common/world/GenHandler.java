@@ -30,20 +30,20 @@ public class GenHandler {
 
         GooBlocksAir = ModBlocks.GOOFEATURE.get()
                 .withConfiguration(new OreFeatureConfig(new BlockMatchRuleTest(Blocks.AIR), ModBlocks.GOO_BLOCK.get().getDefaultState(), 4))
-                .withPlacement(Placement.field_242907_l.configure(new TopSolidRangeConfig(Config.GEN_NORMAL_ABOVEGROUND_YMIN.get(), Config.GEN_NORMAL_ABOVEGROUND_YMIN.get(), Config.GEN_NORMAL_ABOVEGROUND_YMAX.get()))) //Bottom Offset, Top Offset, Maximum
-                .func_242729_a(Config.GEN_NORMAL_ABOVEGROUND_CHANCE.get()); //% Chance to spawn - Bigger Number == More Rare
+                .withPlacement(Placement.RANGE.configure(new TopSolidRangeConfig(Config.GEN_NORMAL_ABOVEGROUND_YMIN.get(), Config.GEN_NORMAL_ABOVEGROUND_YMIN.get(), Config.GEN_NORMAL_ABOVEGROUND_YMAX.get()))) //Bottom Offset, Top Offset, Maximum
+                .chance(Config.GEN_NORMAL_ABOVEGROUND_CHANCE.get()); //% Chance to spawn - Bigger Number == More Rare
         Registry.register(registry, new ResourceLocation(DireGoo.MOD_ID, "gooblock_gen_air"), GooBlocksAir);
 
         GooBlocksUnderground = Feature.ORE
-                .withConfiguration(new OreFeatureConfig(OreFeatureConfig.FillerBlockType.field_241882_a, ModBlocks.GOO_BLOCK.get().getDefaultState(), 4))
-                .withPlacement(Placement.field_242907_l.configure(new TopSolidRangeConfig(Config.GEN_NORMAL_UNDERGROUND_YMIN.get(), Config.GEN_NORMAL_UNDERGROUND_YMIN.get(), Config.GEN_NORMAL_UNDERGROUND_YMAX.get())))
-                .func_242729_a(Config.GEN_NORMAL_UNDERGROUND_CHANCE.get());
+                .withConfiguration(new OreFeatureConfig(OreFeatureConfig.FillerBlockType.BASE_STONE_OVERWORLD, ModBlocks.GOO_BLOCK.get().getDefaultState(), 4))
+                .withPlacement(Placement.RANGE.configure(new TopSolidRangeConfig(Config.GEN_NORMAL_UNDERGROUND_YMIN.get(), Config.GEN_NORMAL_UNDERGROUND_YMIN.get(), Config.GEN_NORMAL_UNDERGROUND_YMAX.get())))
+                .chance(Config.GEN_NORMAL_UNDERGROUND_CHANCE.get());
         Registry.register(registry, new ResourceLocation(DireGoo.MOD_ID, "gooblock_gen_underground"), GooBlocksUnderground);
 
         GooBlocksTerrainUnderground = Feature.ORE
-                .withConfiguration(new OreFeatureConfig(OreFeatureConfig.FillerBlockType.field_241882_a, ModBlocks.GOO_BLOCK_TERRAIN.get().getDefaultState(), 4))
-                .withPlacement(Placement.field_242907_l.configure(new TopSolidRangeConfig(Config.GEN_TERRAIN_UNDERGROUND_YMIN.get(), Config.GEN_TERRAIN_UNDERGROUND_YMIN.get(), Config.GEN_TERRAIN_UNDERGROUND_YMAX.get())))
-                .func_242729_a(Config.GEN_TERRAIN_UNDERGROUND_CHANCE.get());
+                .withConfiguration(new OreFeatureConfig(OreFeatureConfig.FillerBlockType.BASE_STONE_OVERWORLD, ModBlocks.GOO_BLOCK_TERRAIN.get().getDefaultState(), 4))
+                .withPlacement(Placement.RANGE.configure(new TopSolidRangeConfig(Config.GEN_TERRAIN_UNDERGROUND_YMIN.get(), Config.GEN_TERRAIN_UNDERGROUND_YMIN.get(), Config.GEN_TERRAIN_UNDERGROUND_YMAX.get())))
+                .chance(Config.GEN_TERRAIN_UNDERGROUND_CHANCE.get());
         Registry.register(registry, new ResourceLocation(DireGoo.MOD_ID, "gooblock_terrain_gen_underground"), GooBlocksTerrainUnderground);
     }
 

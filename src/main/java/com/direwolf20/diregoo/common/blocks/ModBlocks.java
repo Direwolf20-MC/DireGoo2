@@ -74,5 +74,5 @@ public class ModBlocks {
     /**
      * Features
      */
-    public static final RegistryObject<Feature<OreFeatureConfig>> GOOFEATURE = FEATURES.register("goofeature", () -> new GooFeature(OreFeatureConfig.field_236566_a_));
+    public static final RegistryObject<Feature<OreFeatureConfig>> GOOFEATURE = FEATURES.register("goofeature", () -> new GooFeature(OreFeatureConfig.CODEC));
 }
