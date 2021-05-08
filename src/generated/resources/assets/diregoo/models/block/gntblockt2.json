@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:block/cube_bottom_top",
   "textures": {
-    "side": "diregoo:block/gnt_side",
+    "side": "diregoo:block/gnt_improved_side",
     "bottom": "diregoo:block/gnt_bottom",
     "top": "diregoo:block/gnt_top"
   }

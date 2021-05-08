@@ -1,6 +1,8 @@
 {
-  "parent": "minecraft:block/cube_all",
+  "parent": "minecraft:block/cube_bottom_top",
   "textures": {
-    "all": "diregoo:block/antigoobeacon"
+    "side": "diregoo:block/antigoobeacon_side",
+    "bottom": "diregoo:block/base_bottom",
+    "top": "diregoo:block/antigoobeacon_top_on"
   }
 }

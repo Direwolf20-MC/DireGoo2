@@ -37,56 +37,57 @@ public class GeneratorItemModels extends ItemModelProvider {
         String path = ModBlocks.GOO_DETECTOR.get().getRegistryName().getPath();
         getBuilder(path).parent(new ModelFile.UncheckedModelFile(modLoc("block/" + path))).transforms()
                 .transform(ModelBuilder.Perspective.THIRDPERSON_RIGHT)
-                .rotation(45, 0, 90)
-                .translation(0, 0, 0)
-                .scale(.5f)
+                .rotation(75, 45, 90)
+                .translation(0, 1.25f, 0)
+                .scale(0.375f)
                 .end()
                 .transform(ModelBuilder.Perspective.FIRSTPERSON_RIGHT)
-                .rotation(45, 0, 90)
-                .translation(0, 0, 0)
-                .scale(.5f)
+                .rotation(0, 45, 0)
+                .translation(0, 2, 0)
+                .scale(0.375f)
                 .end()
                 .transform(ModelBuilder.Perspective.GUI)
-                .rotation(90, 0, 0)
+                .rotation(30, 225, 0)
                 .translation(0, 0, 0)
-                .scale(1f)
+                .scale(0.625f)
                 .end()
                 .end();
-        ;
+
+        // Rid: Commented out as these items are now custom models included in the Main package
 
         //Our Item Models
-        String gooRemover = ModItems.GOO_REMOVER.get().getRegistryName().getPath();
-        singleTexture(gooRemover, mcLoc("item/handheld"), "layer0", modLoc("item/" + gooRemover)).transforms()
-                .transform(ModelBuilder.Perspective.THIRDPERSON_RIGHT)
-                .rotation(0, 80, 0)
-                .translation(0, 0, 0)
-                .scale(.5f)
-                .end()
-                .transform(ModelBuilder.Perspective.FIRSTPERSON_RIGHT)
-                .rotation(0, 80, 0)
-                .translation(6, 0, -7)
-                .scale(1f)
-                .end()
-                .end();
-
-        String gooZapper = ModItems.GOO_ZAPPER.get().getRegistryName().getPath();
-        singleTexture(gooZapper, mcLoc("item/handheld"), "layer0", modLoc("item/" + gooZapper)).transforms()
-                .transform(ModelBuilder.Perspective.THIRDPERSON_RIGHT)
-                .rotation(0, 80, 0)
-                .translation(0, 0, 0)
-                .scale(.5f)
-                .end()
-                .transform(ModelBuilder.Perspective.FIRSTPERSON_RIGHT)
-                .rotation(0, 80, 0)
-                .translation(6, 0, -7)
-                .scale(1f)
-                .end()
-                .transform(ModelBuilder.Perspective.FIRSTPERSON_LEFT)
-                .rotation(0, -80, 0)
-                .translation(6, 0, -7)
-                .scale(1f)
-                .end()
-                .end();
+//        String gooRemover = ModItems.GOO_REMOVER.get().getRegistryName().getPath();
+//        singleTexture(gooRemover, mcLoc("item/handheld"), "layer0", modLoc("item/" + gooRemover)).transforms()
+//                .transform(ModelBuilder.Perspective.THIRDPERSON_RIGHT)
+//                .rotation(0, 80, 0)
+//                .translation(0, 0, 0)
+//                .scale(.5f)
+//                .end()
+//                .transform(ModelBuilder.Perspective.FIRSTPERSON_RIGHT)
+//                .rotation(0, 80, 0)
+//                .translation(6, 0, -7)
+//                .scale(1f)
+//                .end()
+//                .end();
+//
+//        String gooZapper = ModItems.GOO_ZAPPER.get().getRegistryName().getPath();
+//        singleTexture(gooZapper, mcLoc("item/handheld"), "layer0", modLoc("item/" + gooZapper)).transforms()
+//                .transform(ModelBuilder.Perspective.THIRDPERSON_RIGHT)
+//                .rotation(0, 80, 0)
+//                .translation(0, 0, 0)
+//                .scale(.5f)
+//                .end()
+//                .transform(ModelBuilder.Perspective.FIRSTPERSON_RIGHT)
+//                .rotation(0, 80, 0)
+//                .translation(6, 0, -7)
+//                .scale(1f)
+//                .end()
+//                .transform(ModelBuilder.Perspective.FIRSTPERSON_LEFT)
+//                .rotation(0, -80, 0)
+//                .translation(6, 0, -7)
+//                .scale(1f)
+//                .end()
+//                .end();
 
         for (RegistryObject<Item> item : ModItems.BASICITEMS.getEntries()) {
             registerBasicItem(item.get());
