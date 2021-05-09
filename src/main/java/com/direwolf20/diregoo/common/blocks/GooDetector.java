@@ -6,15 +6,25 @@ import net.minecraft.block.material.Material;
 import net.minecraft.state.StateContainer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.shapes.IBooleanFunction;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+
+import java.util.stream.Stream;
 
 import static net.minecraft.block.RedstoneDiodeBlock.POWERED;
 
 public class GooDetector extends Block {
-    protected static final VoxelShape SHAPE = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 2.0D, 16.0D);
+    protected static final VoxelShape SHAPE = Stream.of(
+            Block.makeCuboidShape(6.5, 2, 6.5, 9.5, 3, 9.5),
+            Block.makeCuboidShape(0, 0, 0, 16, 2, 16),
+            Block.makeCuboidShape(7, 6, 2, 9, 8, 14),
+            Block.makeCuboidShape(2, 6, 7, 14, 8, 9),
+            Block.makeCuboidShape(7, 2, 7, 9, 13, 9)
+    ).reduce((v1, v2) -> {return VoxelShapes.combineAndSimplify(v1, v2, IBooleanFunction.OR);}).get();
 
     public GooDetector() {
         super(

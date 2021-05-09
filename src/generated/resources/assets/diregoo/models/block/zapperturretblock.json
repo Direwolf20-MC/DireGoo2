@@ -1,7 +1,9 @@
 {
-  "parent": "minecraft:block/orientable_vertical",
+  "parent": "minecraft:block/orientable_with_bottom",
   "textures": {
-    "side": "diregoo:block/zapperturretblock",
-    "front": "diregoo:block/zapperturretblock_front"
+    "side": "diregoo:block/zapperturret_side",
+    "front": "diregoo:block/zapperturret_side",
+    "bottom": "diregoo:block/zapperturret_bottom",
+    "top": "diregoo:block/zapperturret_top"
   }
 }

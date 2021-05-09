@@ -26,38 +26,54 @@ public class GeneratorBlockStates extends BlockStateProvider {
         //buildCubeGoo(ModBlocks.GOO_BLOCK_BURST.get());
 
         buildCubeAll(ModBlocks.GOO_BLOCK_POISON.get());
-        buildCubeAll(ModBlocks.TURRET_BLOCK.get());
-        buildCubeAll(ModBlocks.ANTI_GOO_FIELD_GEN.get());
-        buildCubeAll(ModBlocks.ANTI_GOO_BEACON.get());
-        buildCubeAll(ModBlocks.GOOLIMINATIONFIELDGEN.get());
+//        buildCubeAll(ModBlocks.ANTI_GOO_FIELD_GEN.get()); // Rid: Removed due to custom model in Main package
+//        buildCubeAll(ModBlocks.GOOLIMINATIONFIELDGEN.get()); // Rid: Removed due to custom model in Main package
+//        buildCubeAll(ModBlocks.ANTI_GOO_BEACON.get()); // Rid: Turned to a simpleBlock below
+//        buildCubeAll(ModBlocks.TURRET_BLOCK.get()); // Rid: Turned to a simpleBlock below
 
-        directionalBlock(ModBlocks.ZAPPER_TURRET_BLOCK.get(), models().orientableVertical(
+        simpleBlock(ModBlocks.ANTI_GOO_BEACON.get(), models().cubeBottomTop(
+                Objects.requireNonNull(ModBlocks.ANTI_GOO_BEACON.get().getRegistryName()).getPath(),
+                modLoc("block/antigoobeacon_side"),
+                modLoc("block/base_bottom"),
+                modLoc("block/antigoobeacon_top_on")
+        ));
+
+        simpleBlock(ModBlocks.TURRET_BLOCK.get(), models().cubeBottomTop(
+                Objects.requireNonNull(ModBlocks.TURRET_BLOCK.get().getRegistryName()).getPath(),
+                modLoc("block/turret_side"),
+                modLoc("block/turret_bottom"),
+                modLoc("block/turret_top")
+        ));
+
+        directionalBlock(ModBlocks.ZAPPER_TURRET_BLOCK.get(), models().orientableWithBottom(
                 Objects.requireNonNull(ModBlocks.ZAPPER_TURRET_BLOCK.get().getRegistryName()).getPath(),
-                modLoc("block/zapperturretblock"),
-                modLoc("block/zapperturretblock_front")
+                modLoc("block/zapperturret_side"),
+                modLoc("block/zapperturret_side"),
+                modLoc("block/zapperturret_bottom"),
+                modLoc("block/zapperturret_top")
         ));
 
         simpleBlock(ModBlocks.GNT_BLOCK_T1.get(), models().cubeBottomTop(
                 Objects.requireNonNull(ModBlocks.GNT_BLOCK_T1.get().getRegistryName()).getPath(),
-                modLoc("block/gnt_side"),
+                modLoc("block/gnt_basic_side"),
                 modLoc("block/gnt_bottom"),
                 modLoc("block/gnt_top")
         ));
         simpleBlock(ModBlocks.GNT_BLOCK_T2.get(), models().cubeBottomTop(
                 Objects.requireNonNull(ModBlocks.GNT_BLOCK_T2.get().getRegistryName()).getPath(),
-                modLoc("block/gnt_side"),
+                modLoc("block/gnt_improved_side"),
                 modLoc("block/gnt_bottom"),
                 modLoc("block/gnt_top")
         ));
         simpleBlock(ModBlocks.GNT_BLOCK_T3.get(), models().cubeBottomTop(
                 Objects.requireNonNull(ModBlocks.GNT_BLOCK_T3.get().getRegistryName()).getPath(),
-                modLoc("block/gnt_side"),
+                modLoc("block/gnt_powerful_side"),
                 modLoc("block/gnt_bottom"),
                 modLoc("block/gnt_top")
         ));
         simpleBlock(ModBlocks.GNT_BLOCK_T4.get(), models().cubeBottomTop(
                 Objects.requireNonNull(ModBlocks.GNT_BLOCK_T4.get().getRegistryName()).getPath(),
-                modLoc("block/gnt_side"),
+                modLoc("block/gnt_extreme_side"),
                 modLoc("block/gnt_bottom"),
                 modLoc("block/gnt_top")
         ));
