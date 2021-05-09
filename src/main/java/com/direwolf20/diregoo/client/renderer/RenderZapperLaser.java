@@ -122,8 +122,8 @@ public class RenderZapperLaser {
         // Support for hand sides remembering to take into account of Skin options
         if (Minecraft.getInstance().gameSettings.mainHand != HandSide.RIGHT)
             hand = hand == Hand.MAIN_HAND ? Hand.OFF_HAND : Hand.MAIN_HAND;
-        float startXOffset = -0.25f;
-        float startYOffset = -.095f;
+        float startXOffset = -0.2f;
+        float startYOffset = -.141f;
         float startZOffset = 0.35f + (1 - player.getFovModifier()) / 2;
         if (hand == Hand.OFF_HAND) {
             startYOffset = -.120f;
