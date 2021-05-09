@@ -1,6 +1,6 @@
 buildscript {
     repositories {
-        maven { url = 'https://files.minecraftforge.net/maven' }
+        maven { url = 'https://maven.minecraftforge.net/' }
         jcenter()
         mavenCentral()
     }
@@ -121,8 +121,8 @@ dependencies {
     runtimeOnly fg.deobf("mezz.jei:jei-${jei_version}")
     //compileOnly fg.deobf("com.feed_the_beast.mods:ftb-gui-library:1.0.0.18")
 
-    runtimeOnly fg.deobf("ignored:Powah:1.16.3-2.3.3")
-    runtimeOnly fg.deobf("ignored:Lollipop:1.16.3-3.2.2")
+    runtimeOnly fg.deobf("ignored:Powah:1.16.5-2.3.16")
+    runtimeOnly fg.deobf("ignored:Lollipop:1.16.5-3.2.9")
     //runtimeOnly fg.deobf("ignored:refinedstorage:1.9.2")
     //runtimeOnly fg.deobf("ignored:charginggadgets:1.2.0")
     //runtimeOnly fg.deobf("ignored:Mekanism:1.16.1-10.0.9.432")

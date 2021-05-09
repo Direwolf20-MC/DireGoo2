@@ -41,7 +41,7 @@ public class GNTEntity extends TNTEntity {
         this.prevPosX = x;
         this.prevPosY = y;
         this.prevPosZ = z;
-        this.tntPlacedBy = igniter;
+        this.igniter = igniter;
         this.radius = radius;
     }
 

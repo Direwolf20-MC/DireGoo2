@@ -63,7 +63,7 @@ public class GoonadeFreeze extends Item {
         Vector3d pathVec = lookingAt.add(-0.125, -0.125, -0.125).subtract(laserPos).normalize(); //Half of the particle size, so it adjusts to the actual center of the block
 
         GoonadeFreezeEntity goonadeEntity = new GoonadeFreezeEntity(world, player);
-        goonadeEntity.func_234612_a_(player, player.rotationPitch, player.rotationYaw, 0f, 1f, 0f);
+        goonadeEntity.setDirectionAndMovement(player, player.rotationPitch, player.rotationYaw, 0f, 1f, 0f);
         world.addEntity(goonadeEntity);
 
     }
