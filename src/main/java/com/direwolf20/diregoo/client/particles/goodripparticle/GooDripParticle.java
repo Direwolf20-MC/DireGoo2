@@ -19,8 +19,8 @@ public class GooDripParticle extends SpriteTexturedParticle {
         this.motionZ = 0;
         this.maxAge = (int) (20.0D / (Math.random() * 0.8D + 0.2D));
         this.particleAlpha = .8f;
-        this.setColor(0.266f, 0.223f, 0.282f);
-//        this.setColor((float) xSpeedIn, (float) ySpeedIn, (float) speedIn);
+        //this.setColor(0.266f, 0.223f, 0.282f);
+        this.setColor((float) xSpeedIn, (float) ySpeedIn, (float) speedIn);
         this.particleGravity = 0.06F;
         this.maxAge = 40;
     }

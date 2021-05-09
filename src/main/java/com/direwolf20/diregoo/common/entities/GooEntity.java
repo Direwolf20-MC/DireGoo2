@@ -83,9 +83,9 @@ public class GooEntity extends EntityBase {
             }
             double r = 0, g = 0, b = 0;
             if (dataManager.get(gooBlockState).get().getBlock().equals(ModBlocks.GOO_BLOCK.get())) {
-                r = 0.1;
-                g = 0.1;
-                b = 1;
+                r = 0.266f;
+                g = 0.223f;
+                b = 0.282f;
             }
             if (dataManager.get(gooBlockState).get().getBlock().equals(ModBlocks.GOO_BLOCK_TERRAIN.get())) {
                 r = 0.1;
